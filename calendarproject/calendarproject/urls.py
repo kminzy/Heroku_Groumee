@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from groupmeet.views import *
+from groupmeet import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', usercalendar, name='usercalendar'),
+    path('', views.userCalendar_view, name="userCalendar_view"),
+    path('grouplist/<str:id>',views.getuserGroupList,name="getuserGroupList"),
+    path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view")
+
 ]
