@@ -1,0 +1,13 @@
+.main-section{
+    display: flex;
+}
+
+.left-section{
+    width: 65%;
+    background-color: aquamarine;
+}
+
+.right-section{
+    width: 35%;
+    background-color: burlywood;
+}
