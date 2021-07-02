@@ -61,15 +61,6 @@ def next_month(day):                                                          # 
    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
    return month
 
-<<<<<<< HEAD
-=======
-def groupCalandar_view(request,userlist):  #list를 인자로 받아와도 되는지?
-   groupschedulelist=[]
-   for user in userlist:
-      schedule=Schedule.objects.filter(user=user)
-      groupschedulelist.append(schedule)
-   return render(request, 'groupCalendar.html',{'groupschedule_list':groupschedulelist})
-
 def createGroupSchedule(request, group_id):
    newGroupSchedule = GroupSchedule()
    newGroupSchedule.group = Group.objects.get(pk=group_id)
@@ -88,4 +79,3 @@ def allowRegister(request, groupSchedule_id):
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
    return redirect('groupCalendar', groupSchedule.group) # group id를 인자로 (group_id/group)
->>>>>>> de1bfc13dc4fb987306f4c78e0d9bf80cb63c311
