@@ -29,6 +29,13 @@
 
         <div class="right-section">
             right
+            <br>
+            {% for schedule in schedule_list%}
+            {{schedule.title}}
+            {{schedule.start}}
+            {{schedule.end}}
+            <br>
+            {%endfor%}
         </div>
     </div>
 </body>
