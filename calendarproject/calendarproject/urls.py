@@ -22,5 +22,4 @@ urlpatterns = [
     path('', views.userCalendar_view, name="userCalendar_view"),
     path('grouplist/<str:id>',views.getuserGroupList,name="getuserGroupList"),
     path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view")
-
 ]

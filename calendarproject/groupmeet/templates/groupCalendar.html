@@ -1,20 +1,35 @@
+{%load static%}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    {% load static %}
     <link rel="stylesheet" href='{% static "css/groupcalendar.css" %}' />
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet">
     <title>Document</title>
+    <script>
+        function go_prev_month(){
+            location.href="{%url 'groupCalendar_view' groupId%}?{{prev_month}}"
+        }
+        function go_next_month(){
+            location.href="{%url 'groupCalendar_view' groupId%}?{{next_month}}"
+        }
+    </script>
 </head>
 <body>
     <div class="main-section">
         <div class="left-section">
-            left
+            <h3>Group Schedule</h3>
+            {{calendar}}
+            <div class="calendar-info">
+                <div class="empty-box">&nbsp;</div>&nbsp;: 스케줄 있음
+            </div>
         </div>
+
         <div class="right-section">
             right
         </div>
     </div>
-
 </body>
 </html>
