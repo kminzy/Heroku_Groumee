@@ -25,6 +25,7 @@ def groupCalendar_view(request, id):
    today = get_date(request.GET.get('month'))
    prev_month_url = prev_month(today)
    next_month_url = next_month(today)
+   cur_month_url = "month=" + str(today.year) + '-' + str(today.month)
    # now = datetime.now()
    # cur_year = now.year        # 현재 연도
    # cur_month = now.month      # 현재 월
@@ -34,13 +35,17 @@ def groupCalendar_view(request, id):
    cal = mark_safe(cal)
 
    #group에 속한 user들의 모든 일정 list로 return
-   members= group.members.all()
    schedule_list=[]
-   for user in members:
-      schedules = Schedule.objects.filter(user=user, start__year=today.year, start__month=today.month)
-      schedule_list+=schedules
+   if request.GET.get('day'):
+      day = request.GET.get('day')
+      members= group.members.all()
+      for user in members:
+         schedules = Schedule.objects.filter(user=user, start__year=today.year, start__month=today.month, start__day=day)
+         schedule_list+=schedules
+      groupschedules = GroupSchedule.objects.filter(group=group, start__year=today.year, start__month=today.month, start__day=day)
+      schedule_list += groupschedules
 
-   return render(request, 'groupCalendar.html', {'calendar' : cal, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list})
+   return render(request, 'groupCalendar.html', {'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list})
 
 def get_date(request_day):
    if request_day:

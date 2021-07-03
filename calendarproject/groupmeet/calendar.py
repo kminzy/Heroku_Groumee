@@ -34,7 +34,8 @@ class Calendar(HTMLCalendar):
             all_members_schedules += Schedule.objects.filter(user=member.userId, start__year=self.year, start__month=self.month, start__day=day)
         if day != 0:
             if all_members_schedules or group_schedules:      # 그 날에 어떠한 스케줄(그룹스케줄이던 개인스케줄이던)이라도 있으면
-                return "<td class='date is_schedule' onclick='location.href=\"#\"'>" + f"{day}</td>"
+                return f"<td class='date is_schedule' onclick='view_day_schedule(this);'>" + f"{day}</td>"
             else:                                             # 그 날에 아무 스케줄도 없으면
-                return f"<td class='date is_not_schedule' onclick='location.href=\"#\"'>{day}</td>"
+                return f"<td class='date is_not_schedule' onclick='view_day_schedule(this);'>{day}</td>"
         return '<td></td>'
+

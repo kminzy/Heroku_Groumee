@@ -9,13 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet" />
     <title>Document</title>
     <script>
-      function go_prev_month() {
-        location.href = "{%url 'groupCalendar_view' groupId%}?{{prev_month}}";
+      function go_prev_month(){
+          location.href="{%url 'groupCalendar_view' groupId%}?{{prev_month}}"
       }
-      function go_next_month() {
-        location.href = "{%url 'groupCalendar_view' groupId%}?{{next_month}}";
+      function go_next_month(){
+          location.href="{%url 'groupCalendar_view' groupId%}?{{next_month}}"
       }
-    </script>
+      function view_day_schedule(self){
+          var url_str = "{%url 'groupCalendar_view' groupId%}?{{cur_month}}&day=" + self.innerText;
+          location.href=url_str;
+      }
+  </script>
     <style>
       .table-content th {
         width: 35%;
@@ -36,9 +40,11 @@
       <div class="right-section">
         right
         <br />
+        {%if schedule_list%}
         {% for schedule in schedule_list%} {{schedule.title}} {{schedule.start}} {{schedule.end}}
         <br />
         {%endfor%}
+        {%endif%}
 
         <div class="table-title">
           <span class="group-name">Group Time-table</span>
