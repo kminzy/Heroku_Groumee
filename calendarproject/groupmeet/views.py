@@ -4,7 +4,7 @@ import datetime
 import calendar
 from .calendar import Calendar
 from django.utils.safestring import mark_safe
-
+import logging
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
@@ -14,27 +14,33 @@ from django.utils.safestring import mark_safe
 def userCalendar_view(request):
    return render(request, 'userCalendar.html')
 
-def getuserGroupList(request,userId):
-   user = get_object_or_404(User, id=userId)
+#사용자의 Id를 받아와서 사용자가 속한 group list return
+def getuserGroupList(request,id):
+   user = get_object_or_404(User, userId=id)
    userGroup_list=list(user.groups.all())  #userid를 받아와서 user가 속한 usergroup 부르기
    return render(request,'userGroupList.html',{'userGroup_list':userGroup_list})
 
-def groupCalendar_view(request, id):            # 그룹 캘린더 보여주기
+# 그룹 캘린더 보여주기
+def groupCalendar_view(request, id):            
    today = get_date(request.GET.get('month'))
-
    prev_month_url = prev_month(today)
    next_month_url = next_month(today)
-   
    # now = datetime.now()
    # cur_year = now.year        # 현재 연도
    # cur_month = now.month      # 현재 월
-
    group = Group.objects.get(id=id)
    cal = Calendar(today.year, today.month)
    cal = cal.formatmonth(withyear=True, group=group)
    cal = mark_safe(cal)
 
-   return render(request, 'groupCalendar.html', {'calendar' : cal, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id})
+   #group에 속한 user들의 모든 일정 list로 return
+   members= group.members.all()
+   schedule_list=[]
+   for user in members:
+      schedules = Schedule.objects.filter(user=user)
+      schedule_list+=schedules
+
+   return render(request, 'groupCalendar.html', {'calendar' : cal, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list})
 
 def get_date(request_day):
    if request_day:
@@ -54,13 +60,6 @@ def next_month(day):                                                          # 
    next_month = last + datetime.timedelta(days=1)                             # next_month = today에서 하루가 더 해진 날, 즉 다음 달 1일이 됨
    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
    return month
-
-def groupCalandar_view(request,userlist):  #list를 인자로 받아와도 되는지?
-   groupschedulelist=[]
-   for user in userlist:
-      schedule=Schedule.objects.filter(user=user)
-      groupschedulelist.append(schedule)
-   return render(request, 'groupCalendar.html',{'groupschedule_list':groupschedulelist})
 
 def createGroupSchedule(request, group_id):
    newGroupSchedule = GroupSchedule()

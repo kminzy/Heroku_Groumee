@@ -31,5 +31,3 @@ class GroupSchedule(models.Model):
     start=models.DateTimeField()
     end=models.DateTimeField()
     #title=models.CharField(max_length=60)  
-    #title이 필요할지? 필요하다면 겹치는 일정 이름은 무엇으로 할지? 아니면 스케줄의 주인 이름을 나타낼지
-
