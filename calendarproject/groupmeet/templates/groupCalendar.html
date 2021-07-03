@@ -40,6 +40,9 @@
       <div class="right-section">
         right
         <br />
+        {%if date%}
+          {{date.0}}년 {{date.1}}월 {{date.2}}일<br>
+        {%endif%}
         {%if schedule_list%}
         {% for schedule in schedule_list%} {{schedule.title}} {{schedule.start}} {{schedule.end}}
         <br />
