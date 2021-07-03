@@ -76,87 +76,87 @@
                 </tr>
                 <tr>
                   <th rowspan="2">10</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/00">click</td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/00" id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">11</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="11/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="11/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">12</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="12/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="12/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">1</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="13/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="13/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">2</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="14/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="14/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">3</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="15/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="15/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">4</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="16/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="16/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">5</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="17/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="17/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">6</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="18/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="18/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">7</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="19/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="19/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">8</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="20/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="20/30"></td>
                 </tr>
                 <tr>
                   <th rowspan="2">9</th>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="21/00"></td>
                 </tr>
                 <tr>
-                  <td></td>
+                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="21/30"></td>
                 </tr>
               </tbody>
             </table>
@@ -174,14 +174,15 @@
           </div>
           <div class="modal-body">
             <form action="">
+              일정 시작: 
               <select name="start_year" id="start_year" disabled>
-                <option value="{{YEAR}}" selected>{{YEAR}}</option>
+                <option value="{{date.0}}" selected>{{date.0}}</option>
               </select>년
               <select name="start_month" id="start_month" disabled>
-                <option value="{{MONTH}}" selected>{{MONTH}}</option>
+                <option value="{{date.1}}" selected>{{date.1}}</option>
               </select>월
               <select name="start_day" id="start_day" disabled>
-                <option value="{{DAY}}" selected>{{DAY}}</option>
+                <option value="{{date.2}}" selected>{{date.2}}</option>
               </select>일
               <select name="start_hour" id="start_hour" value="" disabled>
                 <option value="9">9</option>
@@ -202,18 +203,25 @@
                 <option value="00">00</option>
                 <option value="30">30</option>
               </select>분
-              <br/>
-              <select name="end_year" id="end_year" disabled>
-                <option value="{{YEAR}}" selected>{{YEAR}}</option>
-                <option value="{{YEAR}}" selected>{{YEAR}}</option>
+              <br/><br/>
+              일정 끝: 
+              <select name="end_year" id="end_year" value={{date.0}} >
+                <option value="{{date.0}}" selected>{{date.0}}</option>
+                <option value="{{date.0}}" selected>{{date.0}}</option> <!-- 1 증가값 수정-->
               </select>년
-              <select name="end_month" id="end_month" disabled>
-                <option value="{{MONTH}}" selected>{{MONTH}}</option>
+              <select name="end_month" id="end_month" value={{date.1}}>
+                <option value="{{date.1}}" selected>{{date.1}}</option>
+                <option value="{{date.1}}" selected>{{date.1}}</option> <!-- 1 증가값 수정-->
               </select>월
-              <select name="end_day" id="end_day" disabled>
-                <option value="{{DAY}}" selected>{{DAY}}</option>
+              <select name="end_day" id="end_day" value={{date.2}}>
+                <option value="{{date.2}}" selected>{{date.2}}</option>
+                <option value="{{date.2}}" selected>{{date.2}}</option>
+                <option value="{{date.2}}" selected>{{date.2}}</option>
+                <option value="{{date.2}}" selected>{{date.2}}</option>
+                <option value="{{date.2}}" selected>{{date.2}}</option> <!-- 1 증가값 수정-->
               </select>일
-              <select name="end_hour" id="end_hour" value="" disabled>
+              <select name="end_hour" id="end_hour" >
+                <option value=""></option>
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
@@ -228,16 +236,17 @@
                 <option value="20">20</option>
                 <option value="21">21</option>
               </select>시
-              <select name="end_minute" id="end_minute" value="" disabled>
+              <select name="end_minute" id="end_minute" >
+                <option value=""></option>
                 <option value="00">00</option>
                 <option value="30">30</option>
               </select>분
-              <br/>
-            <input type="select" name="title" id="title" placeholder="일정 명 입력" />
+              <br/><br/>
+            일정명: <input type="select" name="title" id="title" />
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="submit" class="btn btn-primary">저장</button>
           </div>
         </div>
       </div>

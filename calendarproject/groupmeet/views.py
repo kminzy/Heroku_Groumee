@@ -46,7 +46,7 @@ def groupCalendar_view(request, id):
       groupschedules = GroupSchedule.objects.filter(group=group, start__year=today.year, start__month=today.month, start__day=day)
       schedule_list += groupschedules
 
-      return render(request, 'groupCalendar.html', {'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [today.year, today.month, day]})
+      return render(request, 'groupCalendar.html', {'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [int(today.year), int(today.month), int(day)]})
    return render(request, 'groupCalendar.html', {'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id})
    
 def get_date(request_day):
