@@ -1,237 +1,156 @@
 {%load static%}
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+  <head>
     <link rel="stylesheet" href='{% static "css/groupcalendar.css" %}' />
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet" />
     <title>Document</title>
     <script>
-        function go_prev_month(){
-            location.href="{%url 'groupCalendar_view' groupId%}?{{prev_month}}"
-        }
-        function go_next_month(){
-            location.href="{%url 'groupCalendar_view' groupId%}?{{next_month}}"
-        }
+      function go_prev_month() {
+        location.href = "{%url 'groupCalendar_view' groupId%}?{{prev_month}}";
+      }
+      function go_next_month() {
+        location.href = "{%url 'groupCalendar_view' groupId%}?{{next_month}}";
+      }
     </script>
-</head>
-<body>
+    <style>
+      th {
+        width: 150px;
+      }
+    </style>
+  </head>
+  <body>
     <div class="main-section">
-        <div class="left-section">
-            <h3>Group Schedule</h3>
-            {{calendar}}
-            <div class="calendar-info">
-                <div class="empty-box">&nbsp;</div>&nbsp;: 스케줄 있음
-            </div>
+      <div class="left-section">
+        <h3>Group Schedule</h3>
+        {{calendar}}
+        <div class="calendar-info">
+          <div class="empty-box">&nbsp;</div>
+          &nbsp;: 스케줄 있음
         </div>
+      </div>
 
-        <div class="right-section">
-            right
-            <br>
-            {% for schedule in schedule_list%}
-            {{schedule.title}}
-            {{schedule.start}}
-            {{schedule.end}}
-            <br>
-            {%endfor%}
+      <div class="right-section">
+        right
+        <br />
+        {% for schedule in schedule_list%} {{schedule.title}} {{schedule.start}} {{schedule.end}}
+        <br />
+        {%endfor%}
 
-            <div class="table-title">
-                <span class="group-name">Group Time-table</span>
-            </div>
-            <div class="table-section">
-                <div class="table-content">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th> </th>
-                                <!-- {% for user in group %}
-                                <th>{{user.name}}</th>
-                                {% endfor %} -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th rowspan="2">9</th>
-                                <!-- {% for user in group %}
+        <div class="table-title">
+          <span class="group-name">Group Time-table</span>
+        </div>
+        <div class="table-section">
+          {{calendar.year}} / {{calendar.month}}
+          <div class="table-content">
+            <table>
+              <tbody>
+                <tr>
+                  <th rowspan="2">9</th>
+                  <!-- {% for user in group %}
                                 <td>
                                 {% if user.schedule %}
                                 ~~~
                                 {% endif %}
                                 </td>
                                 {% endfor %} -->
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">10</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">11</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">12</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">1</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">2</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">3</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">4</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">5</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">6</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">7</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">8</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th rowspan="2">9</th>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">10</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">11</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">12</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">1</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">2</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">3</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">4</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">5</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">6</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">7</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">8</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th rowspan="2">9</th>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
