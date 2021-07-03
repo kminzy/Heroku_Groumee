@@ -37,7 +37,7 @@ def groupCalendar_view(request, id):
    members= group.members.all()
    schedule_list=[]
    for user in members:
-      schedules = Schedule.objects.filter(user=user)
+      schedules = Schedule.objects.filter(user=user, start__year=today.year, start__month=today.month)
       schedule_list+=schedules
 
    return render(request, 'groupCalendar.html', {'calendar' : cal, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list})

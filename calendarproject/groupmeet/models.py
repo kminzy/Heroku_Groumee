@@ -10,7 +10,7 @@ class User(models.Model):
 class Group(models.Model):
     name=models.CharField(max_length=50)
     members=models.ManyToManyField('User',related_name="groups")
-    #leader=models.ForeignKey(User,on_delete=models.CASCADE,default='')
+    leader=models.ForeignKey(User,on_delete=models.CASCADE,default='')
 
 '''
 #UserGroup은 User와 Group의 중개 모델
@@ -30,4 +30,4 @@ class GroupSchedule(models.Model):
     group=models.ForeignKey(Group,on_delete=models.CASCADE,default='')
     start=models.DateTimeField()
     end=models.DateTimeField()
-    #title=models.CharField(max_length=60)  
+    title=models.CharField(max_length=60)  
