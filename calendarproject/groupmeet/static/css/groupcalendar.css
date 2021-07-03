@@ -17,6 +17,7 @@
 .left-section h3{
     text-align: center;
 }
+
 .calendar-section{
     display: flex;
     align-items: center;
@@ -118,7 +119,6 @@ td:first-child, th:first-child{
     padding: .25em .25em;
     transition: background .2s;
 }
-  
 
 .calendar td:hover {
 	background: #a4abeb;
@@ -130,139 +130,10 @@ td:first-child, th:first-child{
     background: #dcdef3;
 }
 
-.main-section, .calendar-info, .table-title{
-    display: flex;
-}
-
-.calendar-info{
-    margin-top: 10px;
-    justify-content: flex-end;
-    padding-right: 10px;
-}
-
-.left-section{
-    width: 65%;
-    background-color: aquamarine;
-    font-family: 'Noto Sans KR', sans-serif;
-}
-
-.left-section h3{
-    text-align: center;
-}
-.calendar-section{
-    display: flex;
-    align-items: center;
-    width: 95%;
-    margin: 0 auto;
-}
-
-.calendar th p{
-    width: 50%;
-    margin: 0 auto;
-    font-size: 1.25rem;
-    font-weight: 400;
-    color: #838de9;
-    background: #fff;
-    padding: 5px;
-    border-radius: 0.5em;
-    transition: background .2s;
-}
-
-.calendar th p:hover{
-    color: #fff;
-    background: #838de9;
-    cursor: pointer;
-}
-
-.empty-box{
-    width: 21px;
-    background-color: #dcdef3;
-}
-
-.right-section{
-    width: 35%;
-    background-color: burlywood;
-}
-
-.calendar{
-    width: 60vw;
-    font-size: 1rem;
-    margin : auto;
-    padding: 10px;
-    background: #fff;
-    border-radius: 1em 1em 1em 1em;
-    -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
-    color: #555;
-    text-align : center;
-    border-spacing: 0px;
-}
-
-.month {
-    font-size: 0.75rem !important;
-}
-
-.month-number{
-    font-size: 4.5rem !important;
-    color : #838de9 !important;
-    line-height: 2.5rem;
-    padding-top: 0 !important;
-    padding-bottom: 3rem !important;
-}
-
-.weekheader{
-    background: #838de9;
-    color: #ffffff !important;
-}
-
-.weekheader th:first-child, .weekheader th:last-child{
-    background: #aeb4e9;
-}
-  
-.date {
-    font-size: 1rem;
-}
-
-.calendar .month {
-    color : #222222;
-    font-weight: 400;
-}
-
-.calendar th {
-    padding: 0.5vw;
-    text-align: center;
-    font-size: 1.25rem;
-}
-
-.calendar tr {
-    color : #222222;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
-td:first-child, th:first-child{
-    color: #f52e2e;
-}
-
-.calendar td {
-    width: 1rem;
-    height: 5em;
-    padding: .25em .25em;
-    transition: background .2s;
-}
-  
-
-.calendar td:hover {
-    background: #a4abeb;
-    color: #fff;
-    cursor: pointer;
-}
-
-.is_schedule{
-    background: #dcdef3;
-}
+/* 여기부터 right섹션 */
 
 .table-title{
+    display: flex;
     justify-content: center;
 }
 
@@ -274,11 +145,6 @@ td:first-child, th:first-child{
     padding-top: 0 !important;
     padding-bottom: 1rem !important;
     font-weight:600;
-}
-
-.right-section{
-    width: 35%;
-    background-color: burlywood;
 }
 
 .table-section{
@@ -309,14 +175,14 @@ td:first-child, th:first-child{
     border-spacing: 0px;
 }
 
-thead th {
+.time-table thead th {
     padding: 5px;
     font-size: 1rem !important;
     background: #838de9;
     color: #ffffff !important;
 }
 
-tbody th {
+.time-table tbody th {
     background: #aeb4e9;
     color: #ffffff !important;
     padding-top: 15px;
@@ -328,19 +194,19 @@ tbody th {
     height:50px;
 }
 
-table {
+.time-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-th, td {
+.time-table th, .time-table td {
     border:0.5px solid #cfcfcf;
     padding: 0.5vw;
     text-align: center;
     font-size: 1.25rem;
 }
 
-table td:hover {
+.time-table td:hover {
     background: #a4abeb;
     color: #fff;
     cursor: pointer;
