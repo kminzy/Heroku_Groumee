@@ -1,5 +1,6 @@
 from calendar import HTMLCalendar
 from .models import Schedule, GroupSchedule
+import datetime
 
 class Calendar(HTMLCalendar):
     def __init__(self, year=None, month=None, firstweekday=6):
@@ -28,11 +29,14 @@ class Calendar(HTMLCalendar):
         # d = ''
         # for schedule in schedules_per_day:
         #     d += f'<li> {schedule.get_html_url} </li>'
-        group_schedules = GroupSchedule.objects.filter(group=group, start__year=self.year, start__month=self.month, start__day=day) # 이 그룹의 그룹스케줄 중 이 날의 스케줄만 담음
-        all_members_schedules = []            # 그룹의 모든 구성원들의 개인스케줄들 중에서, 이 날에 있는 스케줄들만 담을 리스트
-        for member in group.members.all():
-            all_members_schedules += Schedule.objects.filter(user=member.userId, start__year=self.year, start__month=self.month, start__day=day)
         if day != 0:
+            date = datetime.date(self.year, self.month, day)
+
+            group_schedules = GroupSchedule.objects.filter(group=group, start__date__lte=date, end__date__gte=date) # 이 그룹의 그룹스케줄 중 이 날 있는 스케줄들을 담음
+            all_members_schedules = []            # 그룹의 모든 구성원들의 개인스케줄들 중에서, 이 날에 있는 스케줄들만 담을 리스트
+            for member in group.members.all():
+                all_members_schedules += Schedule.objects.filter(user=member, start__date__lte=date, end__date__gte=date)
+
             if all_members_schedules or group_schedules:      # 그 날에 어떠한 스케줄(그룹스케줄이던 개인스케줄이던)이라도 있으면
                 return f"<td class='date is_schedule' onclick='view_day_schedule(this);'>" + f"{day}</td>"
             else:                                             # 그 날에 아무 스케줄도 없으면
