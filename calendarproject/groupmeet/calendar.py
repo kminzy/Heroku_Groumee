@@ -25,10 +25,6 @@ class Calendar(HTMLCalendar):
         return f'<tr> {week} </tr>'
 
     def formatday(self, day, group):
-        # schedules_per_day = schedules.filter(start__day=day) # 어떤 년도 어떤 달에 있는 스케줄 중에서 특정 '날'에 있는 스케줄만 필터링 -> 그 날 있는 스케줄들을 필터링한다
-        # d = ''
-        # for schedule in schedules_per_day:
-        #     d += f'<li> {schedule.get_html_url} </li>'
         if day != 0:
             date = datetime.date(self.year, self.month, day)
 
