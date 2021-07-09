@@ -42,16 +42,15 @@
       </div>
 
       <div class="right-section">
-        right
         <br />
-        {%if date%}
-          {{date.0}}년 {{date.1}}월 {{date.2}}일<br>
-        {%endif%}
-      
 
         <div class="table-title">
           <span class="group-name">Group Time-table</span>
         </div>
+        
+        {%if date%}
+          {{date.0}}년 {{date.1}}월 {{date.2}}일<br>
+        {%endif%}
         <div class="table-section">
           <div class="table-content">
             <table class="time-table">

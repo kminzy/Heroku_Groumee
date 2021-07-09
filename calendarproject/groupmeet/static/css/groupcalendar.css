@@ -1,5 +1,6 @@
 .main-section, .calendar-info{
     display: flex;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .calendar-info{
@@ -10,12 +11,19 @@
 
 .left-section{
     width: 65%;
-    background-color: aquamarine;
-    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #ede7f6;
+    text-align: center;
 }
 
 .left-section h3{
     text-align: center;
+    margin-top: 10px;
+    font-size: 2rem !important;
+    color : #3849aa !important;
+    line-height: 2.5rem;
+    padding-top: 0 !important;
+    padding-bottom: 1rem !important;
+    font-weight:600;
 }
 
 .calendar-section{
@@ -50,7 +58,7 @@
 
 .right-section{
     width: 35%;
-    background-color: burlywood;
+    background-color: #ede7f6;
 }
 
 .calendar{
@@ -58,11 +66,11 @@
     font-size: 1rem;
     margin : auto;
     padding: 10px;
-	background: #fff;
-	border-radius: 1em 1em 1em 1em;
-	-webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
-	box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
-	color: #555;
+    background: #fff;
+    border-radius: 1em 1em 1em 1em;
+    -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    color: #555;
     text-align : center;
     border-spacing: 0px;
 }
@@ -104,9 +112,9 @@
 }
 
 .calendar tr {
-	color : #222222;
-	font-weight: 700;
-	text-transform: uppercase;
+    color : #222222;
+    font-weight: 700;
+    text-transform: uppercase;
 }
 
 td:first-child, th:first-child{
@@ -121,8 +129,8 @@ td:first-child, th:first-child{
 }
 
 .calendar td:hover {
-	background: #a4abeb;
-	color: #fff;
+    background: #a4abeb;
+    color: #fff;
     cursor: pointer;
 }
 
@@ -140,7 +148,7 @@ td:first-child, th:first-child{
 .group-name{
     margin-top: 10px;
     font-size: 2rem !important;
-    color : #222222 !important;
+    color : #3849aa !important;
     line-height: 2.5rem;
     padding-top: 0 !important;
     padding-bottom: 1rem !important;
