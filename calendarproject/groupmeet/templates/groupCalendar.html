@@ -47,11 +47,7 @@
         {%if date%}
           {{date.0}}년 {{date.1}}월 {{date.2}}일<br>
         {%endif%}
-        {%if schedule_list%}
-        {% for schedule in schedule_list%} {{schedule.title}} {{schedule.start}} {{schedule.end}}
-        <br />
-        {%endfor%}
-        {%endif%}
+      
 
         <div class="table-title">
           <span class="group-name">Group Time-table</span>
@@ -60,103 +56,31 @@
           <div class="table-content">
             <table class="time-table">
               <tbody>
+               {% for time , value in schedule_list.items %}
                 <tr>
-                  <th rowspan="2">9</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="9/00"></td>
+                  <th rowspan="2">{{time}}</th>
+                  {% if value.0 == 1 %}
+                    <td style="background-color: #eee;"></td>
+                  {% else %}
+                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-hour="{{time}}" data-minute="00"></td>
+                  {% endif %}
                 </tr>
                 <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="9/30"></td>
+                  {% if value.1 == 1 %}
+                    <td style="background-color: #eee;"></td>
+                  {% else %}
+                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-hour="{{time}}" data-minute="30"></td>
+                  {% endif %}
                 </tr>
-                <tr>
-                  <th rowspan="2">10</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/00" ></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="10/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">11</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="11/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="11/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">12</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="12/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="12/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">1</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="13/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="13/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">2</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="14/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="14/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">3</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="15/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="15/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">4</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="16/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="16/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">5</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="17/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="17/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">6</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="18/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="18/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">7</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="19/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="19/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">8</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="20/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="20/30"></td>
-                </tr>
-                <tr>
-                  <th rowspan="2">9</th>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="21/00"></td>
-                </tr>
-                <tr>
-                  <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-title="21/30"></td>
-                </tr>
+                {% endfor %}
+                
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -198,21 +122,7 @@
               </select>분
               <br/><br/>
               일정 끝: 
-              <select name="end_year" id="end_year" value={{date.0}} >
-                <option value="{{date.0}}" selected>{{date.0}}</option>
-                <option value="{{date.0}}" selected>{{date.0}}</option> <!-- 1 증가값 수정-->
-              </select>년
-              <select name="end_month" id="end_month" value={{date.1}}>
-                <option value="{{date.1}}" selected>{{date.1}}</option>
-                <option value="{{date.1}}" selected>{{date.1}}</option> <!-- 1 증가값 수정-->
-              </select>월
-              <select name="end_day" id="end_day" value={{date.2}}>
-                <option value="{{date.2}}" selected>{{date.2}}</option>
-                <option value="{{date.2}}" selected>{{date.2}}</option>
-                <option value="{{date.2}}" selected>{{date.2}}</option>
-                <option value="{{date.2}}" selected>{{date.2}}</option>
-                <option value="{{date.2}}" selected>{{date.2}}</option> <!-- 1 증가값 수정-->
-              </select>일
+              <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}" min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}">
               <select name="end_hour" id="end_hour" >
                 <option value=""></option>
                 <option value="9">9</option>
@@ -246,9 +156,10 @@
     </div>
     <script>
       $(document).on('click', '#selectTime', function () {
-        var selectedTime = $(this).data('title').split('/');
-        $('.modal-body #start_hour').val(selectedTime[0]);
-        $('.modal-body #start_minute').val(selectedTime[1]);
+        var selectedHour = $(this).data('hour')
+        var selectedMinute = $(this).data('minute')
+        $('.modal-body #start_hour').val(selectedHour);
+        $('.modal-body #start_minute').val(selectedMinute);
       });
     </script>
   </body>

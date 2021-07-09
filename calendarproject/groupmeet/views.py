@@ -39,15 +39,30 @@ def groupCalendar_view(request, id):
       day = request.GET.get('day')
    else:
       day = today.day
-   schedule_list=[]
+   schedule_list={9:[0,0], 10:[0,0], 11:[0,0], 12:[0,0], 13:[0,0], 14:[0,0], 15:[0,0], 16:[0,0], 17:[0,0], 18:[0,0], 19:[0,0], 20:[0,0], 21:[0,0]}
    members= group.members.all()
-
+   date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
    for user in members:
-      schedules = Schedule.objects.filter(user=user, start__year=today.year, start__month=today.month, start__day=day)
-      schedule_list+=schedules
+      schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
+      if schedules:
+         for schedule in schedules:
+            if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 9, 0):
+               s = 9
+            else:
+               if schedule.start.minute == 30:
+                  schedule_list[schedule.start.hour][1] = 1
+               s = schedule.start.hour + 1 if schedule.start.minute == 30 else int(schedule.start.hour)
+            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day), 22, 0):
+               e = 21
+            else:
+               if schedule.end.minute == 30:
+                  schedule_list[schedule.end.hour][0] = 1
+               e = schedule.end.hour - 1
+            for i in range(s, e+1):
+               schedule_list[i][0] = 1
+               schedule_list[i][1] = 1
    groupschedules = GroupSchedule.objects.filter(group=group, start__year=today.year, start__month=today.month, start__day=day)
-   return render(request, 'groupCalendar.html', {'groupschedules':groupschedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [int(today.year), int(today.month), int(day)]})
-   
+   return render(request, 'groupCalendar.html', {'groupschedules':groupschedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)]})
 def get_date(request_day):
    if request_day:
       year, month = (int(x) for x in request_day.split('-'))
