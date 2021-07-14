@@ -39,7 +39,7 @@ def groupCalendar_view(request, id):
       day = request.GET.get('day')
    else:
       day = today.day
-   schedule_list={9:[0,0], 10:[0,0], 11:[0,0], 12:[0,0], 13:[0,0], 14:[0,0], 15:[0,0], 16:[0,0], 17:[0,0], 18:[0,0], 19:[0,0], 20:[0,0], 21:[0,0]}
+   schedule_list={'9':[0,0], '10':[0,0], '11':[0,0], '12':[0,0], '13':[0,0], '14':[0,0], '15':[0,0], '16':[0,0], '17':[0,0], '18':[0,0], '19':[0,0], '20':[0,0], '21':[0,0]}
    members= group.members.all()
    date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
    for user in members:
@@ -50,19 +50,37 @@ def groupCalendar_view(request, id):
                s = 9
             else:
                if schedule.start.minute == 30:
-                  schedule_list[schedule.start.hour][1] = 1
+                  schedule_list[str(schedule.start.hour)][1] = -1
                s = schedule.start.hour + 1 if schedule.start.minute == 30 else int(schedule.start.hour)
             if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day), 22, 0):
                e = 21
             else:
                if schedule.end.minute == 30:
-                  schedule_list[schedule.end.hour][0] = 1
+                  schedule_list[str(schedule.end.hour)][0] = -1
                e = schedule.end.hour - 1
             for i in range(s, e+1):
-               schedule_list[i][0] = 1
-               schedule_list[i][1] = 1
-   groupschedules = GroupSchedule.objects.filter(group=group, start__year=today.year, start__month=today.month, start__day=day)
-   return render(request, 'groupCalendar.html', {'groupschedules':groupschedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)]})
+               schedule_list[str(i)][0] = -1
+               schedule_list[str(i)][1] = -1
+   groupSchedules = GroupSchedule.objects.filter(group=group,  start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
+   if groupSchedules:
+      for schedule in groupSchedules:
+         if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 9, 0):
+            s = 9
+         else:
+            if schedule.start.minute == 30:
+                  schedule_list[str(schedule.start.hour)][1] = GroupSchedule.objects.get(id=schedule.id)
+            s = schedule.start.hour+1 if schedule.start.minute == 30 else schedule.start.hour
+            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day), 22, 0):
+               e = 21
+            else:
+               if schedule.end.minute == 30:
+                  schedule_list[str(schedule.end.hour)][0] = GroupSchedule.objects.get(id=schedule.id)
+               e = schedule.end.hour - 1
+            for i in range(s, e+1):
+               schedule_list[str(i)][0] = GroupSchedule.objects.get(id=schedule.id)
+               schedule_list[str(i)][1] = GroupSchedule.objects.get(id=schedule.id)
+   return render(request, 'groupCalendar.html', {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)]})
+
 def get_date(request_day):
    if request_day:
       year, month = (int(x) for x in request_day.split('-'))
@@ -82,17 +100,23 @@ def next_month(day):                                                          # 
    month = 'month=' + str(next_month.year) + '-' + str(next_month.month)
    return month
 
-def createGroupSchedule(request, group_id):
+def createGroupSchedule(request, id):
    newGroupSchedule = GroupSchedule()
-   newGroupSchedule.group = Group.objects.get(pk=group_id)
-   newGroupSchedule.start =  request.POST.get('start') # 날짜/시간 프론트에서 어떻게 받는지에 따라 수정
-   newGroupSchedule.end =  request.POST.get('end') # 날짜/시간 프론트에서 어떻게 받는지에 따라 수정
+   newGroupSchedule.group = Group.objects.get(pk=id)
+   start_date = request.POST.get('start_date')
+   start_hour = request.POST.get('start_hour')
+   start_minute = request.POST.get('start_minute')
+   newGroupSchedule.start =  start_date + ' ' + start_hour + ':' + start_minute
+   end_date = request.POST.get('end_date')
+   end_hour = request.POST.get('end_hour')
+   end_minute = request.POST.get('end_minute')
+   newGroupSchedule.end =  end_date + ' ' + end_hour + ':' + end_minute
    newGroupSchedule.title =  request.POST.get('title')
    newGroupSchedule.save()
-   return redirect('groupCalendar', group_id)
+   return redirect('groupCalendar', id)
 
-def allowRegister(request, groupSchedule_id):
-   groupSchedule = GroupSchedule.objects.get(pk = groupSchedule_id)
+def allowRegister(request, id):
+   groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
    newUserSchedule.user = request.session.get('user')
    newUserSchedule.start =  groupSchedule.start

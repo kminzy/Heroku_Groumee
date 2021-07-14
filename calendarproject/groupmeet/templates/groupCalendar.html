@@ -55,20 +55,26 @@
           <div class="table-content">
             <table class="time-table">
               <tbody>
+                {% for test in groupschedules %}
+                {% endfor %}
                {% for time , value in schedule_list.items %}
                 <tr>
                   <th rowspan="2">{{time}}</th>
-                  {% if value.0 == 1 %}
+                  {% if value.0 == 0 %}
+                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#addScheduleModal" data-hour="{{time}}" data-minute="00"></td>
+                  {% elif value.0 == -1 %}
                     <td style="background-color: #eee;"></td>
                   {% else %}
-                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-hour="{{time}}" data-minute="00"></td>
+                    <td style="background-color: #dcdef3;" id="groupSchedule" data-bs-toggle="modal" data-bs-target="#groupScheduleModal" data-title="{{value.0.title}}" data-start="{{value.0.start}}" data-end="{{value.0.end}}" data-id="{{value.0.id}}"></td>
                   {% endif %}
                 </tr>
                 <tr>
-                  {% if value.1 == 1 %}
+                  {% if value.1 == 0 %}
+                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#addScheduleModal" data-hour="{{time}}" data-minute="30"></td>
+                  {% elif value.1 == -1 %}
                     <td style="background-color: #eee;"></td>
                   {% else %}
-                    <td id="selectTime" data-bs-toggle="modal" data-bs-target="#exampleModal" data-hour="{{time}}" data-minute="30"></td>
+                    <td style="background-color: #dcdef3;" id="groupSchedule" data-bs-toggle="modal" data-bs-target="#groupScheduleModal" data-title="{{value.1.title}}" data-start="{{value.1.start}}" data-end="{{value.1.end}}" data-id="{{value.1.id}}"></td>
                   {% endif %}
                 </tr>
                 {% endfor %}
@@ -81,26 +87,19 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">그룹 일정 추가</h5>
+            <h5 class="modal-title" id="addScheduleModalLabel">그룹 일정 추가</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="">
+            <form action="{% url 'createGroupSchedule' groupId %}" method="POST">
+              {% csrf_token %}
               일정 시작: 
-              <select name="start_year" id="start_year" disabled>
-                <option value="{{date.0}}" selected>{{date.0}}</option>
-              </select>년
-              <select name="start_month" id="start_month" disabled>
-                <option value="{{date.1}}" selected>{{date.1}}</option>
-              </select>월
-              <select name="start_day" id="start_day" disabled>
-                <option value="{{date.2}}" selected>{{date.2}}</option>
-              </select>일
-              <select name="start_hour" id="start_hour" value="" disabled>
+              <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}" min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}" readonly="true">
+              <select name="start_hour" id="start_hour" value="" disabled="disabled">
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
@@ -115,13 +114,13 @@
                 <option value="20">20</option>
                 <option value="21">21</option>
               </select>시
-              <select name="start_minute" id="start_minute" value="" disabled>
+              <select name="start_minute" id="start_minute" value="" >
                 <option value="00">00</option>
                 <option value="30">30</option>
               </select>분
               <br/><br/>
               일정 끝: 
-              <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}" min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}">
+              <input type="date" name="end_date" id="end_date" value="{{date.0}}-{{date.1}}-{{date.2}}" min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}">
               <select name="end_hour" id="end_hour" >
                 <option value=""></option>
                 <option value="9">9</option>
@@ -153,12 +152,45 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="groupScheduleModal" tabindex="-1" aria-labelledby="groupScheduleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="groupScheduleModalLabel"><span id="name"></span></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p> 일정 시작: <span id="start"></span> </p>
+            <p> 일정 끝: <span id="end"></span></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+            <button type="button" id="button" class="btn btn-primary" onclick="location.href='id'">내 캘린더에 추가하기</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       $(document).on('click', '#selectTime', function () {
         var selectedHour = $(this).data('hour')
         var selectedMinute = $(this).data('minute')
         $('.modal-body #start_hour').val(selectedHour);
         $('.modal-body #start_minute').val(selectedMinute);
+      });
+
+      $(document).on('click', '#groupSchedule', function () {
+        var id = $(this).data('id');
+        var title = $(this).data('title');
+        var start = $(this).data('start');
+        var end = $(this).data('end');
+        console.log(id);
+        document.getElementById("name").innerHTML = title;
+        document.getElementById("start").innerHTML = start;
+        document.getElementById("end").innerHTML = end;
+        document.getElementById("button").onclick = function () {
+        location.href = "/addschedule/"+id; // url 수정
+    };
       });
     </script>
   </body>

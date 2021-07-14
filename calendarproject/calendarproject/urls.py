@@ -22,4 +22,6 @@ urlpatterns = [
     path('', views.userCalendar_view, name="userCalendar_view"),
     path('grouplist/<str:id>',views.getuserGroupList,name="getuserGroupList"),
     path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view"),
+    path('group/<str:id>/addschedule', views.createGroupSchedule, name="createGroupSchedule"),
+    path('addschedule/<str:id>', views.allowRegister, name="allowRegister"),
 ]
