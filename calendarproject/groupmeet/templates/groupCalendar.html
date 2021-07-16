@@ -39,6 +39,25 @@
           <div class="empty-box">&nbsp;</div>
           &nbsp;: 스케줄 있음
         </div>
+
+        {% for comment in comment_list %}
+        {{comment.writer}}
+        {{comment.pub_date}}
+        {{comment.content}}
+        <br>
+        {% endfor %}
+
+        <div class="writeComment">
+          <form action="{%url 'addComment' groupId%}" method="POST">
+            {% csrf_token %}  
+            <!--로그인 완성되면 수정-->
+            <input type="text" name="writer" placeholder="이름을 입력하세요"></input>
+            <textarea name="content" placeholder="댓글 입력하세요"></textarea>
+            <input type="submit" value="등록"></input>
+          </form>
+        </div>
+
+
       </div>
 
       <div class="right-section">
@@ -81,6 +100,7 @@
                 
               </tbody>
             </table>
+
           </div>
         </div>
       </div>
@@ -99,7 +119,9 @@
               {% csrf_token %}
               일정 시작: 
               <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}" min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}" readonly="true">
-              <select name="start_hour" id="start_hour" value="" disabled="disabled">
+              <!--<select name="start_hour" id="start_hour" value="" disabled="disabled">
+                disabled 할 시 고정 but id를 못불러와서 views에서 인식을 못함-->
+                <select name="start_hour" id="start_hour" value="">
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="11">11</option>

@@ -1,23 +1,26 @@
 from django.shortcuts import render, redirect,  get_object_or_404
-from .models import User, Schedule, Group, GroupSchedule
+from .models import User, Schedule, Group, GroupSchedule, UserGroup, Comment
 import datetime
 import calendar
 from .calendar import Calendar
 from django.utils.safestring import mark_safe
-import logging
+from django.utils import timezone
+
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
 
 # Create your views here.
-
 def userCalendar_view(request):
    return render(request, 'userCalendar.html')
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request,id):
    user = get_object_or_404(User, userId=id)
-   userGroup_list=list(user.groups.all())  #userid를 받아와서 user가 속한 usergroup 부르기
+   usergroup=UserGroup.objects.filter(user=user)
+   userGroup_list=[]
+   for ug in usergroup:
+      userGroup_list.append(ug.group)
    return render(request,'userGroupList.html',{'userGroup_list':userGroup_list})
 
 # 그룹 캘린더 보여주기
@@ -29,6 +32,7 @@ def groupCalendar_view(request, id):
    # now = datetime.now()
    # cur_year = now.year        # 현재 연도
    # cur_month = now.month      # 현재 월
+
    group = Group.objects.get(id=id)
    cal = Calendar(today.year, today.month)
    cal = cal.formatmonth(withyear=True, group=group)
@@ -79,7 +83,11 @@ def groupCalendar_view(request, id):
             for i in range(s, e+1):
                schedule_list[str(i)][0] = GroupSchedule.objects.get(id=schedule.id)
                schedule_list[str(i)][1] = GroupSchedule.objects.get(id=schedule.id)
-   return render(request, 'groupCalendar.html', {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)]})
+   comments=Comment.objects.filter(group=group)
+   comment_list=list(comments)
+   return render(request, 'groupCalendar.html',
+   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
+   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list})
 
 def get_date(request_day):
    if request_day:
@@ -106,14 +114,27 @@ def createGroupSchedule(request, id):
    start_date = request.POST.get('start_date')
    start_hour = request.POST.get('start_hour')
    start_minute = request.POST.get('start_minute')
-   newGroupSchedule.start =  start_date + ' ' + start_hour + ':' + start_minute
+   startdatetime=str(start_date + ' ' + start_hour + ':' + start_minute+':00')
+   newGroupSchedule.start = datetime.datetime.strptime(startdatetime,'%Y-%m-%d %H:%M:%S')
    end_date = request.POST.get('end_date')
    end_hour = request.POST.get('end_hour')
    end_minute = request.POST.get('end_minute')
-   newGroupSchedule.end =  end_date + ' ' + end_hour + ':' + end_minute
+   enddatetime=str(end_date + ' ' + end_hour + ':' + end_minute+':00')
+   newGroupSchedule.end = datetime.datetime.strptime(enddatetime,'%Y-%m-%d %H:%M:%S')
    newGroupSchedule.title =  request.POST.get('title')
    newGroupSchedule.save()
-   return redirect('groupCalendar', id)
+   return redirect('groupCalendar_view',newGroupSchedule.group.id)
+
+def addComment(request, id):
+    comment=Comment()
+    comment.writer=request.POST.get('writer',False)
+    #로그인 완성되면 수정 comment.writer=request.user
+    comment.group = Group.objects.get(pk=id)
+    comment.pub_date=timezone.datetime.now()
+    comment.content=request.POST.get('content',False)
+    comment.save()
+    return redirect('groupCalendar_view',id)
+
 
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
