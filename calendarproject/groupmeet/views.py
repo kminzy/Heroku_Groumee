@@ -118,9 +118,10 @@ def createGroupSchedule(request, id):
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
-   newUserSchedule.user = request.session.get('user')
+   userid = request.session.get('user')  # 로그인세션
+   newUserSchedule.user = User.objects.get(pk = userid)
    newUserSchedule.start =  groupSchedule.start
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
-   return redirect('groupCalendar', groupSchedule.group) # group id를 인자로 (group_id/group)
+   return redirect('groupCalendar', groupSchedule.group_id)
