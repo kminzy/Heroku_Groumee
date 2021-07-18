@@ -15,7 +15,7 @@ class Group(models.Model):
 class UserGroup(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,default='')
     group=models.ForeignKey(Group,on_delete=models.CASCADE,default='')
-    joined=models.IntegerField(default = 0)  
+    allowed=models.IntegerField(default = 0)  
     #0:연관 없음, 1:초대했지만 수락하지 않음, 2:초대 후 수락 완료
 
 class Schedule(models.Model):
