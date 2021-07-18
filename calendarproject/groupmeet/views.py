@@ -1,18 +1,65 @@
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
 from .models import User, Schedule, Group, GroupSchedule, UserGroup, Comment
 import datetime
 import calendar
-from .calendar import Calendar
+from .calendar import (Calendar, UserCalendar)
 from django.utils.safestring import mark_safe
+import logging
+import json
+from django.core import serializers
 from django.utils import timezone
-
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
 
 # Create your views here.
-def userCalendar_view(request):
-   return render(request, 'userCalendar.html')
+
+def userCalendar_view(request, user_id):
+   user = get_object_or_404(User, pk=user_id)
+
+   today = get_date(request.GET.get('month'))
+   prev_month_url = prev_month(today)
+   next_month_url = next_month(today)
+   
+
+   cal = UserCalendar(today.year, today.month)
+   cal = cal.formatmonth(withyear=True, user=user)
+   cal = mark_safe(cal)
+
+   return render(request, 'userCalendar.html', {
+                           'calendar' : cal,
+                           'cur_year' : today.year, 
+                           'cur_month' : today.month, 
+                           'prev_month' : prev_month_url, 
+                           'next_month' : next_month_url, 
+                           'userId' : user_id
+                           })
+
+def show_userschedule(request, user_id):
+   jsonObj = json.loads(request.body) #jsonObg.get('key')를 통해 접근가능, value들은 다 string형임
+
+   year = int(jsonObj.get('year'))
+   month = int(jsonObj.get('month'))
+   day = int(jsonObj.get('day'))
+
+   user = get_object_or_404(User, pk=user_id)
+   date = datetime.date(year, month, day)
+
+   schedules = Schedule.objects.filter(user=user, start__date__lte=date, end__date__gte=date).order_by('start')   # 유저가 클릭한 날짜에 있는 스케줄들
+
+   data = serializers.serialize("json", schedules)                                                                # 스케줄들을 json형태로 바꿔줌
+
+   return JsonResponse(data, safe=False)
+
+def delete_userschedule(request):
+   jsonObj = json.loads(request.body) #jsonObg.get('key')를 통해 접근가능, value들은 다 string형임
+   pk = int(jsonObj.get('pk'))
+
+   schedule = get_object_or_404(Schedule, pk=pk)
+   schedule.delete()
+
+   return JsonResponse(jsonObj)
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request,id):
@@ -139,9 +186,10 @@ def addComment(request, id):
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
-   newUserSchedule.user = request.session.get('user')
+   userid = request.session.get('user')  # 로그인세션
+   newUserSchedule.user = User.objects.get(pk = userid)
    newUserSchedule.start =  groupSchedule.start
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
-   return redirect('groupCalendar', groupSchedule.group) # group id를 인자로 (group_id/group)
+   return redirect('groupCalendar', groupSchedule.group_id)
