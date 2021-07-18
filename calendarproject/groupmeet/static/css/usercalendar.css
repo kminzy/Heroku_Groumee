@@ -1,0 +1,364 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+body{
+    background-color: #dcdef3;
+}
+
+/* main-section */
+
+.main-section{
+    font-family: 'Noto Sans KR', sans-serif;
+    height: 100%;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.main-section h3{
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 2rem !important;
+    color : #3849aa !important;
+    line-height: 2.5rem;
+    padding-top: 0 !important;
+    padding-bottom: 1rem !important;
+    font-weight: 600;
+}
+
+
+.calendar{
+    width: 65vw;
+    font-size: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    background: #fff;
+    border-radius: 1em 1em 1em 1em;
+    -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    color: #555;
+    text-align : center;
+    border-spacing: 0px;
+}
+
+.month {
+    font-size: 0.75rem !important;
+}
+
+.month-number{
+    font-size: 4.5rem !important;
+    color : #838de9 !important;
+    line-height: 2.5rem;
+    padding-top: 0 !important;
+    padding-bottom: 3rem !important;
+}
+
+.weekheader{
+    background: #838de9;
+    color: #ffffff !important;
+}
+
+.weekheader th:first-child, .weekheader th:last-child{
+    background: #aeb4e9;
+}
+  
+.date {
+    font-size: 1rem;
+}
+
+.date .schedule_line{
+    font-size: 0.5rem;
+    font-weight: 100;
+    list-style: none;
+    color : #fff;
+    padding: 0;
+}
+
+.date .schedule_line li{
+    background: #838de9;
+    margin: 2px auto;
+    border-radius: 10px;
+    width: 80%;
+    /* white-space:nowrap; */
+}
+
+.calendar .month {
+    color : #222222;
+    font-weight: 400;
+}
+
+.calendar th {
+    padding: 0.5vw;
+    text-align: center;
+    font-size: 1.25rem;
+}
+
+.calendar th p{
+    width: 50%;
+    margin: 0 auto;
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: #838de9;
+    /* color: #96dbbf; */
+    background: #fff;
+    padding: 5px;
+    border-radius: 0.5em;
+    transition: background .2s;
+}
+
+.calendar th p:hover{
+    color: #fff;
+    background: #838de9;
+    cursor: pointer;
+}
+
+.calendar tr {
+    color : #222222;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+td:first-child, th:first-child{
+    color: #f52e2e;
+}
+
+.calendar td {
+    vertical-align: top;
+    /* width: 120px;
+    height: 95px; */
+    width: 20vw;
+    height: 90px;
+    /* padding: .25em .25em; */
+    transition: background .2s;
+}
+
+.calendar td:hover {
+    /* background: #96dbbf; */
+    background: #aeb4e9;
+    color: #fff;
+    cursor: pointer;
+}
+
+.calendar td:hover > .schedule_line li{
+    background: #1f33e2;
+    font-weight: 400;
+}
+
+/* Sidebar Css */
+
+#Sidebar{
+    background-color: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    width: 25vw;
+    overflow-x: hidden;
+	transition: 0.4s ease-in-out;
+    top: 0;
+	right: -25vw;
+    padding: 10px 20px 10px 20px;
+    box-shadow: -0.5px 0px 1px 1px rgba(0, 0, 0, .2);
+}
+
+#Sidebar .close-section{
+    /* height: 5vh; */
+    font-size: 30px;
+    color: rgb(185, 185, 185);
+}
+
+#Sidebar .close-Sidebar:hover{
+    color: #222222;
+    cursor: pointer;
+    font-size: 36px;  
+    transition: .3s;
+}
+
+#Sidebar .Sidebar-head{
+    /* height: 12vh; */
+    color: #222222;
+    font-size: 1.25rem;
+    padding: 10px 0;
+    border-bottom: 1.5px solid rgba(0, 0, 0, .2);
+}
+
+#Sidebar .Sidebar-head .cur-date{
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+#Sidebar .Sidebar-head .num-of-schedules{
+    color: #838de9;
+    font-weight: 700;
+}
+
+#Sidebar .content-section{
+    width: 100%;
+    height: 65vh;
+    overflow: auto;
+    border-bottom: 1.5px solid rgba(0, 0, 0, .2);
+}
+
+#Sidebar .content-section .is-not-schedule{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #222222;
+    font-size: 15vh;
+}
+
+#Sidebar .content-section .is-not-schedule p{
+    text-align: center;
+    font-size: 3vh;
+}
+
+#Sidebar .content-section .content{
+    width: 90%;
+    height: 13.5vh;
+    margin: 10px auto;
+    border-radius: 0px 0px 20px 0px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2); 
+    background:linear-gradient(135deg, #838de9 7%, #fff 0);
+}
+
+#Sidebar .content-section .content:hover{
+    cursor: pointer;
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .1); 
+    transition: .3s;
+    transform: scale(1.05);
+}
+
+/*스크롤바 디자인*/
+#Sidebar .content-section::-webkit-scrollbar {         /*스크롤바 너비*/
+    width: 6px;
+}
+#Sidebar .content-section::-webkit-scrollbar-track {   /*바가 오르락내리락 하는 라인 */
+    background-color: transparent;
+}
+#Sidebar .content-section::-webkit-scrollbar-thumb {   /*실제 바*/
+    border-radius: 10px;
+    background-color: #aeb4e9;
+}
+#Sidebar .content-section::-webkit-scrollbar-button {  /*바에 있는 버튼(위아래 버튼 같은거) 안보이게 */
+    width: 0;
+    height: 0;
+}
+
+#Sidebar .content-section .content .top{
+    width: 95%;
+    height: 25%;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(0, 0, 0, .2);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#Sidebar .content-section .content .top div{
+    width: 90%;
+    font-size: 0.75rem;
+}
+
+#Sidebar .content-section .content .top .delete-schedule{
+    color: #929292;
+}
+
+#Sidebar .content-section .content .top .delete-schedule:hover{
+    color: #838de9;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: .3s;
+}
+
+#Sidebar .content-section .content .mid{
+    width: 95%;
+    height: 75%;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+#Sidebar .content-add-section {
+    height: 13vh;
+    font-size: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #838de9;
+}
+
+#Sidebar .content-add-section .add-schedule:hover{
+    color: #4555e6;
+    cursor: pointer;
+    transition: .3s;
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+#create-modal.create-modal-overlay {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+}
+#create-modal .create-modal-window {
+    background: rgb(255, 255, 255);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    border-radius: 10px;
+    border: 1px solid rgba(68, 68, 68, 0.18);
+    width: 500px;
+    height: 550px;
+    position: relative;
+    padding: 10px;
+}
+#create-modal .create-modal-title {
+    padding-left: 10px;
+    display: inline;
+    text-shadow: 1px 1px 2px gray;
+    color: rgb(59, 59, 59);
+}
+#create-modal .create-modal-title h2 {
+    display: inline;
+}
+#create-modal .create-modal-close-section {
+    display: inline;
+    float: right;
+    padding-right: 10px;
+    cursor: pointer;
+    text-shadow: 1px 1px 2px gray;
+    color: rgb(59, 59, 59);
+}
+
+#create-modal .create-modal-content {
+    margin-top: 20px;
+    padding: 0px 10px;
+    text-shadow: 1px 1px 2px gray;
+    color: white;
+}
