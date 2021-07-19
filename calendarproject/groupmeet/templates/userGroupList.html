@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <form href="{%url 'getuserGroupList' park">    <!--임의로 userId를 test2로-->
     {%for group in userGroup_list%}
     {{group.name}}</br>
     {%endfor%}
     </form>
-</body>
-</html>
+{% endblock %}

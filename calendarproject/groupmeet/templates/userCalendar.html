@@ -1,45 +1,11 @@
-{%load static%}
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <link rel="stylesheet" href='{% static "css/usercalendar.css" %}' />
-    <meta charset="UTF-8" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>  
-    <script src="https://use.fontawesome.com/releases/v5.2.0/js/all.js"></script>
-    <script>
-      window.onload = function(){
-        const create_modal = document.getElementById("create-modal");
-        const btn_OpenCreateModal = document.querySelector(".add-schedule");
-        btn_OpenCreateModal.addEventListener("click", e => {
-            $('#create-modal').fadeIn('fast');
-            create_modal.style.display = "flex";
-        })
+{% extends 'base.html' %}
+{% load static %} 
+{% block extrahead %}
+<link rel="stylesheet" href='{% static "css/usercalendar.css" %}' />
+{% endblock %}
 
-        const btn_CloseCreateModal = create_modal.querySelector(".close-create-modal");
-        btn_CloseCreateModal.addEventListener("click", e => {
-            create_modal.style.display = "none";
-        })
+{% block content %}
 
-        create_modal.addEventListener("click", e => {
-            const evTarget = e.target;
-            if(evTarget.classList.contains("create-modal-overlay")) {
-                create_modal.style.display = "none";
-            }
-        })
-
-        window.addEventListener("keyup", e => {
-            if(create_modal.style.display === "flex" && e.key === "Escape") {
-                create_modal.style.display = "none";
-            }
-        })
-      }
-    </script>
-    <title>Document</title>
-  </head>
-  <body>
     <div class="main-section">
       <h3>User Calendar</h3>
       {{calendar}}
@@ -76,6 +42,34 @@
     </div>
     
     <script>
+      window.onload = function(){
+        const create_modal = document.getElementById("create-modal");
+        const btn_OpenCreateModal = document.querySelector(".add-schedule");
+        btn_OpenCreateModal.addEventListener("click", e => {
+            $('#create-modal').fadeIn('fast');
+            create_modal.style.display = "flex";
+        })
+
+        const btn_CloseCreateModal = create_modal.querySelector(".close-create-modal");
+        btn_CloseCreateModal.addEventListener("click", e => {
+            create_modal.style.display = "none";
+        })
+
+        create_modal.addEventListener("click", e => {
+            const evTarget = e.target;
+            if(evTarget.classList.contains("create-modal-overlay")) {
+                create_modal.style.display = "none";
+            }
+        })
+
+        window.addEventListener("keyup", e => {
+            if(create_modal.style.display === "flex" && e.key === "Escape") {
+                create_modal.style.display = "none";
+            }
+        })
+      }
+
+
       $(document).ready(function(){
         $(".date").click(function () {                     // 어떤 날짜를 누르면 이하 내용들을 실행
                                                                  /* ★★★실행시키고자 하는 것★★★
@@ -210,5 +204,4 @@
         }
       }
     </script>
-  </body>
-</html>
+    {% endblock %}

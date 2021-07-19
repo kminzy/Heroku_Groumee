@@ -14,10 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from groupmeet import views
+from account import views as account_view
 
 urlpatterns = [
+    path('', account_view.login_view, name="login"),
     path('admin/', admin.site.urls),
     path('grouplist/<str:id>',views.getuserGroupList,name="getuserGroupList"),
     path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view"),
@@ -27,4 +29,5 @@ urlpatterns = [
     path('usercalendar/<str:user_id>/', views.userCalendar_view, name="userCalendar_view"),
     path('usercalendar/<str:user_id>/show', views.show_userschedule, name="show-userschedule"),
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
+    path('account/', include('account.urls')),
 ]

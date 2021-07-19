@@ -1,8 +1,8 @@
 from django.contrib import admin
-from .models import User, Schedule, Group, GroupSchedule, UserGroup, Comment
+from .models import Schedule, Group, GroupSchedule, UserGroup, Comment
 
 # Register your models here.
-admin.site.register(User)
+# admin.site.register(User)
 admin.site.register(Schedule)
 admin.site.register(UserGroup)
 admin.site.register(Group)
