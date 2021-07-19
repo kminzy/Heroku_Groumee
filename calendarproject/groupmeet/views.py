@@ -1,6 +1,8 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
 from .models import Schedule, Group, GroupSchedule, UserGroup, Comment
+from account.models import CustomUser
+from django.contrib.auth.decorators import login_required
 import datetime
 import calendar
 from .calendar import (Calendar, UserCalendar)
@@ -11,13 +13,14 @@ from django.core import serializers
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
+
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
 
 # Create your views here.
-
-def userCalendar_view(request, user_id):
-   user = get_object_or_404(get_user_model(), pk=user_id)
+@login_required
+def userCalendar_view(request):
+   user = get_object_or_404(CustomUser, pk=request.user.nickname)
 
    today = get_date(request.GET.get('month'))
    prev_month_url = prev_month(today)
@@ -28,23 +31,24 @@ def userCalendar_view(request, user_id):
    cal = cal.formatmonth(withyear=True, user=user)
    cal = mark_safe(cal)
 
+   print(user, today, prev_month_url, next_month_url, cal)
+
    return render(request, 'userCalendar.html', {
                            'calendar' : cal,
                            'cur_year' : today.year, 
                            'cur_month' : today.month, 
                            'prev_month' : prev_month_url, 
-                           'next_month' : next_month_url, 
-                           'userId' : user_id
+                           'next_month' : next_month_url
                            })
 
-def show_userschedule(request, user_id):
+def show_userschedule(request):
    jsonObj = json.loads(request.body) #jsonObg.get('key')를 통해 접근가능, value들은 다 string형임
 
    year = int(jsonObj.get('year'))
    month = int(jsonObj.get('month'))
    day = int(jsonObj.get('day'))
 
-   user = get_object_or_404(get_user_model(), pk=user_id)
+   user = get_object_or_404(CustomUser, pk=request.user.nickname)
    date = datetime.date(year, month, day)
 
    schedules = Schedule.objects.filter(user=user, start__date__lte=date, end__date__gte=date).order_by('start')   # 유저가 클릭한 날짜에 있는 스케줄들
@@ -188,7 +192,7 @@ def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
    userid = request.session.get('user')  # 로그인세션
-   newUserSchedule.user = User.objects.get(pk = userid)
+   newUserSchedule.user = CustomUser.objects.get(pk = userid)
    newUserSchedule.start =  groupSchedule.start
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title

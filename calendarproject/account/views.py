@@ -14,7 +14,7 @@ def login_view(request):
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
-        return redirect('usercalendar/%s/' % username)
+            return redirect("userCalendar_view")
     else:
         form = AuthenticationForm()
         return render(request,"login.html", {"form":form})

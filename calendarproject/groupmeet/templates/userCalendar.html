@@ -90,7 +90,7 @@
           }
 
           $.ajax({                                         // ajax 통신
-            url : '{% url "show-userschedule" userId %}',  // 통신할 url. urlspy에서 이 url에 매칭되는 views가 실행됨
+            url : '{% url "show-userschedule" %}',  // 통신할 url. urlspy에서 이 url에 매칭되는 views가 실행됨
             type : 'POST',                                 // 어떤 방식으로 통신할 것인지. GET or POST
             headers : {
               'X-CSRFTOKEN' : '{{csrf_token}}'
@@ -184,11 +184,11 @@
         if (document.getElementById("Sidebar").style.right === "0px"){    // 사이드바가 보이는 상태면, 사이드바를 먼저 닫고 저번달 보여줌
           closeSidebar();
           setTimeout(function() {
-            location.href = "{%url 'userCalendar_view' userId%}?{{prev_month}}";
+            location.href = "{% url 'userCalendar_view' %}?{{prev_month}}";
           }, 400);
         }
         else{                                                            // 사이드바가 닫힌 상태면, 바로 저번달 보여줌
-          location.href = "{%url 'userCalendar_view' userId%}?{{prev_month}}";
+          location.href = "{% url 'userCalendar_view' %}?{{prev_month}}";
         }
       }
 
@@ -196,11 +196,11 @@
         if (document.getElementById("Sidebar").style.right === "0px"){    // 사이드바가 보이는 상태면, 사이드바를 먼저 닫고 다음달 보여줌
           closeSidebar();
           setTimeout(function() {
-            location.href = "{%url 'userCalendar_view' userId%}?{{next_month}}";
+            location.href = "{% url 'userCalendar_view' %}?{{next_month}}";
           }, 400);
         }
         else{                                                            // 사이드바가 닫힌 상태면, 바로 다음달 보여줌
-          location.href = "{%url 'userCalendar_view' userId%}?{{next_month}}";
+          location.href = "{% url 'userCalendar_view' %}?{{next_month}}";
         }
       }
     </script>

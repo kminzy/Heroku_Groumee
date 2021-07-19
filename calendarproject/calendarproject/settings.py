@@ -28,6 +28,8 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'account.CustomUser'
 
+LOGIN_URL = 'login'
+
 
 # Application definition
 
