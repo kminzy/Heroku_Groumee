@@ -1,6 +1,6 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
-from .models import User, Schedule, Group, GroupSchedule, UserGroup, Comment
+from .models import Schedule, Group, GroupSchedule, UserGroup, Comment
 import datetime
 import calendar
 from .calendar import (Calendar, UserCalendar)
@@ -9,14 +9,15 @@ import logging
 import json
 from django.core import serializers
 from django.utils import timezone
-
+from django.conf import settings
+from django.contrib.auth import get_user_model
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
 
 # Create your views here.
 
 def userCalendar_view(request, user_id):
-   user = get_object_or_404(User, pk=user_id)
+   user = get_object_or_404(get_user_model(), pk=user_id)
 
    today = get_date(request.GET.get('month'))
    prev_month_url = prev_month(today)
@@ -43,7 +44,7 @@ def show_userschedule(request, user_id):
    month = int(jsonObj.get('month'))
    day = int(jsonObj.get('day'))
 
-   user = get_object_or_404(User, pk=user_id)
+   user = get_object_or_404(get_user_model(), pk=user_id)
    date = datetime.date(year, month, day)
 
    schedules = Schedule.objects.filter(user=user, start__date__lte=date, end__date__gte=date).order_by('start')   # 유저가 클릭한 날짜에 있는 스케줄들
@@ -63,7 +64,7 @@ def delete_userschedule(request):
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request,id):
-   user = get_object_or_404(User, userId=id)
+   user = get_object_or_404(get_user_model(), userId=id)
    usergroup=UserGroup.objects.filter(user=user)
    userGroup_list=[]
    for ug in usergroup:

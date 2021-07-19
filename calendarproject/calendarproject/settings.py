@@ -26,6 +26,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'account.CustomUser'
+
 
 # Application definition
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'groupmeet.apps.GroupmeetConfig',
+    'account',
 ]
 
 STATIC_URL = '/static/'
@@ -56,7 +59,7 @@ ROOT_URLCONF = 'calendarproject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['calendarproject/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
