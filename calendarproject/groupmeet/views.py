@@ -31,8 +31,6 @@ def userCalendar_view(request):
    cal = cal.formatmonth(withyear=True, user=user)
    cal = mark_safe(cal)
 
-   print(user, today, prev_month_url, next_month_url, cal)
-
    return render(request, 'userCalendar.html', {
                            'calendar' : cal,
                            'cur_year' : today.year, 
