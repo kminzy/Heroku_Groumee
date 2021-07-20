@@ -37,6 +37,20 @@
         .table-content th {
             width: 35%;
         }
+
+        #bell-image{
+            width:30px;
+            height: 30px;
+        }
+
+        .notice-container{
+            background-color: white;
+            width:300px;
+            height:400px;
+            position: relative; top: 10px; left: 53% ;
+            z-index:2;
+        }
+        
     </style>
 
 </head>
@@ -56,9 +70,27 @@
             <a href="#">
                 <span class="profile">그룹관리</span>
             </a>
+            <a href="#">
+                <img src="{%static 'img/bell.png'%}" id="bell-image">
+            </a>
             {% endif %}
         </div>
+
     </nav>
+
+    
+    <div class="notice-container"></div>
+
+    <script>
+      $( document ).ready( function() 
+      {
+        $( 'img' ).click( function() 
+        {
+            $('.notice-container').fadeToggle();
+        })
+      });
+     
+    </script>
 
     {% block content %}
     {% endblock %}
