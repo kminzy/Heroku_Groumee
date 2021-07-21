@@ -21,12 +21,11 @@ from account import views as account_view
 urlpatterns = [
     path('', account_view.login_view, name="login"),
     path('admin/', admin.site.urls),
-    path('grouplist/<str:id>',views.getuserGroupList,name="getuserGroupList"),
+    path('grouplist/',views.getuserGroupList,name="getuserGroupList"),
     path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view"),
     path('group/<str:id>/addschedule', views.createGroupSchedule, name="createGroupSchedule"),
     path('group/<str:id>/addcomment', views.addComment, name="addComment"),
     path('addschedule/<str:id>', views.allowRegister, name="allowRegister"),
-    # path('usercalendar/', views.userCalendar_view, name="userCalendar_view"),
     path('usercalendar/show', views.show_userschedule, name="show-userschedule"),
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
     path('account/', include('account.urls')),

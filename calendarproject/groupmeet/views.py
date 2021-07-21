@@ -65,13 +65,14 @@ def delete_userschedule(request):
    return JsonResponse(jsonObj)
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
-def getuserGroupList(request,id):
-   user = get_object_or_404(get_user_model(), userId=id)
-   usergroup=UserGroup.objects.filter(user=user)
-   userGroup_list=[]
-   for ug in usergroup:
-      userGroup_list.append(ug.group)
-   return render(request,'userGroupList.html',{'userGroup_list':userGroup_list})
+def getuserGroupList(request):
+   if request.user.is_authenticated:
+      user = request.user
+      usergroup=UserGroup.objects.filter(user=user)
+      userGroup_list=[]
+      for ug in usergroup:
+         userGroup_list.append(ug.group)
+      return render(request,'userGroupList.html',{'userGroup_list':userGroup_list})
 
 # 그룹 캘린더 보여주기
 def groupCalendar_view(request, id):            

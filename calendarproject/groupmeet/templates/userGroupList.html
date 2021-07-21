@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-    <form href="{%url 'getuserGroupList' park">    <!--임의로 userId를 test2로-->
+ 
     {%for group in userGroup_list%}
-    {{group.name}}</br>
+    <a href="{%url 'groupCalendar_view' group.id%}" style="color:black">
+        {{group.id}}
+    </a></br>
     {%endfor%}
-    </form>
+
 {% endblock %}
