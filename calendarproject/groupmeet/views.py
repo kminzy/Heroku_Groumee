@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
 from .models import Schedule, Group, GroupSchedule, UserGroup, Comment
@@ -178,7 +179,7 @@ def createGroupSchedule(request, id):
 
 def addComment(request, id):
     comment=Comment()
-    comment.writer=request.POST.get('writer',False)
+    comment.writer=request.user
     #로그인 완성되면 수정 comment.writer=request.user
     comment.group = Group.objects.get(pk=id)
     comment.pub_date=timezone.datetime.now()
@@ -197,3 +198,18 @@ def allowRegister(request, id):
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
    return redirect('groupCalendar', groupSchedule.group_id)
+
+
+def makeGroup(request):
+   return render(request,'makeGroup.html')
+
+def findUser(request):
+   if request.method =='POST':
+      inputfriendId = request.POST.get('input-friendId')
+   friend=CustomUser.objects.filter(username=inputfriendId)
+   if friend.exists():
+      flag=True
+   else:
+      flag=False
+   print(flag)
+   return redirect('makeGroup')

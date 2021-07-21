@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+ 
+{% load static %} 
+
+<form action="{%url 'findUser' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="input-friendId" placeholder="초대할 사용자를 입력하세요"></input>
+    <input type="submit" value="초대"></input>
+</form>
+
+
+{% endblock %}

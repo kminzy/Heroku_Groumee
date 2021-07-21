@@ -29,5 +29,6 @@ urlpatterns = [
     path('usercalendar/show', views.show_userschedule, name="show-userschedule"),
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
     path('account/', include('account.urls')),
-    path('usercalendar/', views.userCalendar_view, name="userCalendar_view"),
+    path('makegroup/', views.makeGroup, name="makeGroup"),
+    path('makegroup/finduser/', views.findUser, name="findUser"),
 ]
