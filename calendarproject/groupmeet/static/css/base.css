@@ -33,4 +33,19 @@
     color: #ede7f6;
 }
 
+#bell-image{
+    width:30px;
+    height: 30px;
+}
+
+.notice-container{
+    background-color: white;
+    width:300px;
+    height:400px;
+    position: fixed; top: 83px; left: 53% ;
+    z-index: 2;
+    border-radius: 20px;
+    border: 1px solid #838de9;
+}
+
 
