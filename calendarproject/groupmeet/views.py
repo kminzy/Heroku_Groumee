@@ -15,6 +15,8 @@ from django.core import serializers
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from .forms import UserScheduleCreationForm
+from django.contrib import messages
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
@@ -29,19 +31,22 @@ def userCalendar_view(request):
    prev_month_url = prev_month(today)
    next_month_url = next_month(today)
    
-
    cal = UserCalendar(today.year, today.month)
    cal = cal.formatmonth(withyear=True, user=user)
    cal = mark_safe(cal)
 
+   form = UserScheduleCreationForm()
+   
    return render(request, 'userCalendar.html', {
                            'calendar' : cal,
                            'cur_year' : today.year, 
                            'cur_month' : today.month, 
                            'prev_month' : prev_month_url, 
-                           'next_month' : next_month_url
+                           'next_month' : next_month_url,
+                           'form' : form
                            })
 
+@login_required
 def show_userschedule(request):
    jsonObj = json.loads(request.body) #jsonObg.get('key')를 통해 접근가능, value들은 다 string형임
 
@@ -56,8 +61,9 @@ def show_userschedule(request):
 
    data = serializers.serialize("json", schedules)                                                                # 스케줄들을 json형태로 바꿔줌
 
-   return JsonResponse(data, safe=False)
+   return JsonResponse(data, safe=False)       # 파라미터로 딕셔너리 형태가 아닌 것을 받으면 두 번째 파라미터로 safe=False를 해야함
 
+@login_required
 def delete_userschedule(request):
    jsonObj = json.loads(request.body) #jsonObg.get('key')를 통해 접근가능, value들은 다 string형임
    pk = int(jsonObj.get('pk'))
@@ -66,6 +72,26 @@ def delete_userschedule(request):
    schedule.delete()
 
    return JsonResponse(jsonObj)
+
+@login_required
+def create_userschedule(request):
+   user = get_object_or_404(CustomUser, pk=request.user.nickname)
+   new_schedule = Schedule(user=user)
+   form = UserScheduleCreationForm(request.POST, instance=new_schedule)
+   
+   if form.is_valid():
+      new_schedule = form.save()
+      data = {
+         'result' : 'success'
+      }
+      return JsonResponse(data)
+   else:
+      data = {
+         'result' : 'fail',
+         'form_errors' : form.errors.as_json()
+      }
+      return JsonResponse(data)
+   
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request):
@@ -205,9 +231,18 @@ def allowRegister(request, id):
 def makeGroup(request):
    if request.method =='POST':
       inputfriendId = request.POST.get('input-friendId')
-      friends=CustomUser.objects.filter(nickname=inputfriendId).values('nickname')
-      for friend in friends:
-         if(friend not in friend_list):
-            friend_list.append(friend)
+      allfriends=CustomUser.objects.all()
+      allfriend_nickname=[]
+      for friend in allfriends:
+         allfriend_nickname.append(friend.nickname)
+         if(friend.nickname==inputfriendId):
+            if(friend in friend_list):
+               messages.warning(request, "이미 추가한 친구 입니다.")
+               return redirect('makeGroup')
+            else:
+               friend_list.append(friend)
+      if(inputfriendId not in allfriend_nickname):
+         messages.warning(request, "존재하지 않는 이름입니다.")
+         return redirect('makeGroup')
    return render(request,'makeGroup.html',{'friend_list':friend_list})
 

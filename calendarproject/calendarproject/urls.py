@@ -29,6 +29,7 @@ urlpatterns = [
     path('usercalendar/', views.userCalendar_view, name="userCalendar_view"),
     path('usercalendar/show', views.show_userschedule, name="show-userschedule"),
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
+    path('usercalendar/create', views.create_userschedule, name="create-userschedule"),
     path('account/', include('account.urls')),
     path('makegroup/', views.makeGroup, name="makeGroup"),
 ]
