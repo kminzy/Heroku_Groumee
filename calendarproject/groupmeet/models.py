@@ -10,6 +10,7 @@ from django.conf import settings
 class Group(models.Model):
     name=models.CharField(max_length=50)
     members=models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserGroup',through_fields=("group","user"))
+    #초대한 사람들 O 수락한 사람 X
 
 #UserGroup은 User와 Group의 중개 모델
 class UserGroup(models.Model):
@@ -35,4 +36,8 @@ class Comment(models.Model):
     #writer=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) 로그인 완성되면 수정
     group= models.ForeignKey(Group ,on_delete=models.CASCADE,default='')
     pub_date = models.DateTimeField(default='')
+    content = models.TextField(default='')
+
+class Notification(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,default='')
     content = models.TextField(default='')

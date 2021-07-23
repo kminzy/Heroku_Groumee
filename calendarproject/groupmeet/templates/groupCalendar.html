@@ -8,6 +8,13 @@
 <div class="main-section">
   <div class="left-section">
     <h3>Group Schedule</h3>
+    
+    {% for member in members %}
+    그룹 멤버들:
+    {{member.nickname}}
+    <br>
+    {% endfor %}
+
     {{calendar}}
     <div class="calendar-info">
       <div class="empty-box">&nbsp;</div>
@@ -25,8 +32,10 @@
       <form action="{%url 'addComment' groupId%}" method="POST">
         {% csrf_token %}
         <!--로그인 완성되면 수정-->
-        <input type="text" name="writer" placeholder="이름을 입력하세요"></input>
-        <textarea name="content" placeholder="댓글 입력하세요"></textarea>
+        <div class="form-floating">
+          <textarea class="form-control" name="content" id="floatingTextarea2" style="height: 100px;"></textarea>
+          <label for="floatingTextarea2">댓글을 입력해보세요!</label>
+        </div>
         <input type="submit" value="등록"></input>
       </form>
     </div>

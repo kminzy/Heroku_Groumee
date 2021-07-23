@@ -31,5 +31,6 @@ urlpatterns = [
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
     path('usercalendar/create', views.create_userschedule, name="create-userschedule"),
     path('account/', include('account.urls')),
-    path('makegroup/', views.makeGroup, name="makeGroup"),
+    path('makeGroup/', views.makeGroup, name="makeGroup"),
+    path('sendInvitation/',views.sendInvitation,name="sendInvitation"),
 ]

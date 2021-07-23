@@ -119,14 +119,23 @@ def groupCalendar_view(request, id):
    cal = cal.formatmonth(withyear=True, group=group)
    cal = mark_safe(cal)
 
+   members=[]
+   testmembers= group.members.all()
+   for testmember in testmembers:
+      usergroups=UserGroup.objects.filter(user=testmember)
+      for ug in usergroups:
+         if (ug.allowed==2):
+            members.append(testmember)
+
    #group에 속한 user들의 모든 일정 list로 return
    if request.GET.get('day'):
       day = request.GET.get('day')
    else:
       day = today.day
    schedule_list={'9':[0,0], '10':[0,0], '11':[0,0], '12':[0,0], '13':[0,0], '14':[0,0], '15':[0,0], '16':[0,0], '17':[0,0], '18':[0,0], '19':[0,0], '20':[0,0], '21':[0,0]}
-   members= group.members.all()
+
    date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
+
    for user in members:
       schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
       if schedules:
@@ -146,7 +155,7 @@ def groupCalendar_view(request, id):
             for i in range(s, e+1):
                schedule_list[str(i)][0] = -1
                schedule_list[str(i)][1] = -1
-   groupSchedules = GroupSchedule.objects.filter(group=group,  start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
+   groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
    if groupSchedules:
       for schedule in groupSchedules:
          if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 9, 0):
@@ -168,7 +177,7 @@ def groupCalendar_view(request, id):
    comment_list=list(comments)
    return render(request, 'groupCalendar.html',
    {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
-   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list})
+   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members})
 
 def get_date(request_day):
    if request_day:
@@ -240,9 +249,34 @@ def makeGroup(request):
                messages.warning(request, "이미 추가한 친구 입니다.")
                return redirect('makeGroup')
             else:
-               friend_list.append(friend)
+               if(inputfriendId==request.user.nickname):
+                  messages.warning(request, "본인")
+                  return redirect('makeGroup')
+               else:
+                  friend_list.append(friend)
       if(inputfriendId not in allfriend_nickname):
          messages.warning(request, "존재하지 않는 이름입니다.")
          return redirect('makeGroup')
    return render(request,'makeGroup.html',{'friend_list':friend_list})
 
+def sendInvitation(request):
+   if(len(friend_list)>0):
+      group=Group()
+      group.name="안녕"
+      group.save()
+      usergroup=UserGroup()
+      usergroup.user=request.user
+      usergroup.group=group
+      usergroup.allowed=2
+      usergroup.save()
+      for friend in friend_list:
+         friend_usergroup=UserGroup()
+         friend_usergroup.user=friend
+         friend_usergroup.group=group
+         friend_usergroup.allowed=1
+         friend_usergroup.save()
+         
+      return redirect('groupCalendar_view', group.id)
+   else:
+      messages.warning(request, "친구를 초대해보세요")
+      return redirect('makeGroup')
