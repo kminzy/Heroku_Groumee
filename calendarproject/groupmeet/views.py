@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import UsernameField
 from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
@@ -17,6 +18,7 @@ from django.contrib.auth import get_user_model
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
+friend_list=[]
 
 # Create your views here.
 @login_required
@@ -67,6 +69,7 @@ def delete_userschedule(request):
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request):
+   friend_list.clear()
    if request.user.is_authenticated:
       user = request.user
       usergroup=UserGroup.objects.filter(user=user)
@@ -199,17 +202,12 @@ def allowRegister(request, id):
    newUserSchedule.save()
    return redirect('groupCalendar', groupSchedule.group_id)
 
-
 def makeGroup(request):
-   return render(request,'makeGroup.html')
-
-def findUser(request):
    if request.method =='POST':
       inputfriendId = request.POST.get('input-friendId')
-   friend=CustomUser.objects.filter(username=inputfriendId)
-   if friend.exists():
-      flag=True
-   else:
-      flag=False
-   print(flag)
-   return redirect('makeGroup')
+      friends=CustomUser.objects.filter(nickname=inputfriendId).values('nickname')
+      for friend in friends:
+         if(friend not in friend_list):
+            friend_list.append(friend)
+   return render(request,'makeGroup.html',{'friend_list':friend_list})
+

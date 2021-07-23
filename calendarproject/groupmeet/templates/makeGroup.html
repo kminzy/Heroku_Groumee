@@ -3,11 +3,17 @@
  
 {% load static %} 
 
-<form action="{%url 'findUser' %}" method="POST">
+<form action="{%url 'makeGroup' %}" method="POST">
     {% csrf_token %}
     <input type="text" name="input-friendId" placeholder="초대할 사용자를 입력하세요"></input>
     <input type="submit" value="초대"></input>
 </form>
 
+{%for friend in friend_list%}
+    {{friend.nickname}}
+{%endfor%}
+
+<br><br>
+<a href="" style="color:black">초대장 보내기</a>
 
 {% endblock %}
