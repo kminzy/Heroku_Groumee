@@ -1,4 +1,4 @@
-$(document).ready(function(){ 
+$(document).ready(function(){
     $(".date").click(function () {                     // 어떤 날짜를 누르면 이하 내용들을 실행
                                                              /* ★★★실행시키고자 하는 것★★★
                                                                 : 특정 날짜를 누르면 그 날짜에 테두리가 생기고
@@ -52,11 +52,13 @@ $(document).ready(function(){
 
             let time = start_time + ' ~ ' + end_time;                       
             let content = schedules_list[i]['fields']['title'].slice(0, 20);  // content : 그 일정의 내용, 단 20글자만 가져옴
-
+    
             $(".content-section").append(                                    // 사이드바에 일정 추가
               '<div class="content">\
                 <div class="top">\
-                  <div>' + time + '</div><i class="fas fa-trash-alt delete-schedule" onclick="delete_schedule(this, ' + schedules_list[i]['pk'] + ');"></i>\
+                  <div>' + time + '</div>\
+                  <i class="fas fa-edit edit-schedule" data-bs-toggle="modal" data-bs-target="#UserScheduleModal" value="' + schedules_list[i]['pk'] + '"></i>\
+                  <i class="fas fa-trash-alt delete-schedule" value="' + schedules_list[i]['pk'] + '"></i>\
                 </div>\
                 <div class="mid">' 
                   + content
@@ -73,33 +75,146 @@ $(document).ready(function(){
 
       $("#Sidebar").css("right", "0");                 // 사이드바 나오게 하기
     });
+    // js를 통해 동적으로 만든 요소들에는 일반적인 이벤트가 동작되지 않음 -> 밑에 주석처리한 코드를 주석해제해도 .content를 클릭할 시 아무일도 일어나지 않음
 
-    $(".go-add-userschedule").click(function (){
-      // let form_field_month = (cur_month < 10) ? ("0" + cur_month) : cur_month;
-      // let form_field_day = (day < 10) ? ("0" + day) : day;
-      // 폼 필드 중 start, end의 기본값을 세팅할 것임. 클릭한 날짜를 기준.
-      let form_field_month = cur_month.padStart(2, '0');            // month가 10보다 작으면 앞에 0을 붙임 ex) 7 -> 07
-      let form_field_day = $("#cur_day").text().padStart(2, '0');   // day가 10보다 작으면 앞에 0을 붙임 ex) 7 -> 07
-                                                                    // type이 datetime-local인 input태그의 value수정 시 이렇게 0이 붙은 값들을 써야 해서
-      $('#id_start').val(cur_year + '-' + form_field_month + '-' + form_field_day + 'T00:00');
-      $('#id_end').val(cur_year + '-' + form_field_month + '-' + form_field_day + 'T00:00');
-      $('#id_title').val('');
+    // $(".content-section .content").click(function (){
+    //   alert("야호");
+    // });
+    let schedule_id_for_edit; // 수정할 스케줄의 pk값을 담을 변수, 얘를 url에 넘겨서 사용할 것임
+    // 동적으로 생성된 요소들에 대한 이벤트는 밑에 코드처럼 활용해야 한다
+    $(document).on("click", ".edit-schedule", function(){             // 각 스케줄들의 수정 아이콘(연필모양)을 누르면 이하 내용 실행
+                                                                      // 부트스트랩 연동으로 모달창이 자동으로 띄워지는데, 모달창의 폼을 우리가 수정할 스케줄의 값들로 채울 것임
+      $('.modal-title').text('일정 수정');
+      $('.modal-footer .btn-primary').text('수정');
+      $('.modal-footer .btn-primary').attr("id", "edit-userschedule");  // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
 
-      $('.modal-body #add-userschedule_form ul').empty();
+      $('.modal-body #userschedule-form ul').empty();                   // 오류메시지 출력하는 칸도 비움
+
+      schedule_id_for_edit = $(this).attr("value");                     // 클릭한 스케줄의 pk값을 할당
+
+      $.ajax({
+        url : ("/usercalendar/edit/" + schedule_id_for_edit + '/'),
+        type : 'GET',
+        success:function(data){
+          $('#id_start_date').val(data['start_date']);
+          $('#id_start_hour').val(data['start_hour']);
+          $('#id_start_minute').val(data['start_minute']);
+          $('#id_end_date').val(data['end_date']);
+          $('#id_end_hour').val(data['end_hour']);
+          $('#id_end_minute').val(data['end_minute']);
+          $('#id_title').val(data['title']);                             // 수정할 스케줄의 원래 값들을 폼에 담아줌
+        },
+        error:function(){
+          alert("일정을 불러오는데 실패했습니다");
+        },
+      });
+
     });
-    
-    $(".add-userschedule").click(function () {
-      const start_time = document.getElementById("id_start").value;
-      const end_time = document.getElementById("id_end").value;
+
+    $(document).on("click", "#edit-userschedule", function(){            // 모달에서 수정버튼을 누르면 이하 내용 실행
+      const start_date = document.getElementById("id_start_date").value;
+      const start_hour = $("#id_start_hour option:selected").val();
+      const start_minute = $("#id_start_minute option:selected").val();
+      const end_date = document.getElementById("id_end_date").value;
+      const end_hour = $("#id_end_hour option:selected").val();
+      const end_minute = $("#id_end_minute option:selected").val();
       const title = document.getElementById("id_title").value;
       const csrf = document.getElementsByName('csrfmiddlewaretoken');
 
       const fd = new FormData();
 
       fd.append('csrfmiddlewaretoken', csrf[0].value);
-      fd.append('start', start_time);
-      fd.append('end', end_time);
-      fd.append('title', title);
+      fd.append('start_date', start_date);
+      fd.append('start_hour', start_hour);
+      fd.append('start_minute', start_minute);
+      fd.append('end_date', end_date);
+      fd.append('end_hour', end_hour);
+      fd.append('end_minute', end_minute);
+      fd.append('title', title);                                         // 입력한 폼 데이터들을 전부 fd란 변수에 담아서 ajax통신
+      
+      $.ajax({
+        url : ("/usercalendar/edit/" + schedule_id_for_edit + '/'),
+        type : 'POST',
+        headers : {
+          'X-CSRFTOKEN' : csrf_token
+        },
+        data : fd,
+        success:function(data){
+
+          if(data['result'] === "success"){                   // 작성한 폼이 유효했다면 redirect
+            setTimeout(function() {
+              location.href = "";
+            }, 300);
+          }
+          else{                                               // 작성한 폼이 유효 X -> 에러메시지 출력
+            form_errors = JSON.parse(data['form_errors']);    // json형태의 데이터를 js객체형태로 바꿔줌
+
+            $('#userschedule-form ul').empty();               // 오류메시지 출력하는 부분 비우기
+           
+            $.each(form_errors, function(i, value){           // 2중 반복문을 돌며 오류 메시지 각 영역에 채우기
+              $.each(value, function(j, message){
+                let error_message = '<li>' + value[j]['message'] + '</li>';
+                let error_field = i.split('_')[0]
+                $("ul[id*='" + error_field +"']").append(error_message);
+              });
+            });
+          }
+
+        },
+        error:function(){
+          alert("일정을 수정하는데 실패했습니다");
+        },
+        cache : false,
+        contentType: false,
+        processData: false
+      });
+
+    });
+
+    $(".go-add-userschedule").click(function (){               // 스케줄 추가 아이콘을 누르면 이하 내용들 실행
+                                                               // 자동으로 띄워지는 모달창의 폼 양식을 설정할 건데, 시작시간과 종료시간을 클릭된 날짜로 할 것임
+      $('.modal-title').text('새 일정 생성');
+      $('.modal-footer .btn-primary').text('생성');
+      $('.modal-footer .btn-primary').attr("id", "add-userschedule");    // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
+
+      $('.modal-body #userschedule-form ul').empty();                    // 오류메시지 출력하는 영역 비우기
+      // let form_field_month = (cur_month < 10) ? ("0" + cur_month) : cur_month;
+      // let form_field_day = (day < 10) ? ("0" + day) : day;
+      // 폼 필드 중 start, end의 기본값을 세팅할 것임. 클릭한 날짜를 기준. 시간, 분은 00시 00분으로 설정
+      let form_field_month = cur_month.padStart(2, '0');            // month가 10보다 작으면 앞에 0을 붙임 ex) 7 -> 07
+      let form_field_day = $("#cur_day").text().padStart(2, '0');   // day가 10보다 작으면 앞에 0을 붙임 ex) 7 -> 07
+                                                                    // type이 datetime-local 또는 date인 input태그의 value수정 시 이렇게 0이 붙은 값들을 써야 해서
+      $('#id_start_date').val(cur_year + '-' + form_field_month + '-' + form_field_day);  // 시작일을 클릭한 날로
+      $('#id_start_date').attr("min", cur_year + '-' + form_field_month + '-' + form_field_day); // 시작일의 최소날짜 설정
+      $("#id_start_hour").val("00").prop("selected", true);         // 시작시간대를 00시로
+      $("#id_start_minute").val("00").prop("selected", true);       // 시작시간대를 00분으로
+      $('#id_end_date').val(cur_year + '-' + form_field_month + '-' + form_field_day);    // 종료일을 클릭한 날로
+      $('#id_end_date').attr("min", cur_year + '-' + form_field_month + '-' + form_field_day); // 종료일의 최소날짜 설정
+      $("#id_end_hour").val("00").prop("selected", true);           // 종료시간대를 00시로
+      $("#id_end_minute").val("00").prop("selected", true);         // 종료시간대를 00분으로
+      $('#id_title').val('');
+    });
+    
+    $(document).on("click", "#add-userschedule", function(){          // 모달창에서 생성버튼을 누르면 이하 내용 실행
+      const start_date = document.getElementById("id_start_date").value;
+      const start_hour = $("#id_start_hour option:selected").val();
+      const start_minute = $("#id_start_minute option:selected").val();
+      const end_date = document.getElementById("id_end_date").value;
+      const end_hour = $("#id_end_hour option:selected").val();
+      const end_minute = $("#id_end_minute option:selected").val();
+      const title = document.getElementById("id_title").value;
+      const csrf = document.getElementsByName('csrfmiddlewaretoken');
+
+      const fd = new FormData();
+
+      fd.append('csrfmiddlewaretoken', csrf[0].value);
+      fd.append('start_date', start_date);
+      fd.append('start_hour', start_hour);
+      fd.append('start_minute', start_minute);
+      fd.append('end_date', end_date);
+      fd.append('end_hour', end_hour);
+      fd.append('end_minute', end_minute);
+      fd.append('title', title);                                    // 폼에 입력한 값들을 fd라는 변수에 담아서 ajax통신
       
       $.ajax({
         url : create_userschedule_url,
@@ -116,14 +231,15 @@ $(document).ready(function(){
             }, 300);
           }
           else{                                               // 작성한 폼이 유효 X -> 에러메시지 출력
-            form_errors = JSON.parse(data['form_errors'])
+            form_errors = JSON.parse(data['form_errors']);    // json형태의 데이터를 js객체형태로 바꿈
             
-            $('#add-userschedule_form ul').empty();
+            $('#userschedule-form ul').empty();               // 오류 메시지 출력되는 부분 비우기
            
-            $.each(form_errors, function(i, value){
+            $.each(form_errors, function(i, value){           // 2중 반복문을 돌며 오류 메시지 각 영역에 채우기
               $.each(value, function(j, message){
                 let error_message = '<li>' + value[j]['message'] + '</li>';
-                $("ul[id*='" + i +"']").append(error_message);
+                let error_field = i.split('_')[0]
+                $("ul[id*='" + error_field +"']").append(error_message);
               });
             });
           }
@@ -139,39 +255,42 @@ $(document).ready(function(){
       });
 
     });
+
+    $(document).on("click", ".delete-schedule", function(e){             // 휴지통 아이콘 누르면 그 스케줄 삭제하기
+      // e.stopPropagation();   // 부모 태그인 .content로 click이벤트가 전파되는 것을 막음
+      let result = confirm("정말 이 일정을 삭제하시겠습니까?");
+      if (result){
+        let param = {
+          'pk' : $(this).attr("value")
+        }
+  
+        $.ajax({
+          url : delete_userschedule_url,
+          type : 'POST',
+          headers : {
+            'X-CSRFTOKEN' : csrf_token
+          },
+          data : JSON.stringify(param),
+          success:function(data){
+            setTimeout(function() {
+              location.href = "";
+            }, 300);
+            // $(self).parent().parent().remove();
+  
+          },
+          error:function(){
+            alert("일정을 삭제하는데 실패했습니다");
+          }
+        });
+      }
+      else{
+        ;
+      }
+    });
+
+
   });
 
-  function delete_schedule(self, pk) {
-    let result = confirm("정말 이 일정을 삭제하시겠습니까?");
-    if (result){
-
-      let param = {
-        'pk' : pk
-      }
-
-      $.ajax({
-        url : delete_userschedule_url,
-        type : 'POST',
-        headers : {
-          'X-CSRFTOKEN' : csrf_token
-        },
-        data : JSON.stringify(param),
-        success:function(data){
-          setTimeout(function() {
-            location.href = "";
-          }, 300);
-          // $(self).parent().parent().remove();
-
-        },
-        error:function(){
-          alert("일정을 삭제하는데 실패했습니다");
-        }
-      });
-    }
-    else{
-      ;
-    }
-  }
 
   function closeSidebar() {                                           // 사이드바 닫기
     document.getElementById("Sidebar").style.right = "-25vw";

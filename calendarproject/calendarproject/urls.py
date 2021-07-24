@@ -30,6 +30,7 @@ urlpatterns = [
     path('usercalendar/show', views.show_userschedule, name="show-userschedule"),
     path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
     path('usercalendar/create', views.create_userschedule, name="create-userschedule"),
+    path('usercalendar/edit/<str:schedule_id>/', views.edit_userschedule, name="edit-userschedule"),
     path('account/', include('account.urls')),
     path('makeGroup/', views.makeGroup, name="makeGroup"),
     path('sendInvitation/',views.sendInvitation,name="sendInvitation"),

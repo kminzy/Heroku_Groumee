@@ -7,7 +7,6 @@
 {% block content %}
 
     <div class="main-section">
-      <h3>User Calendar</h3>
       {{calendar}}
       <div id="Sidebar">
         <div class="close-section">
@@ -28,22 +27,26 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="UserScheduleModalLabel">새 일정 생성</h5>
+              <h5 class="modal-title" id="UserScheduleModalLabel"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form id="add-userschedule_form">{% csrf_token %}
-                {{form.start}}<br>
+              <form id="userschedule-form">{% csrf_token %}
+                <div class="start-time">
+                  <span>시작시간 : </span>{{form.start_date}}{{form.start_hour}}{{form.start_minute}}
+                </div>
                 <ul id="form-start-error"></ul>
-                {{form.end}}<br>
+                <div class="end-time">
+                  <span>종료시간 : </span>{{form.end_date}}{{form.end_hour}}{{form.end_minute}}
+                </div>
                 <ul id="form-end-error"></ul>
-                {{form.title}}<br>
+                <span>일정이름 : </span>{{form.title}}<br>
                 <ul id="form-title-error"></ul>
               </form>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary add-userschedule">생성</button>
+              <button type="button" class="btn btn-primary"></button>
             </div>
           </div>
         </div>
@@ -61,6 +64,7 @@
       let create_userschedule_url = '{% url "create-userschedule" %}';
       let delete_userschedule_url = '{% url "delete-userschedule" %}';
       let userCalendar_view_url = "{% url 'userCalendar_view' %}";
+      
     </script>
     <script src="{%static 'js/usercalendar.js' %}"></script>
     {% endblock %}

@@ -6,6 +6,9 @@ from groupmeet import *
 # Create your views here.
 
 def login_view(request):
+    if request.user.is_authenticated:
+        return redirect("userCalendar_view")
+        
     if request.method == "POST":
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -14,10 +17,10 @@ def login_view(request):
             user = authenticate(request=request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("userCalendar_view")
+            return redirect("userCalendar_view")
     else:
         form = AuthenticationForm()
-        return render(request,"login.html", {"form":form})
+    return render(request,"login.html", {"form":form})
 
 def logout_view(request):
     logout(request)
