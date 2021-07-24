@@ -77,20 +77,85 @@ def delete_userschedule(request):
 def create_userschedule(request):
    user = get_object_or_404(CustomUser, pk=request.user.nickname)
    new_schedule = Schedule(user=user)
-   form = UserScheduleCreationForm(request.POST, instance=new_schedule)
+   form = UserScheduleCreationForm(request.POST)
    
    if form.is_valid():
-      new_schedule = form.save()
+      s = form.cleaned_data['start_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['start_hour'] + ':' + form.cleaned_data['start_minute']
+      e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
+      start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
+      end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+      title = form.cleaned_data['title']
+
+      new_schedule.start = start
+      new_schedule.end = end
+      new_schedule.title = title
+
+      new_schedule.save()
+
       data = {
          'result' : 'success'
       }
-      return JsonResponse(data)
    else:
       data = {
          'result' : 'fail',
          'form_errors' : form.errors.as_json()
       }
-      return JsonResponse(data)
+
+   return JsonResponse(data)
+
+@login_required
+def edit_userschedule(request, schedule_id):
+   schedule = get_object_or_404(Schedule, pk=schedule_id)
+   if request.method == "POST":
+      form = UserScheduleCreationForm(request.POST)
+      if form.is_valid():
+         s = form.cleaned_data['start_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['start_hour'] + ':' + form.cleaned_data['start_minute']
+         e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
+         start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
+         end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+
+         title = form.cleaned_data['title']
+
+         schedule.start = start
+         schedule.end = end
+         schedule.title = title
+
+         schedule.save()
+
+         data = {
+            'result' : 'success'
+         }
+      else:
+         data = {
+            'result' : 'fail',
+            'form_errors' : form.errors.as_json()
+         }
+   else:          # GET방식으로 들어오면
+      s = schedule.start.strftime('%Y-%m-%d %H:%M').split(' ')
+      e = schedule.end.strftime('%Y-%m-%d %H:%M').split(' ')
+      s_time = s[1].split(':')
+      e_time = e[1].split(':')
+
+      start_date = s[0]
+      start_hour = s_time[0]
+      start_minute = s_time[1]
+
+      end_date = e[0]
+      end_hour = e_time[0]
+      end_minute = e_time[1]
+      title = schedule.title
+      
+      data = {
+         'start_date' : start_date,
+         'start_hour' : start_hour,
+         'start_minute' : start_minute,
+         'end_date' : end_date,
+         'end_hour' : end_hour,
+         'end_minute' : end_minute,
+         'title' : title
+      }
+
+   return JsonResponse(data)
    
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
