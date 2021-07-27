@@ -26,12 +26,16 @@ class Calendar(HTMLCalendar):
 
     def formatday(self, day, group):
         if day != 0:
-            date = datetime.date(self.year, self.month, day)
+            date = datetime.date(self.year, self.month, day)  # 날짜(ex: 2021-07-26)
+            min_end_time = datetime.time(9, 0, 0)         # 오전 09:00:00 객체(시간객체)
+            min_datetime = datetime.datetime.combine(date, min_end_time) #날짜와 시간을 결합한 객체 (ex : 2021-07-26 09:00:00)
 
             group_schedules = GroupSchedule.objects.filter(group=group, start__date__lte=date, end__date__gte=date) # 이 그룹의 그룹스케줄 중 이 날 있는 스케줄들을 담음
             all_members_schedules = []            # 그룹의 모든 구성원들의 개인스케줄들 중에서, 이 날에 있는 스케줄들만 담을 리스트
             for member in group.members.all():
-                all_members_schedules += Schedule.objects.filter(user=member, start__date__lte=date, end__date__gte=date)
+                member_schedule = Schedule.objects.filter(user=member, start__date__lte=date, end__date__gte=date) # 시작일이 date보다 작거나 같고, 종료일에 date보다 크거나 같은 애들 필터링
+                member_schedule = member_schedule.exclude(end__lte=min_datetime)                                   # 그 중에서 date날짜의 9시 전에 끝나는 일정 제외
+                all_members_schedules += member_schedule
 
             if all_members_schedules or group_schedules:      # 그 날에 어떠한 스케줄(그룹스케줄이던 개인스케줄이던)이라도 있으면
                 return f"<td class='date is_schedule' onclick='view_day_schedule(this);'>" + f"{day}</td>"
