@@ -100,6 +100,7 @@ def getuserGroupList(request):
       return render(request,'userGroupList.html',{'userGroup_list':userGroup_list})
 
 # 그룹 캘린더 보여주기
+@login_required
 def groupCalendar_view(request, id):            
    today = get_date(request.GET.get('month'))
    prev_month_url = prev_month(today)
@@ -211,14 +212,55 @@ def addComment(request, id):
     comment.save()
     return redirect('groupCalendar_view',id)
 
-
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
-   userid = request.session.get('user')  # 로그인세션
-   newUserSchedule.user = CustomUser.objects.get(pk = userid)
+   user = request.user
+   newUserSchedule.user = CustomUser.objects.get(nickname = user)
    newUserSchedule.start =  groupSchedule.start
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
    return redirect('groupCalendar', groupSchedule.group_id)
+
+@login_required
+def createGroup(request):
+   user = request.user
+   userList = CustomUser.objects.exclude(pk=user)
+   return render(request, "createGroup.html", {'userList':userList} )
+
+def groupInvite(request):
+   user = request.user
+   group = Group()
+   group.name = request.POST.get('name')
+   group.save()
+   userGroup = UserGroup()
+   userGroup.user = user
+   userGroup.group = group
+   userGroup.allowed = 2
+   userGroup.save()
+   members = request.POST.getlist('members[]')
+   for member in members:
+      userGroup = UserGroup()
+      userGroup.user = CustomUser.objects.get(nickname=member)
+      userGroup.group = group
+      userGroup.allowed = 0
+      userGroup.save()
+   return redirect('getuserGroupList')
+
+def getInvitationList(request):
+   user = request.user
+   invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
+   return render(request, "groupInvitaionList.html", {'invitedGroup':invitedGroup})
+
+def acceptInvitation(request, id):
+   userGroup = UserGroup.objects.get(pk=id) # userGroup id
+   userGroup.allowed = 2
+   userGroup.save()
+   return redirect('getInvitationList')
+
+def refuseInvitation(request, id):
+   userGroup = UserGroup.objects.get(pk=id) # userGroup id
+   userGroup.allowed = 1
+   userGroup.save()
+   return redirect('getInvitationList')

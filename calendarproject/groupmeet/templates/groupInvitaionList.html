@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% load static %} {% block extrahead %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+{% endblock %} {% block content %}
+{% if invitedGroup %}
+{% for group in invitedGroup %}
+<h2>{{group.group.name}}</h2>
+<a href={% url 'acceptInvitation' group.id %}> 승인 </a>
+<a href={% url 'refuseInvitation' group.id%}> 거부 </a>
+{% endfor %}
+{% endif %}
+{% endblock %}
