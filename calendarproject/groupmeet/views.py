@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import UsernameField
+from django.contrib.auth.models import User
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect,  get_object_or_404
 from .models import Schedule, Group, GroupSchedule, UserGroup, Comment
@@ -14,9 +16,11 @@ from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from .forms import UserScheduleCreationForm
+from django.contrib import messages
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
+friend_list=[]
 
 # Create your views here.
 @login_required
@@ -73,24 +77,90 @@ def delete_userschedule(request):
 def create_userschedule(request):
    user = get_object_or_404(CustomUser, pk=request.user.nickname)
    new_schedule = Schedule(user=user)
-   form = UserScheduleCreationForm(request.POST, instance=new_schedule)
+   form = UserScheduleCreationForm(request.POST)
    
    if form.is_valid():
-      new_schedule = form.save()
+      s = form.cleaned_data['start_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['start_hour'] + ':' + form.cleaned_data['start_minute']
+      e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
+      start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
+      end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+      title = form.cleaned_data['title']
+
+      new_schedule.start = start
+      new_schedule.end = end
+      new_schedule.title = title
+
+      new_schedule.save()
+
       data = {
          'result' : 'success'
       }
-      return JsonResponse(data)
    else:
       data = {
          'result' : 'fail',
          'form_errors' : form.errors.as_json()
       }
-      return JsonResponse(data)
+
+   return JsonResponse(data)
+
+@login_required
+def edit_userschedule(request, schedule_id):
+   schedule = get_object_or_404(Schedule, pk=schedule_id)
+   if request.method == "POST":
+      form = UserScheduleCreationForm(request.POST)
+      if form.is_valid():
+         s = form.cleaned_data['start_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['start_hour'] + ':' + form.cleaned_data['start_minute']
+         e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
+         start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
+         end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+
+         title = form.cleaned_data['title']
+
+         schedule.start = start
+         schedule.end = end
+         schedule.title = title
+
+         schedule.save()
+
+         data = {
+            'result' : 'success'
+         }
+      else:
+         data = {
+            'result' : 'fail',
+            'form_errors' : form.errors.as_json()
+         }
+   else:          # GET방식으로 들어오면
+      s = schedule.start.strftime('%Y-%m-%d %H:%M').split(' ')
+      e = schedule.end.strftime('%Y-%m-%d %H:%M').split(' ')
+      s_time = s[1].split(':')
+      e_time = e[1].split(':')
+
+      start_date = s[0]
+      start_hour = s_time[0]
+      start_minute = s_time[1]
+
+      end_date = e[0]
+      end_hour = e_time[0]
+      end_minute = e_time[1]
+      title = schedule.title
+      
+      data = {
+         'start_date' : start_date,
+         'start_hour' : start_hour,
+         'start_minute' : start_minute,
+         'end_date' : end_date,
+         'end_hour' : end_hour,
+         'end_minute' : end_minute,
+         'title' : title
+      }
+
+   return JsonResponse(data)
    
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request):
+   friend_list.clear()
    if request.user.is_authenticated:
       user = request.user
       usergroup=UserGroup.objects.filter(user=user)
@@ -115,14 +185,23 @@ def groupCalendar_view(request, id):
    cal = cal.formatmonth(withyear=True, group=group)
    cal = mark_safe(cal)
 
+   members=[]
+   testmembers= group.members.all()
+   for testmember in testmembers:
+      usergroups=UserGroup.objects.filter(user=testmember)
+      for ug in usergroups:
+         if (ug.allowed==2):
+            members.append(testmember)
+
    #group에 속한 user들의 모든 일정 list로 return
    if request.GET.get('day'):
       day = request.GET.get('day')
    else:
       day = today.day
    schedule_list={'9':[0,0], '10':[0,0], '11':[0,0], '12':[0,0], '13':[0,0], '14':[0,0], '15':[0,0], '16':[0,0], '17':[0,0], '18':[0,0], '19':[0,0], '20':[0,0], '21':[0,0]}
-   members= group.members.all()
+
    date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
+
    for user in members:
       schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
       if schedules:
@@ -142,7 +221,7 @@ def groupCalendar_view(request, id):
             for i in range(s, e+1):
                schedule_list[str(i)][0] = -1
                schedule_list[str(i)][1] = -1
-   groupSchedules = GroupSchedule.objects.filter(group=group,  start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
+   groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 22:00:00", end__gte = date_format+" 09:00:00")
    if groupSchedules:
       for schedule in groupSchedules:
          if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 9, 0):
@@ -164,7 +243,7 @@ def groupCalendar_view(request, id):
    comment_list=list(comments)
    return render(request, 'groupCalendar.html',
    {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
-   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list})
+   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members})
 
 def get_date(request_day):
    if request_day:
@@ -204,7 +283,7 @@ def createGroupSchedule(request, id):
 
 def addComment(request, id):
     comment=Comment()
-    comment.writer=request.POST.get('writer',False)
+    comment.writer=request.user
     #로그인 완성되면 수정 comment.writer=request.user
     comment.group = Group.objects.get(pk=id)
     comment.pub_date=timezone.datetime.now()
@@ -248,6 +327,7 @@ def groupInvite(request):
       userGroup.save()
    return redirect('getuserGroupList')
 
+@login_required
 def getInvitationList(request):
    user = request.user
    invitedGroup = UserGroup.objects.filter(user=user, allowed=0)

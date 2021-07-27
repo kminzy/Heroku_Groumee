@@ -9,6 +9,8 @@ html, body{
 
 body{
     background-color: #dcdef3 !important;
+    display: flex;
+    flex-direction: column;
 }
 
 table{             /* 부트스트랩 css 상쇄 */
@@ -19,28 +21,16 @@ table{             /* 부트스트랩 css 상쇄 */
 
 .main-section{
     font-family: 'Noto Sans KR', sans-serif;
-    height: 100%;
+    flex: 1;
     /* display: flex;
     align-items: center;
     justify-content: center; */
 }
 
-.main-section h3{
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 2rem !important;
-    color : #3849aa !important;
-    line-height: 2.5rem;
-    padding-top: 0 !important;
-    padding-bottom: 1rem !important;
-    font-weight: 600;
-}
-
-
 .calendar{
     width: 65vw;
     font-size: 1rem;
+    margin-top: 1rem;
     margin-left: auto;
     margin-right: auto;
     padding: 10px;
@@ -88,7 +78,7 @@ table{             /* 부트스트랩 css 상쇄 */
 
 .date .schedule_line li{
     background: #838de9;
-    margin: 2px auto;
+    margin: 1px auto;
     border-radius: 10px;
     width: 80%;
     /* white-space:nowrap; */
@@ -136,11 +126,8 @@ td:first-child, th:first-child{
 
 .calendar td {
     vertical-align: top;
-    /* width: 120px;
-    height: 95px; */
     width: 20vw;
     height: 90px;
-    /* padding: .25em .25em; */
     transition: background .2s;
 }
 
@@ -240,7 +227,7 @@ td:first-child, th:first-child{
     cursor: pointer;
     box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .1); 
     transition: .3s;
-    transform: scale(1.05);
+    transform: scale(1.025);
 }
 
 /*스크롤바 디자인*/
@@ -270,8 +257,20 @@ td:first-child, th:first-child{
 }
 
 #Sidebar .content-section .content .top div{
-    width: 90%;
+    width: 75%;
     font-size: 0.75rem;
+}
+
+#Sidebar .content-section .content .top .edit-schedule{
+    color: #929292;
+    margin-right: 2.5%;
+}
+
+#Sidebar .content-section .content .top .edit-schedule:hover{
+    color: #838de9;
+    cursor: pointer;
+    font-size: 1.5em;
+    transition: .3s;
 }
 
 #Sidebar .content-section .content .top .delete-schedule{
@@ -326,6 +325,7 @@ td:first-child, th:first-child{
     margin: 0;
     color: red;
 }
+
 
 
 
