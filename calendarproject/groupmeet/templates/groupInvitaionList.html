@@ -3,7 +3,7 @@
 {% endblock %} {% block content %} {% if invitedGroup %} {% for group in invitedGroup %}
 <h2>{{group.group.name}}</h2>
 <button class="btn btn-primary" type="button" onclick="location.href={% url 'acceptInvitation' group.id %}">승인</button>
-<button class="btn btn-primary" type="button" onclick="location.href={% url 'refuseInvitation' group.id %}">거부</button>
-{% endfor %}
-{% endif %}
+<button class="btn btn-primary" type="button" onclick="location.href={% url 'refuseInvitation' group.id %}">거부</button> 
+{% endfor %} 
+{% endif %} 
 {% endblock %}

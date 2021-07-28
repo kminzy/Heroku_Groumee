@@ -37,4 +37,5 @@ urlpatterns = [
     path('groupInvitation/', views.getInvitationList, name="getInvitationList"),
     path('groupInvitation/acceptIvitation/<str:id>', views.acceptInvitation, name="acceptInvitation"),
     path('groupInvitation/refuseIvitation/<str:id>', views.acceptInvitation, name="refuseInvitation"),
+    
 ]

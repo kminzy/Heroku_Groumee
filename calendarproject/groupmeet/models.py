@@ -32,8 +32,7 @@ class GroupSchedule(models.Model):
     title=models.CharField(max_length=60)  
 
 class Comment(models.Model):
-    writer=models.CharField(max_length=20)
-    #writer=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) 로그인 완성되면 수정
+    writer=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE) 
     group= models.ForeignKey(Group ,on_delete=models.CASCADE,default='')
     pub_date = models.DateTimeField(default='')
     content = models.TextField(default='')

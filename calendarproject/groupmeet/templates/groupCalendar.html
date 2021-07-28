@@ -77,11 +77,13 @@
 
 </div>
 
+<!--
 <div class="comments">
   <div class="show-comments">
     {% for comment in comment_list %}
     <section>
-      <div class="clear"></div>
+      <div class="clear">
+      </div>
       {% if comment.writer == request.user.username%}
       <div class="from-me">
         <p>{{comment.content}}</p>
@@ -105,6 +107,55 @@
     </form>
   </div>
 </div>
+-->
+
+<div class="container content">
+  <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body height3">
+            <ul class="chat-list">
+              {% for comment in comment_list %}
+              {% if comment.writer == request.user%}
+              <li class="out">  <!--me-->
+                <div class="chat-body">
+                  <div class="chat-message">
+                    <h5>{{comment.writer.nickname}}</h5>
+                    <p>{{comment.content}}</p>
+                  </div>
+                </div>
+              </li>
+              {%else%}
+              <li class="in">
+                <div class="chat-body">
+                  <div class="chat-message">
+                    <h5>{{comment.writer.nickname}}</h5>
+                    <p>{{comment.content}}</p>
+                  </div>
+                </div>
+              </li>
+
+              {%endif%}
+              {%endfor%}
+            </ul>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="chat-box">
+  <form action="{%url 'addComment' groupId%}" method="POST">
+    {% csrf_token %}
+  <div class="input-group" style="height: 50px;">
+    <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here">
+    <input type="submit" style="border-radius: 5px; background:#a4abeb; border:none ;" value="Send"></input>
+  </form>
+  </div>
+</div>  
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
@@ -196,6 +247,9 @@
     </div>
   </div>
 </div>
+
+<footer style="margin-bottom: 50px;">
+</footer>
 
 <script>
   function go_prev_month() {
