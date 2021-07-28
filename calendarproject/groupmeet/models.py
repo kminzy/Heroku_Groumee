@@ -37,7 +37,3 @@ class Comment(models.Model):
     group= models.ForeignKey(Group ,on_delete=models.CASCADE,default='')
     pub_date = models.DateTimeField(default='')
     content = models.TextField(default='')
-
-class Notification(models.Model):
-    user=models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE,default='')
-    content = models.TextField(default='')

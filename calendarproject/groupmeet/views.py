@@ -284,7 +284,6 @@ def createGroupSchedule(request, id):
 def addComment(request, id):
     comment=Comment()
     comment.writer=request.user
-    #로그인 완성되면 수정 comment.writer=request.user
     comment.group = Group.objects.get(pk=id)
     comment.pub_date=timezone.datetime.now()
     comment.content=request.POST.get('content',False)
@@ -344,3 +343,6 @@ def refuseInvitation(request, id):
    userGroup.allowed = 1
    userGroup.save()
    return redirect('getInvitationList')
+
+def test(request):
+   return render(request,'test.html')

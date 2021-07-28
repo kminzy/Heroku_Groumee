@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+
 <div class="main-section">
   <div class="left-section">
     <h3>Group Schedule</h3>
@@ -20,32 +21,10 @@
       <div class="empty-box">&nbsp;</div>
       &nbsp;: 스케줄 있음
     </div>
-
-    {% for comment in comment_list %}
-    {{comment.writer}}
-    {{comment.pub_date}}
-    {{comment.content}}
-    <br>
-    {% endfor %}
-
-    <div class="writeComment">
-      <form action="{%url 'addComment' groupId%}" method="POST">
-        {% csrf_token %}
-        <!--로그인 완성되면 수정-->
-        <div class="form-floating">
-          <textarea class="form-control" name="content" id="floatingTextarea2" style="height: 100px;"></textarea>
-          <label for="floatingTextarea2">댓글을 입력해보세요!</label>
-        </div>
-        <input type="submit" value="등록"></input>
-      </form>
-    </div>
-
-
   </div>
 
   <div class="right-section">
-    <br />
-
+    <br>
     <div class="table-title">
       <span class="group-name">Group Time-table</span>
     </div>
@@ -92,6 +71,36 @@
 
       </div>
     </div>
+  </div>
+
+</div>
+
+<div class="comments">
+  <div class="show-comments">
+    {% for comment in comment_list %}
+    <section>
+      <div class="clear"></div>
+      {% if comment.writer == request.user.username%}
+        <div class="from-me">
+          <p>{{comment.content}}</p>
+        </div>
+      {%else%}
+        <div class="clear"></div>
+        <div class="from-them">
+          <p>{{comment.content}}</p>
+        </div>
+      {%endif%}
+    </section>
+    {% endfor %}
+  </div>
+  <div class="writeComment">
+    <form action="{%url 'addComment' groupId%}" method="POST">
+      {% csrf_token %}
+      <div class="from-me">
+        <p><textarea name="content">댓글 입력</textarea></p>
+      </div>
+      <input type="submit" value="등록"></input>
+    </form>
   </div>
 </div>
 
@@ -219,5 +228,7 @@
     };
   });
 </script>
+
+
 
 {% endblock %}
