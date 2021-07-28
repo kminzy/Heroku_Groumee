@@ -19,7 +19,7 @@ class RegisterForm(UserCreationForm):
     password2 = forms.CharField(widget = forms.TextInput(attrs={
          "class":"input",
          "type":"password",
-         "placeholder":"enter password",
+         "placeholder":"confirm password",
      }),label="password")
 
     nickname = forms.CharField(widget = forms.TextInput(attrs={
