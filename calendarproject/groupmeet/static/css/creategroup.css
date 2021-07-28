@@ -1,0 +1,47 @@
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100% !important;
+    width:100%;
+    margin: 0 !important;
+}
+
+body{
+    background-color: #dcdef3 !important;
+}
+
+table{             /* 부트스트랩 css 상쇄 */
+    caption-side: initial;
+    border-collapse: initial;
+}
+/* main-section */
+
+.main-section{
+    font-family: 'Noto Sans KR', sans-serif;
+    width:100%;
+    height: 100%;
+    margin-top:1rem;
+    /* display: flex;
+    align-items: center;
+    justify-content: center; */
+}
+
+.main-section h3{
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 2rem !important;
+    color : #3849aa !important;
+    line-height: 2.5rem;
+    padding-top: 0 !important;
+    padding-bottom: 1rem !important;
+    font-weight: 600;
+}
+
+.inviteSection{
+    width:100%;
+    display: flex;
+    justify-content: center;
+}
