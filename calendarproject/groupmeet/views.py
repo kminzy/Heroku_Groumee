@@ -286,8 +286,9 @@ def addComment(request, id):
     comment.writer=request.user
     comment.group = Group.objects.get(pk=id)
     comment.pub_date=timezone.datetime.now()
-    comment.content=request.POST.get('content',False)
-    comment.save()
+    comment.content=request.POST.get('content')
+    if comment.content!='':
+       comment.save()
     return redirect('groupCalendar_view',id)
 
 def allowRegister(request, id):
@@ -344,6 +345,3 @@ def refuseInvitation(request, id):
    userGroup.allowed = 1
    userGroup.save()
    return redirect('getInvitationList')
-
-def test(request):
-   return render(request,'test.html')

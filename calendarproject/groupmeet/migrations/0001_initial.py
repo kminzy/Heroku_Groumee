@@ -59,10 +59,10 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('writer', models.CharField(max_length=20)),
                 ('pub_date', models.DateTimeField(default='')),
                 ('content', models.TextField(default='')),
                 ('group', models.ForeignKey(default='', on_delete=django.db.models.deletion.CASCADE, to='groupmeet.group')),
+                ('writer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

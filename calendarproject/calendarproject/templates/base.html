@@ -63,7 +63,12 @@
     <nav class="navbar">
         <div class="nav_logo">
             <i class="fas fa-cloud"></i>
-            <a href="#">Groumee</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'userCalendar_view' %}">Groumee</a>
+            {% endif %}
+            {% if not user.is_authenticated %}
+            <a href="{% url 'login' %}">Groumee</a>
+            {% endif %}
         </div>
 
         <div class="profile">
@@ -75,10 +80,9 @@
                 <span class="profile">그룹관리</span>
             </a>
             <img src="{%static 'img/bell.png'%}" id="bell-image">
-            {{user.nickname}}
+            <span>{{user.nickname}}</span>
             {% endif %}
         </div>
-
     </nav>
 
     
