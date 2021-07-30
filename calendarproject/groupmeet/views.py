@@ -22,6 +22,12 @@ from django.contrib import messages
 #Schedule: 일정 하나 하나
 friend_list=[]
 
+def test(request):
+   user = get_object_or_404(CustomUser, pk=request.user.nickname)
+   invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
+   notification_list=list(invitedGroup)
+   return render(request,'base.html',{'notification_list':notification_list})
+
 # Create your views here.
 @login_required
 def userCalendar_view(request):
@@ -36,6 +42,8 @@ def userCalendar_view(request):
    cal = mark_safe(cal)
 
    form = UserScheduleCreationForm()
+   invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
+   invitedGroup=list(invitedGroup)
    
    return render(request, 'userCalendar.html', {
                            'calendar' : cal,
@@ -43,7 +51,8 @@ def userCalendar_view(request):
                            'cur_month' : today.month, 
                            'prev_month' : prev_month_url, 
                            'next_month' : next_month_url,
-                           'form' : form
+                           'form' : form,
+                           'invitedGroup':invitedGroup
                            })
 
 @login_required
@@ -58,10 +67,9 @@ def show_userschedule(request):
    date = datetime.date(year, month, day)
 
    schedules = Schedule.objects.filter(user=user, start__date__lte=date, end__date__gte=date).order_by('start')   # 유저가 클릭한 날짜에 있는 스케줄들
-
    data = serializers.serialize("json", schedules)                                                                # 스케줄들을 json형태로 바꿔줌
-
-   return JsonResponse(data, safe=False)       # 파라미터로 딕셔너리 형태가 아닌 것을 받으면 두 번째 파라미터로 safe=False를 해야함
+   
+   return JsonResponse(data, safe=False)    # 파라미터로 딕셔너리 형태가 아닌 것을 받으면 두 번째 파라미터로 safe=False를 해야함
 
 @login_required
 def delete_userschedule(request):
@@ -187,17 +195,13 @@ def groupCalendar_view(request, id):
 
    members=[]
    testmembers= group.members.all()
-   for testmember in testmembers:
-      usergroups=UserGroup.objects.filter(user=testmember)
-      for ug in usergroups:
-         if (ug.allowed==2):
-            members.append(testmember)
-
    waiting_members = []    # allowed가 1인 멤버들 담을 리스트
    for member in testmembers:    # 그룹원들에 대해 루프
       ug = UserGroup.objects.get(user=member, group=group)
       if ug.allowed == 0:
          waiting_members.append(member)
+      if ug.allowed==2:
+         members.append(member)
 
    #group에 속한 user들의 모든 일정 list로 return
    if request.GET.get('day'):
@@ -297,11 +301,19 @@ def addComment(request, id):
        comment.save()
     return redirect('groupCalendar_view',id)
 
-def delComment(request,id):
-   delete_comment = get_object_or_404(Comment, pk=id)
+def delComment(request,group_id,comment_id):
+   delete_comment = get_object_or_404(Comment, pk=comment_id)
    if delete_comment.writer == request.user:
       delete_comment.delete()
-   return redirect('groupCalendar_view',delete_comment.group.id)
+   return redirect('groupCalendar_view',group_id)
+
+'''
+def editComment(request,group_id,comment_id):
+   edit_comment = get_object_or_404(Comment, pk=comment_id)
+   edit_comment.comment=request.POST.get('content')
+   edit_comment.save()
+   return redirect('groupCalendar_view',group_id)
+   '''
 
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
@@ -317,7 +329,6 @@ def allowRegister(request, id):
 @login_required
 def createGroup(request):
    user = request.user.nickname
-   print(user)
    userList = CustomUser.objects.exclude(nickname=user)
    return render(request, "createGroup.html", {'userList':userList} )
 
@@ -340,23 +351,28 @@ def groupInvite(request):
       userGroup.save()
    return redirect('getuserGroupList')
 
-@login_required
-def getInvitationList(request):
-   user = request.user
-   invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
-   return render(request, "groupInvitaionList.html", {'invitedGroup':invitedGroup})
+def invatation_view(request,id):
+   group=get_object_or_404(Group,id=id)
+   members=group.members.all()
+   member_list=[]
+   for member in members:
+      ug= get_object_or_404(UserGroup,group = id,user=member)
+      if ug.allowed==2:
+         member_list.append(member)
+   usergroup=get_object_or_404(UserGroup,group=id,user=request.user)
+   return render(request,'groupInvitation.html',{'group':group,'member_list':member_list,'usergroup':usergroup})
 
 def acceptInvitation(request, id):
    userGroup = UserGroup.objects.get(pk=id) # userGroup id
    userGroup.allowed = 2
    userGroup.save()
-   return redirect('getInvitationList')
+   return redirect('getuserGroupList')
 
 def refuseInvitation(request, id):
    userGroup = UserGroup.objects.get(pk=id) # userGroup id
    userGroup.allowed = 1
    userGroup.save()
-   return redirect('getInvitationList')
+   return redirect('getuserGroupList')
 
 @login_required
 def leaveGroup(request, id):

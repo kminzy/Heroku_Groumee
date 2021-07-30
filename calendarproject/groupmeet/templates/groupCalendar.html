@@ -114,7 +114,6 @@
           <div class="card-body height3">
             <ul class="chat-list">
               {% for comment in comment_list %}
-              
               {% if comment.writer == request.user%}
                 <li class="out">  
                   <div class="chat-body">
@@ -123,7 +122,7 @@
                       <p>{{comment.content}}</p>
 
                       <div class="close-container">
-                        <a href="{%url 'delComment' comment.id %}">
+                        <a href="{%url 'delComment' groupId comment.id %}">
                           <div class="leftright"></div>
                           <div class="rightleft"></div>
                         </a>
