@@ -357,3 +357,10 @@ def refuseInvitation(request, id):
    userGroup.allowed = 1
    userGroup.save()
    return redirect('getInvitationList')
+
+@login_required
+def leaveGroup(request, id):
+   group = get_object_or_404(Group, pk=id)
+   usergroup = get_object_or_404(UserGroup, user=request.user, group=group)
+   usergroup.delete()
+   return redirect('getuserGroupList')
