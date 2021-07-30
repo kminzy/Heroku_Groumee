@@ -293,8 +293,8 @@ def addComment(request, id):
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
-   user = request.user
-   newUserSchedule.user = CustomUser.objects.get(nickname = user)
+   user = request.user.nickname
+   newUserSchedule.user = CustomUser.objects.get(nickname=user)
    newUserSchedule.start =  groupSchedule.start
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title
@@ -303,8 +303,9 @@ def allowRegister(request, id):
 
 @login_required
 def createGroup(request):
-   user = request.user
-   userList = CustomUser.objects.exclude(pk=user)
+   user = request.user.nickname
+   print(user)
+   userList = CustomUser.objects.exclude(nickname=user)
    return render(request, "createGroup.html", {'userList':userList} )
 
 def groupInvite(request):

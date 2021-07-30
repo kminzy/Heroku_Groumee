@@ -13,15 +13,21 @@
         userList[i].style.display = 'none';
       }
     }
-    let;
   }
 
   function addUser(button) {
     let checkboxArea = document.getElementById('checkboxArea');
+    let checkList = document.getElementsByClassName('checkbox');
     let newDiv = document.createElement('div');
     newDiv.setAttribute('class', 'form-check');
-    newDiv.innerHTML = `<input name="members[]" class="form-check-input" type="checkbox" value="${button.name}" id="gridCheck1" checked/> <label class="form-check-label" for="gridCheck1"> ${button.name} </label>`;
-    checkboxArea.appendChild(newDiv);
+    let checkListData = [];
+    for (let i = 0; i < checkList.length; i++) {
+      checkListData.push(checkList[i].value);
+    }
+    if (!checkListData.includes(button.name)) {
+      newDiv.innerHTML = `<input name="members[]" class="form-check-input checkbox" type="checkbox" value="${button.name}" id="gridCheck1" checked/> <label class="form-check-label" for="gridCheck1"> ${button.name} </label>`;
+      checkboxArea.appendChild(newDiv);
+    }
   }
 </script>
 <div class="container-sm">
