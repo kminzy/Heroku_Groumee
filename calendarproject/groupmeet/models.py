@@ -2,11 +2,6 @@ from django.db import models
 from django.conf import settings
 # Create your models here.
 
-# class User(models.Model):   
-#     userId=models.CharField(max_length=50,primary_key=True) 
-#     password=models.CharField(max_length=150)
-#     name=models.CharField(max_length=10)
-
 class Group(models.Model):
     name=models.CharField(max_length=50)
     members=models.ManyToManyField(settings.AUTH_USER_MODEL, through='UserGroup',through_fields=("group","user"))

@@ -217,7 +217,6 @@ td:first-child, th:first-child{
     cursor: pointer;
  }
 
- 
  /*댓글 */
  body{
     background:#ede7f6;    
@@ -313,3 +312,125 @@ td:first-child, th:first-child{
     width:80%;
     margin:0 auto;
 }
+
+.chat-message{
+    position:relative;
+}
+
+.close-container {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    position:absolute;
+    bottom:88%;
+    left:13px;
+}
+
+.leftright {
+    height: 3px;
+    width: 15px;
+    position: absolute;
+    margin-top: 24px;
+    background-color: #ff0000;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    transition: all 0.2s ease-in;
+}
+
+.rightleft {
+    height: 3px;
+    width: 15px;
+    position: absolute;
+    margin-top: 24px;
+    background-color: #ff0000;
+    border-radius: 2px;
+    transform: rotate(-45deg);
+    transition: all 0.2s ease-in;
+}
+
+.close{
+    margin: 20px 0 0 5px;
+    position: absolute;
+}
+
+.close-container:hover label{
+    opacity: 1;
+}
+
+.close-container:hover .leftright {
+transform: rotate(-45deg);
+background-color: #ffffff;
+}
+
+.close-container:hover .rightleft {
+    transform: rotate(45deg);
+    background-color: #ffffff;
+}
+  
+
+.noselect {
+    -webkit-touch-callout: none;
+      -webkit-user-select: none;
+       -khtml-user-select: none;
+         -moz-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
+          -webkit-tap-highlight-color: transparent;
+  }
+  
+  #mybtn {
+      width: 50px;
+      height: 50px;
+      cursor: pointer;
+      background-color: #5de6de;
+      background-image: linear-gradient(315deg, #5de6de 0%, #b58ecc 74%);
+      border: none;
+      border-radius: 50%;
+      transition: 200ms;
+      float:right;
+      margin-right: 30px;
+      margin-bottom: 50px;
+  }
+  
+  #mybtn svg {
+      fill: white;
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      transform: translateX(-50%) translateY(-50%);
+  }
+  
+  #mybtn:before {
+      position: absolute;
+      transform: translateX(-50%) translateY(45px);
+      font-size: 15px;
+      transition: 200ms;
+      color: transparent;
+      font-weight: bold;
+  }
+  
+  #mybtn:hover {
+      box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+      width: 60px;
+      height: 60px;
+  }
+  
+  #mybtn:hover::before {
+      color: #fff;
+  }
+  
+  #mybtn:hover svg {
+          animation: bounce 2s infinite linear;
+  }
+  
+  @keyframes bounce {
+      0% {transform: translateX(-50%) translateY(-50%)}
+      25% {transform: translateX(-50%) translateY(-65%)}
+      50% {transform: translateX(-50%) translateY(-50%)}
+      75% {transform: translateX(-50%) translateY(-35%)}
+      100% {transform: translateX(-50%) translateY(-50%)}
+  }
+  
+  #mybtn:focus {
+      outline: none;
+  }

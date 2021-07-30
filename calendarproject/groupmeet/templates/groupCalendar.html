@@ -76,39 +76,6 @@
   </div>
 
 </div>
-
-<!--
-<div class="comments">
-  <div class="show-comments">
-    {% for comment in comment_list %}
-    <section>
-      <div class="clear">
-      </div>
-      {% if comment.writer == request.user.username%}
-      <div class="from-me">
-        <p>{{comment.content}}</p>
-      </div>
-      {%else%}
-      <div class="clear"></div>
-      <div class="from-them">
-        <p>{{comment.content}}</p>
-      </div>
-      {%endif%}
-    </section>
-    {% endfor %}
-  </div>
-  <div class="writeComment">
-    <form action="{%url 'addComment' groupId%}" method="POST">
-      {% csrf_token %}
-      <div class="from-me">
-        <p><textarea name="content">댓글 입력</textarea></p>
-      </div>
-      <input type="submit" value="등록"></input>
-    </form>
-  </div>
-</div>
--->
-
 <div class="container content">
   <div class="row">
       <div class="col">
@@ -116,24 +83,32 @@
           <div class="card-body height3">
             <ul class="chat-list">
               {% for comment in comment_list %}
+              
               {% if comment.writer == request.user%}
-              <li class="out">  <!--me-->
-                <div class="chat-body">
-                  <div class="chat-message">
-                    <h5>{{comment.writer.nickname}}</h5>
-                    <p>{{comment.content}}</p>
+                <li class="out">  
+                  <div class="chat-body">
+                    <div class="chat-message">
+                      <h5>{{comment.writer.nickname}}</h5>
+                      <p>{{comment.content}}</p>
+
+                      <div class="close-container">
+                        <a href="{%url 'delComment' comment.id %}">
+                          <div class="leftright"></div>
+                          <div class="rightleft"></div>
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
               {%else%}
-              <li class="in">
-                <div class="chat-body">
-                  <div class="chat-message">
-                    <h5>{{comment.writer.nickname}}</h5>
-                    <p>{{comment.content}}</p>
+                <li class="in">
+                  <div class="chat-body">
+                    <div class="chat-message">
+                      <h5>{{comment.writer.nickname}}</h5>
+                      <p>{{comment.content}}</p>
+                    </div>
                   </div>
-                </div>
-              </li>
+                </li>
 
               {%endif%}
               {%endfor%}
@@ -154,7 +129,6 @@
   </form>
   </div>
 </div>  
-
 
 
 <!-- Modal -->
@@ -248,6 +222,11 @@
   </div>
 </div>
 
+<button class="noselect" id="mybtn" onclick="topFunction()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339 2.829-2.83-11.996-12.17z"/></svg>
+</button>
+</body>
+  
 <footer style="margin-bottom: 50px;">
 </footer>
 
@@ -285,6 +264,22 @@
       location.href = "/addschedule/" + id; // url 수정
     };
   });
+
+
+  var btn = $('#mybtn');
+  $(window).scroll(function() {
+  if ($(window).scrollTop() > 20) {
+    btn.addClass('show');
+  } else {
+    btn.removeClass('show');
+  }
+  });
+
+  btn.on('click', function(e) {
+  e.preventDefault();
+  $('html, body').animate({scrollTop:0}, '20');
+  });
+
 </script>
 
 

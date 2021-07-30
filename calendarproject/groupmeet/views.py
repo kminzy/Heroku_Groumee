@@ -291,6 +291,12 @@ def addComment(request, id):
        comment.save()
     return redirect('groupCalendar_view',id)
 
+def delComment(request,id):
+   delete_comment = get_object_or_404(Comment, pk=id)
+   if delete_comment.writer == request.user:
+      delete_comment.delete()
+   return redirect('groupCalendar_view',delete_comment.group.id)
+
 def allowRegister(request, id):
    groupSchedule = GroupSchedule.objects.get(pk = id)
    newUserSchedule = Schedule()
