@@ -193,6 +193,12 @@ def groupCalendar_view(request, id):
          if (ug.allowed==2):
             members.append(testmember)
 
+   waiting_members = []    # allowed가 1인 멤버들 담을 리스트
+   for member in testmembers:    # 그룹원들에 대해 루프
+      ug = UserGroup.objects.get(user=member, group=group)
+      if ug.allowed == 1:
+         waiting_members.append(member)
+
    #group에 속한 user들의 모든 일정 list로 return
    if request.GET.get('day'):
       day = request.GET.get('day')
@@ -243,7 +249,7 @@ def groupCalendar_view(request, id):
    comment_list=list(comments)
    return render(request, 'groupCalendar.html',
    {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
-   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members})
+   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
 
 def get_date(request_day):
    if request_day:

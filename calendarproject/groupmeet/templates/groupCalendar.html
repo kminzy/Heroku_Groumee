@@ -8,7 +8,38 @@
 
 <div class="main-section">
   <div class="left-section">
-    <h3>Group Schedule</h3>
+    <div class="sidebar-overlay"></div>
+    <div class="sidebar">
+      <div class="sidebar-top">
+        <i class="fas fa-times close-sidebar"></i>
+      </div>
+      <div class="sidebar-mid">
+        <div class="ok-members">
+          <i class="fas fa-users"></i> 그룹 멤버
+          <div class="members-list">
+            {% for member in members %}
+              {{member.nickname}}<br>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="waiting-members">
+          <i class="fas fa-spinner"></i> 아직 오지 않은 멤버
+          <div class="members-list">
+            {% for member in waiting_members %}
+              {{member.nickname}}<br>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="sidebar-bot">
+        <span id="leave-group">나가기 <i class="fas fa-sign-out-alt"></i></span>
+      </div>
+    </div>
+    <div id="top">
+      <span><i class="fas fa-bars open-sidebar"></i></span>
+      <h3>Group Schedule</h3>
+      <span></span>
+    </div>
 
     {% for member in members %}
     그룹 멤버들:
@@ -278,6 +309,35 @@
   btn.on('click', function(e) {
   e.preventDefault();
   $('html, body').animate({scrollTop:0}, '20');
+  });
+
+  $(document).on('click', '.open-sidebar', function() {                // 사이드바 열기
+    $('.sidebar').css('left', '0');
+    $('.sidebar-overlay').css('display', 'flex');
+    $('.main-section').on('scroll touchmove mousewheel', function(e){
+      e.preventDefault();
+      e.stopPropagation(); 
+      return false;
+    })
+  });
+
+  $(document).on('click', '.close-sidebar', function() {              // 사이드바 닫기
+    $('.sidebar').css('left', '-20vw');
+    setTimeout(function() {
+      $('.sidebar-overlay').css('display', 'none');
+    }, 400);
+    $('.main-section').off('scroll touchmove mousewheel');
+  });
+
+  $(document).on('click', '#leave-group', function() {               // 그룹 탈퇴
+    let result = confirm("정말 이 그룹에서 나가시겠습니까?");
+    if(result){
+      alert("이 그룹에서 나갔습니다");
+      location.href = "{% url 'leaveGroup' groupId %}"
+    }
+    else{
+      ;
+    }
   });
 
 </script>
