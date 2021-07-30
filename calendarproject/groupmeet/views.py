@@ -196,7 +196,7 @@ def groupCalendar_view(request, id):
    waiting_members = []    # allowed가 1인 멤버들 담을 리스트
    for member in testmembers:    # 그룹원들에 대해 루프
       ug = UserGroup.objects.get(user=member, group=group)
-      if ug.allowed == 1:
+      if ug.allowed == 0:
          waiting_members.append(member)
 
    #group에 속한 user들의 모든 일정 list로 return
