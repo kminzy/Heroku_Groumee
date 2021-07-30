@@ -163,7 +163,7 @@ def getuserGroupList(request):
    friend_list.clear()
    if request.user.is_authenticated:
       user = request.user
-      usergroup=UserGroup.objects.filter(user=user)
+      usergroup=UserGroup.objects.filter(user=user, allowed=2)
       userGroup_list=[]
       for ug in usergroup:
          userGroup_list.append(ug.group)
