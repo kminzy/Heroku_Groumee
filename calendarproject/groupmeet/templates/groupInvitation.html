@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href='{% static "css/usergrouplist.css" %}' />
+{% endblock %}
+
+{% block content %}
+<div class="main-section">
+    <div class="groupList">
+        <div class="listTitle">
+            <div class="title_section">
+                <div class="group_title">
+                    <span class="mygroup">{{group.name}} 초대장</span>
+                </div>
+            </div>
+            <!--
+            <button class="btn btn-primary" type="button" onclick="location.href='{% url 'acceptInvitation' group.id %}'">승인</button>
+            <button class="btn btn-primary" type="button" onclick="location.href='{% url 'refuseInvitation' group.id %}'">거부</button>
+-->
+        </div>
+        {%for member in member_list%}
+        <span class="group_icon"><i class="fas fa-user-friends"></i></span>
+        {{member.nickname}}
+        <br>
+        {%endfor%}
+
+        
+        <button class="btn btn-primary" type="button" onclick="location.href='{% url 'acceptInvitation' usergroup.id %}'">승인</button>
+        <button class="btn btn-primary" type="button" onclick="location.href='{% url 'refuseInvitation' usergroup.id %}'">거부</button>
+        
+    </div>
+
+</div>
+{% endblock %}

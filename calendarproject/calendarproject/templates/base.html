@@ -37,13 +37,14 @@
         .table-content th {
             width: 35%;
         }
-
+        
+        /*
         #bell-image{
             width:30px;
             height: 30px;
         }
 
-        /*
+        
         .notice-container{
             background-color: white;
             width:300px;
@@ -79,30 +80,50 @@
             <a href="{% url 'getuserGroupList' %}">
                 <span class="profile">그룹관리</span>
             </a>
-            <img src="{%static 'img/bell.png'%}" id="bell-image">
+            <!--<img src="{%static 'img/bell.png'%}" id="bell-image">-->
             <span>{{user.nickname}}</span>
             {% endif %}
         </div>
-    </nav>
-
-    
-    <div class="notice-container"></div>
-<!--
-    <script>
-      $( document ).ready( function() 
-      {
-        $( 'img' ).click( function() 
-        {
-            $('.notice-container').fadeToggle();
-        })
-      });
-     
-    </script>
-    -->
-
+        
+        <div class="icon" id="bell"> <img src="https://i.imgur.com/AC7dgLA.png" alt=""> </div>
+        <div class="notifications" id="box">
+            <h2>Notifications</h2>
+            {% if invitedGroup %}
+            {% for group in invitedGroup %}
+            <a class="notifications-item" href="{%url 'invatation' group.group.id %}"> 
+                <div class="text">
+                    <h4>{{group.group.name}}</h4>
+                    <p>{{group.group.name}}에 초대되었습니다.</p>
+                </div>
+            </a>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </nav>    
     {% block content %}
     {% endblock %}
-
 </body>
+
+<script>
+    $(document).ready(function(){
+        var down = false;
+        $('#bell').click(function(e){
+            var color = $(this).text();
+            if(down)
+            {
+                $('#box').css('height','0px');
+                $('#box').css('opacity','0');
+                down = false;
+            }
+            else
+            {
+                $('#box').css('height','auto');
+                $('#box').css('opacity','1');
+                down = true;
+            }
+        });
+    });
+</script>
+
 
 </html>
