@@ -8,38 +8,7 @@
 
 <div class="main-section">
   <div class="left-section">
-    <div class="sidebar-overlay"></div>
-    <div class="sidebar">
-      <div class="sidebar-top">
-        <i class="fas fa-times close-sidebar"></i>
-      </div>
-      <div class="sidebar-mid">
-        <div class="ok-members">
-          <i class="fas fa-users"></i> 그룹 멤버
-          <div class="members-list">
-            {% for member in members %}
-              {{member.nickname}}<br>
-            {% endfor %}
-          </div>
-        </div>
-        <div class="waiting-members">
-          <i class="fas fa-spinner"></i> 아직 오지 않은 멤버
-          <div class="members-list">
-            {% for member in waiting_members %}
-              {{member.nickname}}<br>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-      <div class="sidebar-bot">
-        <span id="leave-group">나가기 <i class="fas fa-sign-out-alt"></i></span>
-      </div>
-    </div>
-    <div id="top">
-      <span><i class="fas fa-bars open-sidebar"></i></span>
-      <h3>Group Schedule</h3>
-      <span></span>
-    </div>
+    <h3>Group Schedule</h3>
 
     {% for member in members %}
     그룹 멤버들:
@@ -107,72 +76,48 @@
   </div>
 
 </div>
-<div class="container content">
-  <div class="row">
-      <div class="col">
-        <div class="card">
-          <div class="card-body height3">
-            <ul class="chat-list">
-              {% for comment in comment_list %}
-              {% if comment.writer == request.user%}
-                <li class="out">  
-                  <div class="chat-body">
-                    <div class="chat-message">
-                      <h5>{{comment.writer.nickname}}</h5>
-                      <p>{{comment.content}}</p>
 
-                      <div class="close-container">
-                        <a href="{%url 'delComment' groupId comment.id %}">
-                          <div class="leftright"></div>
-                          <div class="rightleft"></div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              {%else%}
-                <li class="in">
-                  <div class="chat-body">
-                    <div class="chat-message">
-                      <h5>{{comment.writer.nickname}}</h5>
-                      <p>{{comment.content}}</p>
-                    </div>
-                  </div>
-                </li>
-
-              {%endif%}
-              {%endfor%}
-            </ul>
-          </div>
-        </div>
+<div class="comments">
+  <div class="show-comments">
+    {% for comment in comment_list %}
+    <section>
+      <div class="clear"></div>
+      {% if comment.writer == request.user.username%}
+      <div class="from-me">
+        <p>{{comment.content}}</p>
       </div>
+      {%else%}
+      <div class="clear"></div>
+      <div class="from-them">
+        <p>{{comment.content}}</p>
+      </div>
+      {%endif%}
+    </section>
+    {% endfor %}
+  </div>
+  <div class="writeComment">
+    <form action="{%url 'addComment' groupId%}" method="POST">
+      {% csrf_token %}
+      <div class="from-me">
+        <p><textarea name="content">댓글 입력</textarea></p>
+      </div>
+      <input type="submit" value="등록"></input>
+    </form>
   </div>
 </div>
-
-
-<div class="chat-box">
-  <form action="{%url 'addComment' groupId%}" method="POST">
-    {% csrf_token %}
-  <div class="input-group" style="height: 50px;">
-    <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here">
-    <input type="submit" style="border-radius: 5px; background:#a4abeb; border:none ;" value="Send"></input>
-  </form>
-  </div>
-</div>  
-
 
 <!-- Modal -->
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addScheduleModalLabel">그룹 일정 추가</h5>
+      <div class="modal-header group-modal">
+        <h5 class="modal-title" id="addScheduleModalLabel"><i class="fas fa-user-plus"></i> 그룹 일정 추가</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modal-body-wrapper group-modal">
         <form action="{% url 'createGroupSchedule' groupId %}" method="POST">
           {% csrf_token %}
-          일정 시작:
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 시작</span>
           <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}"
             min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}" readonly="true">
           <!--<select name="start_hour" id="start_hour" value="" disabled="disabled">
@@ -191,13 +136,18 @@
             <option value="19">19</option>
             <option value="20">20</option>
             <option value="21">21</option>
-          </select>시
+          </select>
+          <span class="sub-title">시</span>
+          
           <select name="start_minute" id="start_minute" value="">
             <option value="00">00</option>
             <option value="30">30</option>
-          </select>분
+          </select>
+          <span class="sub-title">분</span>
+          
           <br /><br />
-          일정 끝:
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 끝</span>
+          
           <input type="date" name="end_date" id="end_date" value="{{date.0}}-{{date.1}}-{{date.2}}"
             min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}">
           <select name="end_hour" id="end_hour">
@@ -215,18 +165,23 @@
             <option value="19">19</option>
             <option value="20">20</option>
             <option value="21">21</option>
-          </select>시
+          </select>
+          <span class="sub-title">시</span>
+          
           <select name="end_minute" id="end_minute">
             <option value=""></option>
             <option value="00">00</option>
             <option value="30">30</option>
-          </select>분
+          </select>
+          <span class="sub-title">분</span>
+          
           <br /><br />
-          일정명: <input type="select" name="title" id="title" />
+          <span class="sub-title"><i class="fas fa-pen"></i> 일정명</span>
+          <input type="select" name="title" id="title" />
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="submit" class="btn btn-primary">저장</button>
+      <div class="btn-wrapper group-modal">
+        <button type="submit" class="btn save-btn">저장 <i class="fas fa-check"></i></button>
+        <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">취소 <i class="fas fa-times"></i></button>
       </div>
     </div>
   </div>
@@ -236,29 +191,27 @@
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="groupScheduleModalLabel"><span id="name"></span></h5>
+      <div class="modal-header group-modal">
+        <h5 class="modal-title" id="groupScheduleModalLabel"><i class="fas fa-check-circle"></i> <span id="name"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <p> 일정 시작: <span id="start"></span> </p>
-        <p> 일정 끝: <span id="end"></span></p>
+      <div class="modal-body modal-body-wrapper group-modal">
+        <p> 
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 시작</span>
+          <span id="start"></span>
+        </p>
+        <p> 
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 끝</span>
+          <span id="end"></span>
+        </p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-        <button type="button" id="button" class="btn btn-primary">내 캘린더에 추가하기</button>
+      <div class="btn-wrapper group-modal">
+        <button type="button" id="button" class="btn save-btn">내 캘린더에 추가하기</button>
+        <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">확인</button>
       </div>
     </div>
   </div>
 </div>
-
-<button class="noselect" id="mybtn" onclick="topFunction()">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339 2.829-2.83-11.996-12.17z"/></svg>
-</button>
-</body>
-  
-<footer style="margin-bottom: 50px;">
-</footer>
 
 <script>
   function go_prev_month() {
@@ -294,53 +247,7 @@
       location.href = "/addschedule/" + id; // url 수정
     };
   });
-
-
-  var btn = $('#mybtn');
-  $(window).scroll(function() {
-  if ($(window).scrollTop() > 20) {
-    btn.addClass('show');
-  } else {
-    btn.removeClass('show');
-  }
-  });
-
-  btn.on('click', function(e) {
-  e.preventDefault();
-  $('html, body').animate({scrollTop:0}, '20');
-  });
-
-  $(document).on('click', '.open-sidebar', function() {                // 사이드바 열기
-    $('.sidebar').css('left', '0');
-    $('.sidebar-overlay').css('display', 'flex');
-    $('.main-section').on('scroll touchmove mousewheel', function(e){
-      e.preventDefault();
-      e.stopPropagation(); 
-      return false;
-    })
-  });
-
-  $(document).on('click', '.close-sidebar', function() {              // 사이드바 닫기
-    $('.sidebar').css('left', '-20vw');
-    setTimeout(function() {
-      $('.sidebar-overlay').css('display', 'none');
-    }, 400);
-    $('.main-section').off('scroll touchmove mousewheel');
-  });
-
-  $(document).on('click', '#leave-group', function() {               // 그룹 탈퇴
-    let result = confirm("정말 이 그룹에서 나가시겠습니까?");
-    if(result){
-      alert("이 그룹에서 나갔습니다");
-      location.href = "{% url 'leaveGroup' groupId %}"
-    }
-    else{
-      ;
-    }
-  });
-
 </script>
-
 
 
 {% endblock %}
