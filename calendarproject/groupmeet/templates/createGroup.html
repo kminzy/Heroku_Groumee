@@ -37,24 +37,26 @@
     <hr />
     <form action="{% url 'groupInvite' %}" method="POST">
       {% csrf_token %}
-      <div class="row mb-3">
-        <label for="inputPassword3" class="col-sm-2 col-form-label">그룹 이름</label>
-        <div class="col-sm-10">
-          <input name="name" type="text" class="form-control w-50" id="inputPassword3" />
-        </div>
+      <div class="invite-wrapper">
+        <label for="inputPassword3" class="col-form-label"><i class="fas fa-user-tag"></i> <span class="invite-title">그룹 이름</span></label>
+        <input name="name" type="text" class="form-control w-50" id="inputPassword3" />
       </div>
+
+      <div class="invite-wrapper">
+
+      
       <fieldset class="row mb-3">
-        <legend class="col-form-label col-sm-2 pt-0">
-          초대 멤버<br /><button
-            class="btn btn-primary btn-sm"
+        <legend class="col-form-label">
+          <i class="fas fa-user-friends"></i> <span class="invite-title">초대 멤버</span>
+          <button
+            class="btn search-btn"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#collapseExample"
             aria-expanded="false"
             aria-controls="collapseExample"
-            style="width: 50px"
           >
-            검색
+            검색하기 <i class="fas fa-search"></i>
           </button>
         </legend>
         <div class="collapse" id="collapseExample">
@@ -96,9 +98,10 @@
         </div>
         <div class="col-sm-10" id="checkboxArea"></div>
       </fieldset>
-      <div class="d-grid d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-danger me-md-1" type="button" onclick="location.href={% url 'getuserGroupList' %}">취소</button>
-        <button class="btn btn-primary" type="submit">그룹 초대하기</button>
+    </div>
+      <div class="d-grid d-md-flex justify-content-md-center">
+        <button class="btn invite-btn" type="submit">그룹 초대하기</button>
+        <button class="btn cancel-btn" type="button" onclick="location.href={% url 'getuserGroupList' %}">취소</button>
       </div>
     </form>
   </div>

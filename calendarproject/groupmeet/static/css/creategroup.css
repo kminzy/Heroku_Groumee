@@ -45,3 +45,41 @@ table{             /* 부트스트랩 css 상쇄 */
     display: flex;
     justify-content: center;
 }
+
+.invite-btn{
+    color: white;
+    background: #aeb4e9;
+    color:white;
+    padding: 12px;
+    margin:10px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.invite-btn:hover{
+    background: #838de9;
+    color:white;
+}
+
+.cancel-btn{
+    font-weight: 700;
+    color:#aeb4e9;
+}
+.cancel-btn:hover{
+    color:#838de9;
+}
+
+.invite-wrapper{
+    margin:20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-btn{
+}
+
+.invite-title{
+    margin-right:40px;
+}
