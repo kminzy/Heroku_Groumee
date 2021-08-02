@@ -114,6 +114,7 @@
           <div class="card-body height3">
             <ul class="chat-list">
               {% for comment in comment_list %}
+              
               {% if comment.writer == request.user%}
                 <li class="out">  
                   <div class="chat-body">
@@ -122,7 +123,7 @@
                       <p>{{comment.content}}</p>
 
                       <div class="close-container">
-                        <a href="{%url 'delComment' groupId comment.id %}">
+                        <a href="{%url 'delComment' comment.id %}">
                           <div class="leftright"></div>
                           <div class="rightleft"></div>
                         </a>
@@ -165,14 +166,14 @@
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addScheduleModalLabel">그룹 일정 추가</h5>
+      <div class="modal-header group-modal">
+        <h5 class="modal-title" id="addScheduleModalLabel"><i class="fas fa-user-plus"></i> 그룹 일정 추가</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modal-body-wrapper group-modal">
         <form action="{% url 'createGroupSchedule' groupId %}" method="POST">
           {% csrf_token %}
-          일정 시작:
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 시작</span>
           <input type="date" name="start_date" id="start_date" value="{{date.0}}-{{date.1}}-{{date.2}}"
             min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}" readonly="true">
           <!--<select name="start_hour" id="start_hour" value="" disabled="disabled">
@@ -191,13 +192,16 @@
             <option value="19">19</option>
             <option value="20">20</option>
             <option value="21">21</option>
-          </select>시
+          </select>
+          <span class="sub-title">시</span>
+
           <select name="start_minute" id="start_minute" value="">
             <option value="00">00</option>
             <option value="30">30</option>
-          </select>분
+          </select><span class="sub-title">분</span>
+
           <br /><br />
-          일정 끝:
+          <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 끝</span>
           <input type="date" name="end_date" id="end_date" value="{{date.0}}-{{date.1}}-{{date.2}}"
             min="{{date.0}}-{{date.1}}-{{date.2}}" max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}">
           <select name="end_hour" id="end_hour">
@@ -215,18 +219,22 @@
             <option value="19">19</option>
             <option value="20">20</option>
             <option value="21">21</option>
-          </select>시
+          </select>
+          <span class="sub-title">시</span>
+
           <select name="end_minute" id="end_minute">
             <option value=""></option>
             <option value="00">00</option>
             <option value="30">30</option>
-          </select>분
+          </select>
+          <span class="sub-title">분</span>
           <br /><br />
-          일정명: <input type="select" name="title" id="title" />
+          <span class="sub-title"><i class="fas fa-pen"></i> 일정명</span>
+          <input type="select" name="title" id="title" />
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-        <button type="submit" class="btn btn-primary">저장</button>
+      <div class="btn-wrapper group-modal">
+        <button type="submit" class="btn save-btn">저장 <i class="fas fa-check"></i></button>
+        <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">취소 <i class="fas fa-times"></i></button>
       </div>
     </div>
   </div>
@@ -236,17 +244,17 @@
   aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="groupScheduleModalLabel"><span id="name"></span></h5>
+      <div class="modal-header group-modal">
+        <h5 class="modal-title" id="groupScheduleModalLabel"><i class="fas fa-check-circle"></i> <span id="name"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body modal-body-wrapper group-modal">
         <p> 일정 시작: <span id="start"></span> </p>
         <p> 일정 끝: <span id="end"></span></p>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
-        <button type="button" id="button" class="btn btn-primary">내 캘린더에 추가하기</button>
+      <div class="btn-wrapper group-modal">
+        <button type="button" id="button" class="btn save-btn">내 캘린더에 추가하기</button>
+        <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">확인</button>
       </div>
     </div>
   </div>
