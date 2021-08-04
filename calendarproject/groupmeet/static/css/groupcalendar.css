@@ -238,6 +238,7 @@ td:first-child, th:first-child{
     cursor: pointer;
  }
 
+
  /*댓글 */
  body{
     background:#ede7f6;    
@@ -259,7 +260,7 @@ td:first-child, th:first-child{
     border-radius: 50px;
     background: #838de9;
     display: inline-block;
-    padding: 15px 30px;
+    padding: 9px 30px;
     position: relative;
 }
 
@@ -319,10 +320,6 @@ td:first-child, th:first-child{
 }
 
 
-.content{
-    margin-top:40px;    
-}
-
 .chat-box {
     padding: 15px;
     transition: all .5s ease;
@@ -331,7 +328,8 @@ td:first-child, th:first-child{
     -ms-transition: all .5s ease;
     -o-transition: all .5s ease;
     width:80%;
-    margin:0 auto;
+    margin-top: 50px;
+
 }
 
 .chat-message{

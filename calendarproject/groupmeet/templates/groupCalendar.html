@@ -41,12 +41,6 @@
       <span></span>
     </div>
 
-    {% for member in members %}
-    그룹 멤버들:
-    {{member.nickname}}
-    <br>
-    {% endfor %}
-
     {{calendar}}
     <div class="calendar-info">
       <div class="empty-box">&nbsp;</div>
@@ -107,12 +101,25 @@
   </div>
 
 </div>
+
+
+<div class="chat-box">
+  <form action="{%url 'addComment' groupId%}" method="POST">
+    {% csrf_token %}
+  <div class="input-group" style="height: 50px;">
+    <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here">
+    <input type="submit" style="border-radius: 5px; background:#a4abeb; border:none ;" value="Send"></input>
+  </form>
+  </div>
+</div>  
+
+
 <div class="container content">
   <div class="row">
       <div class="col">
         <div class="card">
           <div class="card-body height3">
-            <ul class="chat-list">
+            <ul class="chat-list" style="overflow-y:auto; height:450px;">
               {% for comment in comment_list %}
               {% if comment.writer == request.user%}
                 <li class="out">  
@@ -120,6 +127,7 @@
                     <div class="chat-message">
                       <h5>{{comment.writer.nickname}}</h5>
                       <p>{{comment.content}}</p>
+                      <div class="comment_date">{{comment.pub_date}}</div>
 
                       <div class="close-container">
                         <a href="{%url 'delComment' groupId comment.id %}">
@@ -136,6 +144,7 @@
                     <div class="chat-message">
                       <h5>{{comment.writer.nickname}}</h5>
                       <p>{{comment.content}}</p>
+                      {{comment.pub_date}}
                     </div>
                   </div>
                 </li>
@@ -148,18 +157,6 @@
       </div>
   </div>
 </div>
-
-
-<div class="chat-box">
-  <form action="{%url 'addComment' groupId%}" method="POST">
-    {% csrf_token %}
-  <div class="input-group" style="height: 50px;">
-    <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here">
-    <input type="submit" style="border-radius: 5px; background:#a4abeb; border:none ;" value="Send"></input>
-  </form>
-  </div>
-</div>  
-
 
 <!-- Modal -->
 <div class="modal fade" id="addScheduleModal" tabindex="-1" aria-labelledby="addScheduleModalLabel" aria-hidden="true">
