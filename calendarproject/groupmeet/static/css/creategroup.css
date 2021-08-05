@@ -26,6 +26,8 @@ table{             /* 부트스트랩 css 상쇄 */
     /* display: flex;
     align-items: center;
     justify-content: center; */
+    display: flex;
+    justify-content: center;
 }
 
 .main-section h3{
@@ -41,15 +43,24 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 .inviteSection{
-    width:100%;
-    display: flex;
-    justify-content: center;
+    width:50%;
+    height:100%;
+    font-size: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    background: #fff;
+    border-radius: 1em 1em 1em 1em;
+    -webkit-box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2), 1px 1px 1px 1px #fff;
+    color: #555;
+    text-align : center;
+    border-spacing: 0px;
 }
 
 .invite-btn{
     color: white;
     background: #aeb4e9;
-    color:white;
     padding: 12px;
     margin:10px;
     font-weight: 700;
@@ -58,11 +69,11 @@ table{             /* 부트스트랩 css 상쇄 */
     padding-left: 20px;
 }
 
+/* 초대, 취소 버튼 */
 .invite-btn:hover{
     background: #838de9;
     color:white;
 }
-
 .cancel-btn{
     font-weight: 700;
     color:#aeb4e9;
@@ -71,15 +82,71 @@ table{             /* 부트스트랩 css 상쇄 */
     color:#838de9;
 }
 
+/* 그룹이름, 초대멤버 div */
 .invite-wrapper{
-    margin:20px;
+    padding:10px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    width:100%;
+}
+fieldset{
+    width:65%;
+}
+.form-check{
+    display: inline !important;
+}
+.invite-title{
+    margin-right:40px;
+}
+
+/* 검색 결과 nickname+btn */
+.card{
+    display: flex;
+    border:none;
+}
+.result-user{
+    border:1px solid #eee;
+    padding:1.5rem;
+    text-align: center;
+    width:80%;
+    margin:auto;
+}
+.result-user > button, .user-name{
+    margin:0 1rem;
+}
+
+.result-user > button{
+    background: #838de9;
+    border-radius: 10px;
+    color:white;
+}
+
+.result-user > button:hover{
+    color:white;
 }
 
 .search-btn{
+    border: 2px solid #838de9;
+    border-radius:10px;
+    color: #838de9;
 }
 
-.invite-title{
-    margin-right:40px;
+.search-btn:hover{
+    color:#838de9;
+}
+
+#checkboxArea{
+    width:30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin:auto;
+}
+
+.form-check{padding: 0 !important;
+margin:0 !important;}
+
+.group-name{
+    width:50%;
 }

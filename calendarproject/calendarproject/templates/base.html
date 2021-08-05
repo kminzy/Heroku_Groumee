@@ -14,6 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@800&family=Roboto+Mono:ital,wght@1,500&family=Ubuntu&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/6584921572.js" crossorigin="anonymous"></script>
     <title>Document</title>
 
@@ -37,25 +38,6 @@
         .table-content th {
             width: 35%;
         }
-        
-        /*
-        #bell-image{
-            width:30px;
-            height: 30px;
-        }
-
-        
-        .notice-container{
-            background-color: white;
-            width:300px;
-            height:400px;
-            position: fixed; top: 83px; left: 53% ;
-            z-index: 2;
-            border-radius: 20px;
-            border: 1px solid #838de9;
-        }
-        */
-
     </style>
 
 </head>
@@ -63,9 +45,8 @@
 <body>
     <nav class="navbar">
         <div class="nav_logo">
-            <i class="fas fa-cloud"></i>
             {% if user.is_authenticated %}
-            <a href="{% url 'userCalendar_view' %}">Groumee</a>
+            <a href="{% url 'userCalendar_view' %}"><i class="fas fa-cloud"></i> Groumee</a>
             {% endif %}
             {% if not user.is_authenticated %}
             <a href="{% url 'login' %}">Groumee</a>
@@ -75,28 +56,40 @@
         <div class="profile">
             {% if user.is_authenticated %}
             <a href="{% url 'logout' %}">
-                <span class="profile">로그아웃</span>
+                <span class="profile">Logout</span>
             </a>
             <a href="{% url 'getuserGroupList' %}">
-                <span class="profile">그룹관리</span>
+                <span class="profile">Group</span>
             </a>
             <!--<img src="{%static 'img/bell.png'%}" id="bell-image">-->
-            <span>{{user.nickname}}</span>
+
+            <span class="profile icon" id="bell"><i class="far fa-bell"></i> Notifications</span>
+            
+            <span class="profile space">|</span>
+            
+            <span class="profile user-icon"><i class="fas fa-user"></i><span class="user-nickname"> {{user.nickname}}</span></span>
+            
+
             {% endif %}
         </div>
         
-        <div class="icon" id="bell"> <img src="https://i.imgur.com/AC7dgLA.png" alt=""> </div>
-        <div class="notifications" id="box">
+        <!-- <div class="icon" id="bell"> <img src="{%static 'img/bell.png'%}" alt=""> </div> -->
+        
+        <div class="notifications" id="box" style="overflow-y:auto; max-height: 400px;">
             <h2>Notifications</h2>
             {% if invitedGroup %}
             {% for group in invitedGroup %}
-            <a class="notifications-item" href="{%url 'invatation' group.group.id %}"> 
+            <a class="notifications-item" href="{%url 'invitation' group.group.id %}"> 
                 <div class="text">
-                    <h4>{{group.group.name}}</h4>
-                    <p>{{group.group.name}}에 초대되었습니다.</p>
+                    <h4><strong>{{group.group.name}}</strong></h4>
+                    <p><strong>{{group.group.name}}</strong>에 초대되었습니다.</p>
                 </div>
             </a>
             {% endfor %}
+            {% else %}
+            <div class="text">
+                <p>알림이 없습니다.</p>
+            </div>
             {% endif %}
         </div>
     </nav>    

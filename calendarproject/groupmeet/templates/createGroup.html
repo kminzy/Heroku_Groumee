@@ -26,85 +26,73 @@
       checkListData.push(checkList[i].value);
     }
     if (!checkListData.includes(button.name)) {
-      newDiv.innerHTML = `<input name="members[]" class="form-check-input checkbox" type="checkbox" value="${button.name}" id="gridCheck1" checked/> <label class="form-check-label" for="gridCheck1"> ${button.name} </label>`;
+      newDiv.innerHTML =
+        `<input name="members[]" class="form-check-input checkbox" type="checkbox" value="${button.name}" id="gridCheck1" checked/> <label class="form-check-label" for="gridCheck1"> ${button.name} </label>`;
       checkboxArea.appendChild(newDiv);
     }
   }
 </script>
 <div class="main-section">
-  <div class="container-sm">
-    <h3>Create Group</h3>
-    <hr />
+  <div class="inviteSection">
     <form action="{% url 'groupInvite' %}" method="POST">
       {% csrf_token %}
+
       <div class="invite-wrapper">
-        <label for="inputPassword3" class="col-form-label"><i class="fas fa-user-tag"></i> <span class="invite-title">그룹 이름</span></label>
-        <input name="name" type="text" class="form-control w-50" id="inputPassword3" />
+        <label for="inputPassword3" class="col-form-label"><i class="fas fa-user-tag"></i> <span class="invite-title"> 그룹이름</span></label>
+        <input name="name" type="text" class="form-control group-name" id="inputPassword3" />
       </div>
 
       <div class="invite-wrapper">
-
-      
-      <fieldset class="row mb-3">
-        <legend class="col-form-label">
-          <i class="fas fa-user-friends"></i> <span class="invite-title">초대 멤버</span>
-          <button
-            class="btn search-btn"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapseExample"
-            aria-expanded="false"
-            aria-controls="collapseExample"
-          >
-            검색하기 <i class="fas fa-search"></i>
-          </button>
-        </legend>
-        <div class="collapse" id="collapseExample">
-          <div class="card card-body">
-            <div class="row justify-content-md">
-              <div class="col-sm-5">
-                <input
-                  class="form-control"
-                  id="searchUser"
-                  name="searchUser"
-                  type="text"
-                  placeholder="Search"
-                  onkeyup="filter()"
-                  required
-                />
+        <fieldset class="">
+          <legend class="col-form-label">
+            <i class="fas fa-user-friends"></i> <span class="invite-title"> 초대멤버</span>
+            <button class="btn search-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+              aria-expanded="false" aria-controls="collapseExample">
+              검색하기 <i class="fas fa-search"></i>
+            </button>
+          </legend>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              <div class="row justify-content-md search-wrapper">
+                <div class="">
+                  <input class="form-control" id="searchUser" name="searchUser" type="text" placeholder="Search"
+                    onkeyup="filter()" required />
+                </div>
               </div>
+
+              <table class="table search-table">
+                <tbody>
+                  {% if userList %} {% for user in userList %}
+                  <tr class="userList" style="display: none;">
+                    <td class="nickName" style="border: none;">
+                      <div class="result-user">
+                        <span class="user-name">{{user.nickname}}</span>
+                        <button type="button" name="{{user.nickname}}" class="btn plus-btn"
+                          onclick="addUser(this)">
+                          추가 <i class="fas fa-plus-circle"></i>
+                        </button>
+                      </div>
+
+                    </td>
+                  </tr>
+                  {% endfor %} {% endif%}
+                </tbody>
+              </table>
+
             </div>
-            <table class="table w-50">
-              <thead>
-                <tr>
-                  <th scope="col">유저 닉네임</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {% if userList %} {% for user in userList %}
-                <tr class="userList" style="display: none">
-                  <td class="nickName">{{user.nickname}}</td>
-                  <td>
-                    <button type="button" name="{{user.nickname}}" class="btn btn-outline-primary btn-sm" onclick="addUser(this)">
-                      추가
-                    </button>
-                  </td>
-                </tr>
-                {% endfor %} {% endif%}
-              </tbody>
-            </table>
           </div>
-        </div>
-        <div class="col-sm-10" id="checkboxArea"></div>
-      </fieldset>
-    </div>
+
+          <div class="" id="checkboxArea"></div>
+
+        </fieldset>
+      </div>
       <div class="d-grid d-md-flex justify-content-md-center">
         <button class="btn invite-btn" type="submit">그룹 초대하기</button>
         <button class="btn cancel-btn" type="button" onclick="location.href={% url 'getuserGroupList' %}">취소</button>
       </div>
     </form>
   </div>
+  <!-- inviteSection 끝 -->
 </div>
 
 {% endblock %}

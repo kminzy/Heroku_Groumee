@@ -32,13 +32,9 @@
     </div>
     <div id="top">
       <span><i class="fas fa-bars open-sidebar"></i></span>
-      <h3>Group Schedule</h3>
-      <span></span>
     </div>
 
-    {% for member in members %} 그룹 멤버들: {{member.nickname}}
-    <br />
-    {% endfor %} {{calendar}}
+    {{calendar}}
     <div class="calendar-info">
       <div class="empty-box">&nbsp;</div>
       &nbsp;: 스케줄 있음
@@ -46,12 +42,10 @@
   </div>
 
   <div class="right-section">
-    <div class="table-title">
-      <span class="group-name">Group Time-table</span>
-    </div>
 
     <div class="today">
-      {%if date%} {{date.0}}년 {{date.1}}월 {{date.2}}일<br />
+      {%if date%}
+      {{date.0}}.{{date.1}}.{{date.2}}
       {%endif%}
     </div>
 
@@ -104,24 +98,51 @@
     </div>
   </div>
 </div>
+
+
+<div class="chat-box">
+  <form action="{%url 'addComment' groupId%}" method="POST">
+    {% csrf_token %}
+  <div class="input-group" style="height: 50px;">
+    <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here">
+    <input type="submit" style="border-radius: 5px; background:#a4abeb; border:none ;" value="Send"></input>
+  </form>
+  </div>
+</div>  
+
+
 <div class="container content">
   <div class="row">
-    <div class="col">
-      <div class="card">
-        <div class="card-body height3">
-          <ul class="chat-list">
-            {% for comment in comment_list %} {% if comment.writer == request.user%}
-            <li class="out">
-              <div class="chat-body">
-                <div class="chat-message">
-                  <h5>{{comment.writer.nickname}}</h5>
-                  <p>{{comment.content}}</p>
+      <div class="col">
+        <div class="card">
+          <div class="card-body height3">
+            <ul class="chat-list" style="overflow-y:auto; height:450px;">
+              {% for comment in comment_list %}
+              {% if comment.writer == request.user%}
+                <li class="out">  
+                  <div class="chat-body">
+                    <div class="chat-message">
+                      <h5>{{comment.writer.nickname}}</h5>
+                      <p>{{comment.content}}</p>
+                      <div class="comment_date">{{comment.pub_date}}</div>
 
-                  <div class="close-container">
-                    <a href="{%url 'delComment' comment.id %}">
-                      <div class="leftright"></div>
-                      <div class="rightleft"></div>
-                    </a>
+                      <div class="close-container">
+                        <a href="{%url 'delComment' groupId comment.id %}">
+                          <div class="leftright"></div>
+                          <div class="rightleft"></div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              {%else%}
+                <li class="in">
+                  <div class="chat-body">
+                    <div class="chat-message">
+                      <h5>{{comment.writer.nickname}}</h5>
+                      <p>{{comment.content}}</p>
+                      {{comment.pub_date}}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -142,16 +163,6 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="chat-box">
-  <form action="{%url 'addComment' group.id%}" method="POST">
-    {% csrf_token %}
-    <div class="input-group" style="height: 50px">
-      <input class="form-control border no-shadow no-rounded" name="content" placeholder="Type your message here" />
-      <input type="submit" style="border-radius: 5px; background: #a4abeb; border: none" value="Send" />
-    </div>
-  </form>
 </div>
 
 <!-- Modal -->
@@ -196,8 +207,9 @@
 
           <select name="start_minute" id="start_minute" value="">
             <option value="00">00</option>
-            <option value="30">30</option></select
-          ><span class="sub-title">분</span>
+            <option value="30">30</option>
+          </select>
+          <span class="sub-title">분</span>
 
           <br /><br />
           <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 끝</span>
@@ -233,6 +245,7 @@
             <option value="30">30</option>
           </select>
           <span class="sub-title">분</span>
+
           <br /><br />
           <span class="sub-title"><i class="fas fa-pen"></i> 일정명</span>
           <input type="select" name="title" id="title" />
@@ -250,12 +263,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header group-modal">
-        <h5 class="modal-title" id="groupScheduleModalLabel"><i class="fas fa-check-circle"></i> <span id="name"></span></h5>
+        <h5 class="modal-title" id="groupScheduleModalLabel"><span id="name"></span></h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body modal-body-wrapper group-modal">
-        <p>일정 시작: <span id="start"></span></p>
-        <p>일정 끝: <span id="end"></span></p>
+        <p><i class="far fa-calendar-alt"></i> 일정 시작 <span id="start"></span> </p>
+        <p><i class="far fa-calendar-alt"></i> 일정 끝 <span id="end"></span></p>
       </div>
       <div class="btn-wrapper group-modal">
         <button type="button" id="addSchedule" class="btn save-btn">내 캘린더에 추가하기</button>
@@ -273,6 +286,7 @@
 
 <footer style="margin-bottom: 50px"></footer>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
   function go_prev_month() {
     location.href = "{%url 'groupCalendar_view' group.id%}?{{prev_month}}";
@@ -322,11 +336,12 @@
 
   btn.on('click', function (e) {
     e.preventDefault();
-    $('html, body').animate({ scrollTop: 0 }, '20');
+    $('html, body').animate({
+      scrollTop: 0
+    }, '20');
   });
 
-  $(document).on('click', '.open-sidebar', function () {
-    // 사이드바 열기
+  $(document).on('click', '.open-sidebar', function () { // 사이드바 열기
     $('.sidebar').css('left', '0');
     $('.sidebar-overlay').css('display', 'flex');
     $('.main-section').on('scroll touchmove mousewheel', function (e) {
@@ -336,8 +351,7 @@
     });
   });
 
-  $(document).on('click', '.close-sidebar', function () {
-    // 사이드바 닫기
+  $(document).on('click', '.close-sidebar', function () { // 사이드바 닫기
     $('.sidebar').css('left', '-20vw');
     setTimeout(function () {
       $('.sidebar-overlay').css('display', 'none');
@@ -345,14 +359,38 @@
     $('.main-section').off('scroll touchmove mousewheel');
   });
 
+  // $(document).on('click', '#leave-group', function () { // 그룹 탈퇴
+  //   let result = confirm("정말 이 그룹에서 나가시겠습니까?");
+  //   if (result) {
+  //     alert("이 그룹에서 나갔습니다");
+  //     location.href = "{% url 'leaveGroup' groupId %}"
+  //   } else {
+  //     ;
+  //   }
+  // });
+
   $(document).on('click', '#leave-group', function () {
-    // 그룹 탈퇴
-    let result = confirm('정말 이 그룹에서 나가시겠습니까?');
-    if (result) {
-      alert('이 그룹에서 나갔습니다');
-      location.href = "{% url 'leaveGroup' group.id %}";
-    } else {
-    }
+    Swal.fire({
+      title: '이 그룹에서 나가시겠습니까?',
+      text: "그룹을 나가시면 다시 참여하실 수 없습니다.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#42a5f5',
+      confirmButtonText: '확인',
+      cancelButtonText: '취소',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: '그룹에서 나갔습니다.',
+          text: "새로운 그룹에 참여해 보세요.",
+          icon: 'success'
+        }).then((result2) => {
+          if (result2.isConfirmed){
+            location.href = "{% url 'leaveGroup' groupId %}"
+          }
+        })
+      }
+    })
   });
 </script>
 

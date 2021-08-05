@@ -3,6 +3,24 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+#top, .info-section{
+    height:70px;
+}
+
+.today{
+    width:100%;
+    font-size: 3rem !important;
+    color : #3849aa !important;
+    margin:auto;
+    font-family: 'Baloo Tamma 2', cursive;
+    /* border:1px solid red; */
+    text-align: center;
+    width: 100%;
+    font-size : 80px;
+    letter-spacing: 5px;
+    text-shadow: -1px -1px 0px #ede7f6, 3px 3px 0px #ede7f6, 6px 6px 0px #311b92;
+}
+
 .calendar-info{
     margin-top: 10px;
     justify-content: flex-end;
@@ -238,6 +256,7 @@ td:first-child, th:first-child{
     cursor: pointer;
  }
 
+
  /*댓글 */
  body{
     background:#ede7f6;    
@@ -259,7 +278,7 @@ td:first-child, th:first-child{
     border-radius: 50px;
     background: #838de9;
     display: inline-block;
-    padding: 15px 30px;
+    padding: 9px 30px;
     position: relative;
 }
 
@@ -319,10 +338,6 @@ td:first-child, th:first-child{
 }
 
 
-.content{
-    margin-top:40px;    
-}
-
 .chat-box {
     padding: 15px;
     transition: all .5s ease;
@@ -331,7 +346,8 @@ td:first-child, th:first-child{
     -ms-transition: all .5s ease;
     -o-transition: all .5s ease;
     width:80%;
-    margin:0 auto;
+    margin-top: 50px;
+
 }
 
 .chat-message{
@@ -563,6 +579,11 @@ background-color: #ffffff;
     align-items: center;
 }
 
+.modal-content{
+    border-radius: 20px;
+    overflow: hidden;
+}
+
 .modal-body-wrapper{
     display: flex;
     flex-direction: column;
@@ -599,7 +620,6 @@ background-color: #ffffff;
 .save-btn {
     color: white;
     background: #aeb4e9;
-    color:white;
     padding: 12px;
     margin:10px;
     font-weight: 700;
@@ -634,3 +654,31 @@ background-color: #ffffff;
 .modal-body{
     padding-top:20px;
 }
+
+/* 그룹 나가기 알림창 */
+.swal2-confirm{
+    font-weight: 700 !important;
+    background: #aeb4e9 !important;
+}
+
+.swal2-confirm:hover{
+    background: #838de9 !important;
+}
+
+.swal2-cancel{
+    font-weight: 700 !important;
+    color:#aeb4e9 !important;
+    background: none !important;
+}
+
+.swal2-cancel:hover{
+    font-weight: 700;
+    color:#838de9 !important;
+}
+
+/* .group-name > i{
+    border-radius: 50%;
+    background:#ffffff;
+    padding:3px;
+    text-align: center;
+} */
