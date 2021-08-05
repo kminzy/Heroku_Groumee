@@ -14,8 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from groupmeet import views
+from account import views as account_view
 
 urlpatterns = [
+    path('', account_view.login_view, name="login"),
     path('admin/', admin.site.urls),
+    path('grouplist/',views.getuserGroupList,name="getuserGroupList"),
+    path('group/<str:id>',views.groupCalendar_view,name="groupCalendar_view"),
+    path('group/<str:id>/addschedule', views.createGroupSchedule, name="createGroupSchedule"),
+    path('group/<str:id>/addcomment', views.addComment, name="addComment"),
+    path('group//<str:group_id>/delcomment/<str:comment_id>', views.delComment, name="delComment"),
+    path('group/<str:id>/leaveGroup',views.leaveGroup,name="leaveGroup"),
+    path('addschedule/<str:id>', views.allowRegister, name="allowRegister"),
+    path('usercalendar/', views.userCalendar_view, name="userCalendar_view"),
+    path('usercalendar/show', views.show_userschedule, name="show-userschedule"),
+    path('usercalendar/delete', views.delete_userschedule, name="delete-userschedule"),
+    path('usercalendar/create', views.create_userschedule, name="create-userschedule"),
+    path('usercalendar/edit/<str:schedule_id>/', views.edit_userschedule, name="edit-userschedule"),
+    path('account/', include('account.urls')),
+    path('createGroup/', views.createGroup, name="createGroup"),
+    path('createGroup/groupInvite', views.groupInvite, name="groupInvite"),
+    path('groupInvitation/<str:id>',views.invitation_view,name="invitation"),
+    path('groupInvitation/acceptIvitation/<str:id>', views.acceptInvitation, name="acceptInvitation"),
+    path('groupInvitation/refuseIvitation/<str:id>', views.refuseInvitation, name="refuseInvitation"),
+    
 ]
