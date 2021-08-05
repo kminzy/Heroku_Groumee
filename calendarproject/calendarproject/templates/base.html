@@ -37,25 +37,6 @@
         .table-content th {
             width: 35%;
         }
-        
-        /*
-        #bell-image{
-            width:30px;
-            height: 30px;
-        }
-
-        
-        .notice-container{
-            background-color: white;
-            width:300px;
-            height:400px;
-            position: fixed; top: 83px; left: 53% ;
-            z-index: 2;
-            border-radius: 20px;
-            border: 1px solid #838de9;
-        }
-        */
-
     </style>
 
 </head>
@@ -80,23 +61,27 @@
             <a href="{% url 'getuserGroupList' %}">
                 <span class="profile">그룹관리</span>
             </a>
-            <!--<img src="{%static 'img/bell.png'%}" id="bell-image">-->
             <span>{{user.nickname}}</span>
             {% endif %}
         </div>
         
-        <div class="icon" id="bell"> <img src="https://i.imgur.com/AC7dgLA.png" alt=""> </div>
-        <div class="notifications" id="box">
+        <div class="icon" id="bell"> <img src="{%static 'img/bell.png'%}" alt=""> </div>
+        
+        <div class="notifications" id="box" style="overflow-y:auto; max-height: 400px;">
             <h2>Notifications</h2>
             {% if invitedGroup %}
             {% for group in invitedGroup %}
-            <a class="notifications-item" href="{%url 'invatation' group.group.id %}"> 
+            <a class="notifications-item" href="{%url 'invitation' group.group.id %}"> 
                 <div class="text">
-                    <h4>{{group.group.name}}</h4>
-                    <p>{{group.group.name}}에 초대되었습니다.</p>
+                    <h4><strong>{{group.group.name}}</strong></h4>
+                    <p><strong>{{group.group.name}}</strong>에 초대되었습니다.</p>
                 </div>
             </a>
             {% endfor %}
+            {% else %}
+            <div class="text">
+                <p>알림이 없습니다.</p>
+            </div>
             {% endif %}
         </div>
     </nav>    
