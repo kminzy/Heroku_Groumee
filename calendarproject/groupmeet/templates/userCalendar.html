@@ -26,27 +26,27 @@
       <div class="modal fade" id="UserScheduleModal" tabindex="-1" aria-labelledby="UserScheduleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header group-modal">
               <h5 class="modal-title" id="UserScheduleModalLabel"></h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-body-wrapper group-modal">
               <form id="userschedule-form">{% csrf_token %}
                 <div class="start-time">
-                  <span>시작시간 : </span>{{form.start_date}}{{form.start_hour}}{{form.start_minute}}
+                  <span>시작시간 </span>{{form.start_date}} {{form.start_hour}} {{form.start_minute}}
                 </div>
                 <ul id="form-start-error"></ul>
                 <div class="end-time">
-                  <span>종료시간 : </span>{{form.end_date}}{{form.end_hour}}{{form.end_minute}}
+                  <span>종료시간 </span>{{form.end_date}} {{form.end_hour}} {{form.end_minute}}
                 </div>
                 <ul id="form-end-error"></ul>
-                <span>일정이름 : </span>{{form.title}}<br>
+                <span>일정이름 </span>{{form.title}}<br>
                 <ul id="form-title-error"></ul>
               </form>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-              <button type="button" class="btn btn-primary"></button>
+            <div class="modal-footer btn-wrapper group-modal">
+              <button type="button" class="btn save-btn"></button>
+              <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">취소</button>
             </div>
           </div>
         </div>
