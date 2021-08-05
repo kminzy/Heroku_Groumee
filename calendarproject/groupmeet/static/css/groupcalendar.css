@@ -3,6 +3,24 @@
     font-family: 'Noto Sans KR', sans-serif;
 }
 
+#top, .info-section{
+    height:70px;
+}
+
+.today{
+    width:100%;
+    font-size: 3rem !important;
+    color : #3849aa !important;
+    margin:auto;
+    font-family: 'Baloo Tamma 2', cursive;
+    /* border:1px solid red; */
+    text-align: center;
+    width: 100%;
+    font-size : 80px;
+    letter-spacing: 5px;
+    text-shadow: -1px -1px 0px #ede7f6, 3px 3px 0px #ede7f6, 6px 6px 0px #311b92;
+}
+
 .calendar-info{
     margin-top: 10px;
     justify-content: flex-end;
@@ -547,3 +565,120 @@ background-color: #ffffff;
     transition: .2s;
     font-weight: bold;
 }
+
+ /* modal style */
+ .modal-title{
+    color: #838de9;
+    font-weight: 700;
+}
+
+#addScheduleModalLabel{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content{
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.modal-body-wrapper{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+.group-modal{
+    background: #e8eaf6;
+    border-color:#e8eaf6;
+}
+
+.sub-title{
+    font-size:15px;
+    font-weight: 600;
+    color:#424242;
+}
+
+.fa-user-plus, .fa-check-circle{
+    border-radius: 50%;
+    background: #e8eaf6;
+    color:#5f5fc4;
+    width:50px;
+    height:50px;
+    text-align: center;
+    padding:0.85rem 0.3rem 0.5rem 0.5rem;
+}
+
+.btn-wrapper{
+    display: flex;
+    justify-content: center;
+}
+.save-btn {
+    color: white;
+    background: #aeb4e9;
+    padding: 12px;
+    margin:10px;
+    font-weight: 700;
+    border-radius: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+.save-btn:hover{
+    background: #838de9;
+    color:white;
+}
+.cancel-btn{
+    font-weight: 700;
+    color:#aeb4e9;
+}
+.cancel-btn:hover{
+    color:#838de9;
+}
+
+.btn-secondary{
+    color: gray;
+    background-color: #fffaff;
+    border-color: #fffaff;
+    margin:10px;
+    padding: 12px;
+    font-weight: 700;
+    border-radius: 41px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.modal-body{
+    padding-top:20px;
+}
+
+/* 그룹 나가기 알림창 */
+.swal2-confirm{
+    font-weight: 700 !important;
+    background: #aeb4e9 !important;
+}
+
+.swal2-confirm:hover{
+    background: #838de9 !important;
+}
+
+.swal2-cancel{
+    font-weight: 700 !important;
+    color:#aeb4e9 !important;
+    background: none !important;
+}
+
+.swal2-cancel:hover{
+    font-weight: 700;
+    color:#838de9 !important;
+}
+
+/* .group-name > i{
+    border-radius: 50%;
+    background:#ffffff;
+    padding:3px;
+    text-align: center;
+} */

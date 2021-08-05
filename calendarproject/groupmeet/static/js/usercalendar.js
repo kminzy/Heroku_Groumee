@@ -174,8 +174,8 @@ $(document).ready(function(){
     $(".go-add-userschedule").click(function (){               // 스케줄 추가 아이콘을 누르면 이하 내용들 실행
                                                                // 자동으로 띄워지는 모달창의 폼 양식을 설정할 건데, 시작시간과 종료시간을 클릭된 날짜로 할 것임
       $('.modal-title').text('새 일정 생성');
-      $('.modal-footer .btn-primary').text('생성');
-      $('.modal-footer .btn-primary').attr("id", "add-userschedule");    // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
+      $('.modal-footer .save-btn').text('내 캘린더에 추가하기');
+      $('.modal-footer .save-btn').attr("id", "add-userschedule");    // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
 
       $('.modal-body #userschedule-form ul').empty();                    // 오류메시지 출력하는 영역 비우기
       // let form_field_month = (cur_month < 10) ? ("0" + cur_month) : cur_month;
