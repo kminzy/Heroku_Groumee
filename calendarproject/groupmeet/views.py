@@ -121,13 +121,11 @@ def edit_userschedule(request, schedule_id):
          e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
          start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
          end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
-
          title = form.cleaned_data['title']
 
          schedule.start = start
          schedule.end = end
          schedule.title = title
-
          schedule.save()
 
          data = {
@@ -213,7 +211,7 @@ def groupCalendar_view(request, id):
    date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
 
    for user in members:
-      schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 24:00:00", end__gte = date_format+" 07:00:00")
+      schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
       if schedules:
          for schedule in schedules:
             if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 7, 0):
@@ -222,7 +220,7 @@ def groupCalendar_view(request, id):
                if schedule.start.minute == 30:
                   schedule_list[str(schedule.start.hour)][1] = -1
                s = schedule.start.hour + 1 if schedule.start.minute == 30 else int(schedule.start.hour)
-            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day), 24, 0):
+            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
                e = 23
             else:
                if schedule.end.minute == 30:
@@ -231,7 +229,7 @@ def groupCalendar_view(request, id):
             for i in range(s, e+1):
                schedule_list[str(i)][0] = -1
                schedule_list[str(i)][1] = -1
-   groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 24:00:00", end__gte = date_format+" 07:00:00")
+   groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
    if groupSchedules:
       for schedule in groupSchedules:
          if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 7, 0):
@@ -240,7 +238,7 @@ def groupCalendar_view(request, id):
             if schedule.start.minute == 30:
                   schedule_list[str(schedule.start.hour)][1] = GroupSchedule.objects.get(id=schedule.id)
             s = schedule.start.hour+1 if schedule.start.minute == 30 else schedule.start.hour
-            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day), 24, 0):
+            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
                e = 23
             else:
                if schedule.end.minute == 30:
@@ -252,7 +250,7 @@ def groupCalendar_view(request, id):
    comments=Comment.objects.filter(group=group)
    comment_list=list(comments)
    return render(request, 'groupCalendar.html',
-   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
+   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'group' : group,
    'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
 
 def get_date(request_day):
@@ -324,13 +322,43 @@ def allowRegister(request, id):
    newUserSchedule.end = groupSchedule.end
    newUserSchedule.title = groupSchedule.title
    newUserSchedule.save()
-   return redirect('groupCalendar', groupSchedule.group_id)
+   return redirect('groupCalendar_view', groupSchedule.group.id)
+
+def deleteGroupSchedule(request, id):
+   groupSchedule = GroupSchedule.objects.get(pk = id)
+   groupMembers = groupSchedule.group.members.all()
+   for member in groupMembers:
+      user = CustomUser.objects.get(pk=member.nickname)
+      try:
+         userSchedule = Schedule.objects.get(user=user, start=groupSchedule.start, end=groupSchedule.end, title=groupSchedule.title)
+         userSchedule.delete()
+      except Schedule.DoesNotExist:
+         continue
+   groupSchedule.delete()
+   return redirect('groupCalendar_view', groupSchedule.group.id)
 
 @login_required
 def createGroup(request):
    user = request.user.nickname
    userList = CustomUser.objects.exclude(nickname=user)
    return render(request, "createGroup.html", {'userList':userList} )
+
+def editGroup(request, group_id):
+   groupInfo = Group.objects.get(pk=group_id)
+   return render(request, "editGroup.html", {'groupInfo':groupInfo})
+
+def updateGroup(request, group_id):
+   groupInfo = Group.objects.get(pk=group_id)
+   groupInfo.name = request.POST.get('name')
+   members = request.POST.getlist('members[]')
+   for member in members:
+      print("hello");
+      userGroup = UserGroup()
+      userGroup.user = CustomUser.objects.get(nickname=member)
+      userGroup.group = groupInfo
+      userGroup.allowed = 0
+      userGroup.save()
+   return redirect('getuserGroupList')
 
 def groupInvite(request):
    user = request.user
