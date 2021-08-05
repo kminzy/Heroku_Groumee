@@ -655,6 +655,16 @@ background-color: #ffffff;
     padding-top:20px;
 }
 
+.modal-body form ul{
+    height: 20px;
+    list-style: none;
+    font-size: 0.75rem;
+    padding: 0;
+    margin: 0;
+    color: red;
+    text-align: center;
+}
+
 /* 그룹 나가기 알림창 */
 .swal2-confirm{
     font-weight: 700 !important;

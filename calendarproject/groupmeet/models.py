@@ -19,6 +19,7 @@ class Schedule(models.Model):
     start=models.DateTimeField()
     end=models.DateTimeField()
     title=models.CharField(max_length=60)
+    color=models.CharField(max_length=30, default='#838de9')
 
 class GroupSchedule(models.Model):
     group=models.ForeignKey(Group,on_delete=models.CASCADE,default='')

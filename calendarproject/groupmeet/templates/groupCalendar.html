@@ -173,88 +173,35 @@
         <h5 class="modal-title" id="addScheduleModalLabel"><i class="fas fa-user-plus"></i> 그룹 일정 추가</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form action="{% url 'createGroupSchedule' group.id %}" method="POST">
-        <div class="modal-body modal-body-wrapper group-modal">
+      <div class="modal-body modal-body-wrapper group-modal">
+        <form>
           {% csrf_token %}
           <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 시작</span>
-          <input
-            type="date"
-            name="start_date"
-            id="start_date"
-            value="{{date.0}}-{{date.1}}-{{date.2}}"
-            min="{{date.0}}-{{date.1}}-{{date.2}}"
-            max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}"
-            readonly="true"
-          />
-          <!--<select name="start_hour" id="start_hour" value="" disabled="disabled">
-                disabled 할 시 고정 but id를 못불러와서 views에서 인식을 못함-->
-          <select name="start_hour" id="start_hour" value="">
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-          </select>
+          {{form.start_date}}
+          {{form.start_hour}}
           <span class="sub-title">시</span>
 
-          <select name="start_minute" id="start_minute" value="">
-            <option value="00">00</option>
-            <option value="30">30</option>
-          </select>
+          {{form.start_minute}}
           <span class="sub-title">분</span>
+          <ul id="form-start-error"></ul>
 
-          <br /><br />
           <span class="sub-title"><i class="far fa-calendar-alt"></i> 일정 끝</span>
-          <input
-            type="date"
-            name="end_date"
-            id="end_date"
-            value="{{date.0}}-{{date.1}}-{{date.2}}"
-            min="{{date.0}}-{{date.1}}-{{date.2}}"
-            max="{{date.0|add:'1'}}-{{date.1}}-{{date.2}}"
-          />
-          <select name="end_hour" id="end_hour">
-            <option value=""></option>
-            <option value="9">9</option>
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-            <option value="13">13</option>
-            <option value="14">14</option>
-            <option value="15">15</option>
-            <option value="16">16</option>
-            <option value="17">17</option>
-            <option value="18">18</option>
-            <option value="19">19</option>
-            <option value="20">20</option>
-            <option value="21">21</option>
-          </select>
+          {{form.end_date}}
+          {{form.end_hour}}
           <span class="sub-title">시</span>
 
-          <select name="end_minute" id="end_minute">
-            <option value=""></option>
-            <option value="00">00</option>
-            <option value="30">30</option>
-          </select>
+          {{form.end_minute}}
           <span class="sub-title">분</span>
+          <ul id="form-end-error"></ul>
 
-          <br /><br />
           <span class="sub-title"><i class="fas fa-pen"></i> 일정명</span>
-          <input type="select" name="title" id="title" />
-        </div>
-        <div class="btn-wrapper group-modal">
-          <button type="submit" class="btn save-btn">저장 <i class="fas fa-check"></i></button>
-          <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">취소 <i class="fas fa-times"></i></button>
-        </div>
-      </form>
+          {{form.title}}
+          <ul id="form-title-error"></ul>
+      </div>
+      <div class="btn-wrapper group-modal">
+        <button type="button" class="btn save-btn" id="create-groupschedule">저장 <i class="fas fa-check"></i></button>
+        <button type="button" class="btn cancel-btn" data-bs-dismiss="modal">취소 <i class="fas fa-times"></i></button>
+      </div>
     </div>
   </div>
 </div>
@@ -302,10 +249,12 @@
   }
 
   $(document).on('click', '#selectTime', function () {
-    var selectedHour = $(this).data('hour');
-    var selectedMinute = $(this).data('minute');
-    $('.modal-body #start_hour').val(selectedHour);
-    $('.modal-body #start_minute').val(selectedMinute);
+    $('form ul').empty();
+    $('#id_title').val('');
+    var selectedHour = $(this).data('hour')
+    var selectedMinute = $(this).data('minute')
+    $('.modal-body #id_start_hour').val(selectedHour);
+    $('.modal-body #id_start_minute').val(selectedMinute);
   });
 
   $(document).on('click', '#groupSchedule', function () {
@@ -391,6 +340,76 @@
         })
       }
     })
+  });
+
+  $('#id_start_date').val("{{date.0}}-{{date.1}}-{{date.2}}");
+  $('#id_start_date').attr("min", "{{date.0}}-{{date.1}}-{{date.2}}");
+  $('#id_start_date').attr("max", "{{date.0|add:'1'}}-{{date.1}}-{{date.2}}");
+  $('#id_start_date').attr("readonly", "true");
+
+  $('#id_end_date').val("{{date.0}}-{{date.1}}-{{date.2}}");
+  $('#id_end_date').attr("min", "{{date.0}}-{{date.1}}-{{date.2}}");
+  $('#id_end_date').attr("max", "{{date.0|add:'1'}}-{{date.1}}-{{date.2}}");
+
+  $(document).on("click", "#create-groupschedule", function(){          // 모달창에서 생성버튼을 누르면 이하 내용 실행
+    const start_date = document.getElementById("id_start_date").value;
+    const start_hour = $("#id_start_hour option:selected").val();
+    const start_minute = $("#id_start_minute option:selected").val();
+    const end_date = document.getElementById("id_end_date").value;
+    const end_hour = $("#id_end_hour option:selected").val();
+    const end_minute = $("#id_end_minute option:selected").val();
+    const title = document.getElementById("id_title").value;
+    const csrf = document.getElementsByName('csrfmiddlewaretoken');
+
+    const fd = new FormData();
+
+    fd.append('csrfmiddlewaretoken', csrf[0].value);
+    fd.append('start_date', start_date);
+    fd.append('start_hour', start_hour);
+    fd.append('start_minute', start_minute);
+    fd.append('end_date', end_date);
+    fd.append('end_hour', end_hour);
+    fd.append('end_minute', end_minute);
+    fd.append('title', title);                                    // 폼에 입력한 값들을 fd라는 변수에 담아서 ajax통신
+    
+    $.ajax({
+      url : "{% url 'createGroupSchedule' groupId %}",
+      type : 'POST',
+      headers : {
+        'X-CSRFTOKEN' : '{{csrf_token}}'
+      },
+      data : fd,
+      success:function(data){
+
+        if(data['result'] === "success"){                   // 작성한 폼이 유효했다면 redirect
+          setTimeout(function() {
+            location.href = "";
+          }, 300);
+        }
+        else{                                               // 작성한 폼이 유효 X -> 에러메시지 출력
+          form_errors = JSON.parse(data['form_errors']);    // json형태의 데이터를 js객체형태로 바꿈
+          
+          $('form ul').empty();               // 오류 메시지 출력되는 부분 비우기
+          
+          $.each(form_errors, function(i, value){           // 2중 반복문을 돌며 오류 메시지 각 영역에 채우기
+            $.each(value, function(j, message){
+              let error_message = '<li>' + value[j]['message'] + '</li>';
+              let error_field = i.split('_')[0]
+              $("ul[id*='" + error_field +"']").append(error_message);
+            });
+          });
+        }
+
+      },
+      error:function(){
+        alert("일정을 생성하는데 실패했습니다");
+      },
+      cache : false,
+      contentType: false,
+      processData: false
+
+    });
+
   });
 </script>
 

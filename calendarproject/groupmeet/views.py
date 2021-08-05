@@ -15,7 +15,7 @@ from django.core import serializers
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from .forms import UserScheduleCreationForm
+from .forms import (UserScheduleCreationForm, GroupScheduleCreationForm)
 from django.contrib import messages
 
 #Calendar: 한달 단위 모든 일정
@@ -93,10 +93,12 @@ def create_userschedule(request):
       start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
       end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
       title = form.cleaned_data['title']
+      color = form.cleaned_data['color']
 
       new_schedule.start = start
       new_schedule.end = end
       new_schedule.title = title
+      new_schedule.color = color
 
       new_schedule.save()
 
@@ -121,11 +123,15 @@ def edit_userschedule(request, schedule_id):
          e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
          start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
          end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+
          title = form.cleaned_data['title']
+         color = form.cleaned_data['color']
 
          schedule.start = start
          schedule.end = end
          schedule.title = title
+         schedule.color = color
+
          schedule.save()
 
          data = {
@@ -150,6 +156,7 @@ def edit_userschedule(request, schedule_id):
       end_hour = e_time[0]
       end_minute = e_time[1]
       title = schedule.title
+      color = schedule.color
       
       data = {
          'start_date' : start_date,
@@ -158,7 +165,8 @@ def edit_userschedule(request, schedule_id):
          'end_date' : end_date,
          'end_hour' : end_hour,
          'end_minute' : end_minute,
-         'title' : title
+         'title' : title,
+         'color' : color,
       }
 
    return JsonResponse(data)
@@ -275,21 +283,48 @@ def next_month(day):                                                          # 
    return month
 
 def createGroupSchedule(request, id):
-   newGroupSchedule = GroupSchedule()
-   newGroupSchedule.group = Group.objects.get(pk=id)
-   start_date = request.POST.get('start_date')
-   start_hour = request.POST.get('start_hour')
-   start_minute = request.POST.get('start_minute')
-   startdatetime=str(start_date + ' ' + start_hour + ':' + start_minute+':00')
-   newGroupSchedule.start = datetime.datetime.strptime(startdatetime,'%Y-%m-%d %H:%M:%S')
-   end_date = request.POST.get('end_date')
-   end_hour = request.POST.get('end_hour')
-   end_minute = request.POST.get('end_minute')
-   enddatetime=str(end_date + ' ' + end_hour + ':' + end_minute+':00')
-   newGroupSchedule.end = datetime.datetime.strptime(enddatetime,'%Y-%m-%d %H:%M:%S')
-   newGroupSchedule.title =  request.POST.get('title')
-   newGroupSchedule.save()
-   return redirect('groupCalendar_view',newGroupSchedule.group.id)
+   # newGroupSchedule = GroupSchedule()
+   # newGroupSchedule.group = Group.objects.get(pk=id)
+   # start_date = request.POST.get('start_date')
+   # start_hour = request.POST.get('start_hour')
+   # start_minute = request.POST.get('start_minute')
+   # startdatetime=str(start_date + ' ' + start_hour + ':' + start_minute+':00')
+   # newGroupSchedule.start = datetime.datetime.strptime(startdatetime,'%Y-%m-%d %H:%M:%S')
+   # end_date = request.POST.get('end_date')
+   # end_hour = request.POST.get('end_hour')
+   # end_minute = request.POST.get('end_minute')
+   # enddatetime=str(end_date + ' ' + end_hour + ':' + end_minute+':00')
+   # newGroupSchedule.end = datetime.datetime.strptime(enddatetime,'%Y-%m-%d %H:%M:%S')
+   # newGroupSchedule.title =  request.POST.get('title')
+   # newGroupSchedule.save()
+   # return redirect('groupCalendar_view',newGroupSchedule.group.id)
+   group = get_object_or_404(Group, pk=id)
+   new_schedule = GroupSchedule(group=group)
+   form = GroupScheduleCreationForm(request.POST)
+   
+   if form.is_valid():
+      s = form.cleaned_data['start_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['start_hour'] + ':' + form.cleaned_data['start_minute']
+      e = form.cleaned_data['end_date'].strftime('%Y-%m-%d') + ' ' + form.cleaned_data['end_hour'] + ':' + form.cleaned_data['end_minute']
+      start = datetime.datetime.strptime(s, '%Y-%m-%d %H:%M')
+      end = datetime.datetime.strptime(e, '%Y-%m-%d %H:%M')
+      title = form.cleaned_data['title']
+
+      new_schedule.start = start
+      new_schedule.end = end
+      new_schedule.title = title
+
+      new_schedule.save()
+
+      data = {
+         'result' : 'success'
+      }
+   else:
+      data = {
+         'result' : 'fail',
+         'form_errors' : form.errors.as_json()
+      }
+
+   return JsonResponse(data)
 
 def addComment(request, id):
     comment=Comment()
