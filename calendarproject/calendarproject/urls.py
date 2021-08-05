@@ -39,7 +39,7 @@ urlpatterns = [
     path('createGroup/groupInvite', views.groupInvite, name="groupInvite"),
     path('editGroup/<str:group_id>', views.editGroup, name="editGroup"),
     path('editGroup/<str:group_id>/updateGroup', views.updateGroup, name="updateGroup"),
-    path('groupInvitation/<str:id>',views.invatation_view,name="invatation"),
+    path('groupInvitation/<str:id>',views.invitation_view,name="invatation"),
     path('groupInvitation/acceptIvitation/<str:id>', views.acceptInvitation, name="acceptInvitation"),
     path('groupInvitation/refuseIvitation/<str:id>', views.refuseInvitation, name="refuseInvitation"),
     
