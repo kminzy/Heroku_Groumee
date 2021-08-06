@@ -13,7 +13,7 @@ class Calendar(HTMLCalendar):
         cal = f'<table class="calendar">\n'
         cal += f'{self.formatmonthname(self.year, self.month, withyear=withyear)}\n'       # 영어로 몇 월인지, 몇 년도인지에 대한 문자열
         cal += '<tr><th colspan="2"><p onclick="go_prev_month();">저번달</p></th>' + f'<th colspan="3" class="month-number">{self.month}</th>' + '<th colspan="2"><p onclick="go_next_month();">다음달</p></th></tr>\n'
-        cal += '<tr class="weekheader"><th class="sun">일</th><th class="mon">월</th><th class="tue">화</th><th class="wed">수</th><th class="thu">목</th><th class="fri">금</th><th class="sat">토</th></tr>\n' 
+        cal += '<tr class="weekheader"><th class="sun">SUN</th><th class="mon">MON</th><th class="tue">TUE</th><th class="wed">WED</th><th class="thu">THU</th><th class="fri">FRI</th><th class="sat">SAT</th></tr>\n' 
         # cal += f'{self.formatweekheader()}\n'                                              # 일 ~ 토 문자열 추가
         for week in self.monthdays2calendar(self.year, self.month):
             cal += f'{self.formatweek(week, group)}\n'

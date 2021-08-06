@@ -200,6 +200,7 @@ def groupCalendar_view(request, id):
    cal = Calendar(today.year, today.month)
    cal = cal.formatmonth(withyear=True, group=group)
    cal = mark_safe(cal)
+   form = GroupScheduleCreationForm()
 
    members=[]
    testmembers= group.members.all()
@@ -260,7 +261,7 @@ def groupCalendar_view(request, id):
    comments=Comment.objects.filter(group=group)
    comment_list=list(comments)
    return render(request, 'groupCalendar.html',
-   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'groupId' : id,
+   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'group' : group, 'form' : form,
    'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
 
 def get_date(request_day):
@@ -449,3 +450,4 @@ def leaveGroup(request, id):
    group = get_object_or_404(Group, pk=id)
    usergroup = get_object_or_404(UserGroup, user=request.user, group=group)
    usergroup.delete()
+   return redirect("getuserGroupList") # 수정2

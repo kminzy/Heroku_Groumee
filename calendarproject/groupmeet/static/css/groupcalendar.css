@@ -73,6 +73,7 @@
 }
 
 .calendar th p{
+    font-family: 'Noto Sans KR', sans-serif;
     width: 50%;
     margin: 0 auto;
     font-size: 1.25rem;
@@ -101,6 +102,7 @@
 }
 
 .calendar{
+    font-family: 'Montserrat', sans-serif;
     width: 60vw;
     font-size: 1rem;
     margin : auto;
@@ -119,6 +121,7 @@
 }
 
 .month-number{
+    font-family: 'Noto Sans KR', sans-serif;
     font-size: 4.5rem !important;
     color : #838de9 !important;
     line-height: 2.5rem;
@@ -127,16 +130,17 @@
 }
 
 .weekheader{
-    background: #838de9;
-    color: #ffffff !important;
+    color: #b1b1b1 !important;
+    border-bottom: 1.5px solid rgba(131, 141, 233, 0.18);
 }
 
-.weekheader th:first-child, .weekheader th:last-child{
-    background: #aeb4e9;
+.sat{
+    color: rgba(131, 141, 233, 0.5);
 }
   
 .date {
     font-size: 1rem;
+    color: #b1b1b1;
 }
 
 .calendar .month {
@@ -147,7 +151,7 @@
 .calendar th {
     padding: 0.5vw;
     text-align: center;
-    font-size: 1.25rem;
+    font-size: 1rem;
 }
 
 .calendar tr {
@@ -157,11 +161,11 @@
 }
 
 td:first-child, th:first-child{
-    color: #f52e2e;
+    color: rgb(255, 157, 157);
 }
 
 .calendar td {
-    width: 1rem;
+    width: 7.5vw;
     height: 5em;
     padding: .25em .25em;
     transition: background .2s;
