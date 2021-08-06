@@ -40,9 +40,14 @@ class RegisterForm(UserCreationForm):
         'password_mismatch': '입력하신 두 비밀번호가 같지 않습니다',
     }
 
+    profile = forms.ImageField(widget = forms.FileInput(attrs={
+         "class":"input",
+         "type":"file",
+     }),label="upload profile")
+
     class Meta:
         model = CustomUser
-        fields = ['username','password1','password2','nickname','email']
+        fields = ['username','password1','password2','nickname','email', 'profile']
     
     # def clean_password2(self):
     #     password = self.cleaned_data.get('password2')

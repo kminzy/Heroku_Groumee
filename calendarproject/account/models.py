@@ -5,3 +5,4 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     nickname = models.CharField(max_length=50, primary_key=True)
     email = models.CharField(max_length=50, default='')
+    profile = models.ImageField(blank=True, null=True, upload_to="images/")

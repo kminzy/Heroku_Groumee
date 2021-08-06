@@ -37,6 +37,14 @@
     color: #ede7f6;
 }
 
+.profile_img{
+    display: inline;
+    width:40px;
+    height:40px;
+    border-radius: 30%;
+    background: #f1f4ff;
+}
+
 .profile > span{
     font-size:1rem;
     font-weight: 600;

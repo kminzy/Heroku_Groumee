@@ -14,7 +14,7 @@
                 <img src="{% static 'images/groumeelogo.png' %}">
             </div>
             <div class="mid-section">
-                <form action="{% url 'signup' %}" method="POST">{%csrf_token%}
+                <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">{%csrf_token%}
                     <div class="form-element">
                         {{form.username}}
                     </div>
@@ -53,6 +53,10 @@
                             {% endfor %}
                         {% endif %}
                     </div>
+                    <div class="form-element profile-upload">
+                        {{form.profile}}
+                    </div>
+                    <div class="error-field"></div>
                     <input type="hidden" name="next" value="{{ request.GET.next }}"/>
                     <button type="submit" class="btn-signup">회원가입</button>
                 </form>

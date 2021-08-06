@@ -32,7 +32,7 @@ def logout_view(request):
 
 def register_view(request):
     if request.method == "POST":
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             login(request, user)
