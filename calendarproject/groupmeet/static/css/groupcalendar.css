@@ -282,7 +282,7 @@ td:first-child, th:first-child{
     border-radius: 50px;
     background: #838de9;
     display: inline-block;
-    padding: 9px 30px;
+    padding: 9px 120px;
     position: relative;
 }
 
@@ -295,7 +295,7 @@ td:first-child, th:first-child{
 }
 
 .chat-list .chat-message h5 {
-    margin: 0 0 5px 0;
+    margin: 0 -95px 5px 0;
     font-weight: 600;
     line-height: 100%;
     font-size: 1.1rem;
@@ -303,7 +303,7 @@ td:first-child, th:first-child{
 
 .chat-list .chat-message p {
     line-height: 18px;
-    margin: 0;
+    margin: 0 -95px 0 0;
     padding: 0;
     font-size: .9rem;
 }
@@ -350,12 +350,18 @@ td:first-child, th:first-child{
     -ms-transition: all .5s ease;
     -o-transition: all .5s ease;
     width:80%;
-    margin-top: 50px;
-
+    margin:auto;
 }
 
 .chat-message{
     position:relative;
+}
+
+.comment_date{
+    color:black;
+    position:absolute;
+    top:8px;
+    left:35px;
 }
 
 .close-container {

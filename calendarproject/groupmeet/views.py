@@ -187,21 +187,11 @@ def getuserGroupList(request):
 
 # 그룹 캘린더 보여주기
 @login_required
-def groupCalendar_view(request, id):            
-   today = get_date(request.GET.get('month'))
-   prev_month_url = prev_month(today)
-   next_month_url = next_month(today)
-   cur_month_url = "month=" + str(today.year) + '-' + str(today.month)
-   # now = datetime.now()
-   # cur_year = now.year        # 현재 연도
-   # cur_month = now.month      # 현재 월
-
-   group = Group.objects.get(id=id)
-   cal = Calendar(today.year, today.month)
-   cal = cal.formatmonth(withyear=True, group=group)
-   cal = mark_safe(cal)
-   form = GroupScheduleCreationForm()
-
+def groupCalendar_view(request, id): 
+   try:
+      group = Group.objects.get(id=id)
+   except Group.DoesNotExist:
+      return render(request,'forbidden.html')   
    members=[]
    testmembers= group.members.all()
    waiting_members = []    # allowed가 1인 멤버들 담을 리스트
@@ -210,59 +200,75 @@ def groupCalendar_view(request, id):
       if ug.allowed == 0:
          waiting_members.append(member)
       if ug.allowed==2:
-         members.append(member)
+         members.append(member)    
 
-   #group에 속한 user들의 모든 일정 list로 return
-   if request.GET.get('day'):
-      day = request.GET.get('day')
-   else:
-      day = today.day
-   schedule_list={'7':[0,0], '8':[0,0], '9':[0,0], '10':[0,0], '11':[0,0], '12':[0,0], '13':[0,0], '14':[0,0], '15':[0,0], '16':[0,0], '17':[0,0], '18':[0,0], '19':[0,0], '20':[0,0], '21':[0,0], '22':[0,0], '23':[0,0]}
+   today = get_date(request.GET.get('month'))
+   prev_month_url = prev_month(today)
+   next_month_url = next_month(today)
+   cur_month_url = "month=" + str(today.year) + '-' + str(today.month)
+   # now = datetime.now()
+   # cur_year = now.year        # 현재 연도
+   # cur_month = now.month      # 현재 월
 
-   date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
+   if request.user in members:
+      cal = Calendar(today.year, today.month)
+      cal = cal.formatmonth(withyear=True, group=group)
+      cal = mark_safe(cal)
+      form = GroupScheduleCreationForm()
 
-   for user in members:
-      schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
-      if schedules:
-         for schedule in schedules:
+      #group에 속한 user들의 모든 일정 list로 return
+      if request.GET.get('day'):
+         day = request.GET.get('day')
+      else:
+         day = today.day
+      schedule_list={'7':[0,0], '8':[0,0], '9':[0,0], '10':[0,0], '11':[0,0], '12':[0,0], '13':[0,0], '14':[0,0], '15':[0,0], '16':[0,0], '17':[0,0], '18':[0,0], '19':[0,0], '20':[0,0], '21':[0,0], '22':[0,0], '23':[0,0]}
+
+      date_format = str(today.year)+"-"+str(today.month).zfill(2)+"-"+str(day).zfill(2)
+
+      for user in members:
+         schedules = Schedule.objects.filter(user=user, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
+         if schedules:
+            for schedule in schedules:
+               if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 7, 0):
+                  s = 7
+               else:
+                  if schedule.start.minute == 30:
+                     schedule_list[str(schedule.start.hour)][1] = -1
+                  s = schedule.start.hour + 1 if schedule.start.minute == 30 else int(schedule.start.hour)
+               if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
+                  e = 23
+               else:
+                  if schedule.end.minute == 30:
+                     schedule_list[str(schedule.end.hour)][0] = -1
+                  e = schedule.end.hour - 1
+               for i in range(s, e+1):
+                  schedule_list[str(i)][0] = -1
+                  schedule_list[str(i)][1] = -1
+      groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
+      if groupSchedules:
+         for schedule in groupSchedules:
             if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 7, 0):
                s = 7
             else:
                if schedule.start.minute == 30:
-                  schedule_list[str(schedule.start.hour)][1] = -1
-               s = schedule.start.hour + 1 if schedule.start.minute == 30 else int(schedule.start.hour)
-            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
-               e = 23
-            else:
-               if schedule.end.minute == 30:
-                  schedule_list[str(schedule.end.hour)][0] = -1
-               e = schedule.end.hour - 1
-            for i in range(s, e+1):
-               schedule_list[str(i)][0] = -1
-               schedule_list[str(i)][1] = -1
-   groupSchedules = GroupSchedule.objects.filter(group=group, start__lte = date_format+" 23:59:59", end__gte = date_format+" 07:00:00")
-   if groupSchedules:
-      for schedule in groupSchedules:
-         if schedule.start < datetime.datetime(int(today.year), int(today.month), int(day), 7, 0):
-            s = 7
-         else:
-            if schedule.start.minute == 30:
-                  schedule_list[str(schedule.start.hour)][1] = GroupSchedule.objects.get(id=schedule.id)
-            s = schedule.start.hour+1 if schedule.start.minute == 30 else schedule.start.hour
-            if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
-               e = 23
-            else:
-               if schedule.end.minute == 30:
-                  schedule_list[str(schedule.end.hour)][0] = GroupSchedule.objects.get(id=schedule.id)
-               e = schedule.end.hour - 1
-            for i in range(s, e+1):
-               schedule_list[str(i)][0] = GroupSchedule.objects.get(id=schedule.id)
-               schedule_list[str(i)][1] = GroupSchedule.objects.get(id=schedule.id)
-   comments=Comment.objects.filter(group=group)
-   comment_list=list(comments)
-   return render(request, 'groupCalendar.html',
-   {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'group' : group, 'form' : form,
-   'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
+                     schedule_list[str(schedule.start.hour)][1] = GroupSchedule.objects.get(id=schedule.id)
+               s = schedule.start.hour+1 if schedule.start.minute == 30 else schedule.start.hour
+               if schedule.end > datetime.datetime(int(today.year), int(today.month), int(day)+1, 0, 0):
+                  e = 23
+               else:
+                  if schedule.end.minute == 30:
+                     schedule_list[str(schedule.end.hour)][0] = GroupSchedule.objects.get(id=schedule.id)
+                  e = schedule.end.hour - 1
+               for i in range(s, e+1):
+                  schedule_list[str(i)][0] = GroupSchedule.objects.get(id=schedule.id)
+                  schedule_list[str(i)][1] = GroupSchedule.objects.get(id=schedule.id)
+      comments=Comment.objects.filter(group=group)
+      comment_list=list(comments)
+      return render(request, 'groupCalendar.html',
+      {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'group' : group, 'form' : form,
+      'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
+   else:
+      return render(request,'forbidden.html')
 
 def get_date(request_day):
    if request_day:
