@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path, include
 from groupmeet import views
 from account import views as account_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', account_view.login_view, name="login"),
@@ -44,3 +46,5 @@ urlpatterns = [
     path('groupInvitation/refuseIvitation/<str:id>', views.refuseInvitation, name="refuseInvitation"),
     
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -43,7 +43,8 @@ body{
 }
 
 .top-section{
-    height: 25%;
+    height: 20%;
+    margin-bottom:1rem;
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -88,7 +89,7 @@ body{
 }
 
 .mid-section form #password2-error-field{
-    height: 3.2rem;
+    height: 1.5rem;
 }
 
 #id_username, #id_nickname, #id_email, #id_password1, #id_password2{
@@ -122,4 +123,17 @@ body{
     border: 2px solid #838de9;
     font-weight: bold;
     cursor: pointer;
+}
+
+#id_profile {
+    width: 100%;
+    background: transparent;
+    height: 30px;
+    border: 0;
+    border-bottom: 1px solid #060b18;
+    margin-bottom: 5px;
+    outline-style: none;
+    font-size: 0.8rem;
+    font-weight: 300;
+    padding: 0;
 }

@@ -67,9 +67,14 @@
             
             <span class="profile space">|</span>
             
-            <span class="profile user-icon"><i class="fas fa-user"></i><span class="user-nickname"> {{user.nickname}}</span></span>
-            
-
+            <span class="profile user-icon">
+                {% if user.profile %}
+                    <img class="profile_img" src="{{user.profile.url}}" alt="">
+                {% else %}
+                <i class="fas fa-user"></i>
+                {% endif %}
+                <span class="user-nickname"> {{user.nickname}}</span>
+            </span>
             {% endif %}
         </div>
         
