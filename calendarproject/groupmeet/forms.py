@@ -70,6 +70,8 @@ class UserScheduleCreationForm(forms.Form):
 
 class GroupScheduleCreationForm(forms.Form):
     HOUR_CHOICES = (      # 오른쪽 값 : 화면에 보이는 값, 왼쪽 값 : 실 저장되는 값
+        ('07', '07'),
+        ('08', '08'),
         ('09', '09'),
         ('10', '10'),
         ('11', '11'),
