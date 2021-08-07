@@ -239,7 +239,7 @@ table{             /* 부트스트랩 css 상쇄 */
     backdrop-filter: blur(1.5px);
     -webkit-backdrop-filter: blur(1.5px);
     position: fixed;
-    z-index: 3;
+    z-index: 4;
     height: 100%;
     width: 25vw;
     overflow-x: hidden;

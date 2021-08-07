@@ -295,7 +295,6 @@ td:first-child, th:first-child{
 }
 
 .chat-list .chat-message h5 {
-    margin: 0 -95px 5px 0;
     font-weight: 600;
     line-height: 100%;
     font-size: 1.1rem;
@@ -303,7 +302,6 @@ td:first-child, th:first-child{
 
 .chat-list .chat-message p {
     line-height: 18px;
-    margin: 0 -95px 0 0;
     padding: 0;
     font-size: .9rem;
 }
@@ -336,6 +334,22 @@ td:first-child, th:first-child{
     border-left: 20px solid #a4abeb;
 }
 
+.chat-list .out .chat-message h5{
+    margin: 0 -100px 5px 0;
+}
+
+.chat-list .out .chat-message p{
+    margin: 0 -100px 0 0;
+}
+
+.chat-list .in .chat-message h5{
+    margin: 0 0 5px -100px;
+}
+
+.chat-list .in .chat-message p{
+    margin: 0 0 0 -100px;
+}
+
 .card{
     background:#ede7f6;   
     border: none;
@@ -357,7 +371,14 @@ td:first-child, th:first-child{
     position:relative;
 }
 
-.comment_date{
+.chat-list .in .chat-message .comment_date{
+    color:black;
+    position:absolute;
+    top:8px;
+    right:20px;
+}
+
+.chat-list .out .chat-message .comment_date{
     color:black;
     position:absolute;
     top:8px;

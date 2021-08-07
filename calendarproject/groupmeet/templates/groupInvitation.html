@@ -22,7 +22,7 @@
         <div class="members">
             {%for member in member_list%}
             <div class="member">
-                <span class="user_icon"><i class="fas fa-user"></i></span>
+                <img class="user_icon" src={{member.profile.url}}></img>
                 <span class="user_name">{{member.nickname}}</span>
             </div>
             {%endfor%}

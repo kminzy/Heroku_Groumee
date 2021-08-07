@@ -53,13 +53,10 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 .user_icon{
-    font-size:2rem;
-    padding:0.3rem 0.4em;
-    margin-right:1rem;
-    border-radius: 50%;
-    background: #f1f4ff;
-    color:#4555e6;
-
+    height: 50px;
+    width: 50px;
+    border-radius: 40%;
+    margin-right: 20px;
 }
 
 .invitation_icon{
@@ -105,33 +102,9 @@ table{             /* 부트스트랩 css 상쇄 */
 .user_name{
     font-size: 1.3rem;
     font-display: center;
+    margin-top: 7px;
 }
 
-.btn_wrap{
-    width: 100%;
-    height: auto;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.btn{
-    border-radius: 25px;
-    background: #aeb4e9;
-    color:white;
-    font-weight: 500;
-    padding:8px 14px 7px 14px;
-    margin-right:0.5rem;
-    cursor:pointer;
-    outline: none;
-    appearance: auto;
-    text-align: center;
-}
-
-.btn:hover{
-    background: #838de9;
-    color:white;
-}
 
 .buttons{
     margin-top: 30px;
