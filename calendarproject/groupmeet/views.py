@@ -49,7 +49,7 @@ def userCalendar_view(request):
                               'invitedGroup':invitedGroup
                               })
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
       
 def show_userschedule(request):
    if request.user.is_authenticated:
@@ -67,7 +67,7 @@ def show_userschedule(request):
       
       return JsonResponse(data, safe=False)    # 파라미터로 딕셔너리 형태가 아닌 것을 받으면 두 번째 파라미터로 safe=False를 해야함
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def delete_userschedule(request):
    if request.user.is_authenticated:
@@ -79,7 +79,7 @@ def delete_userschedule(request):
 
       return JsonResponse(jsonObj)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def create_userschedule(request):
    if request.user.is_authenticated:
@@ -113,7 +113,7 @@ def create_userschedule(request):
 
       return JsonResponse(data)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 @login_required
 def edit_userschedule(request, schedule_id):
@@ -173,7 +173,7 @@ def edit_userschedule(request, schedule_id):
          }
       return JsonResponse(data)
    else:
-      return render(request,'fobidden.html') 
+      return render(request,'forbidden.html')
 
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request):
@@ -189,7 +189,7 @@ def getuserGroupList(request):
          invitedGroup=list(invitedGroup)
          return render(request,'userGroupList.html',{'userGroup_list':userGroup_list,'invitedGroup':invitedGroup})
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
       
 # 그룹 캘린더 보여주기
 @login_required
@@ -277,7 +277,7 @@ def groupCalendar_view(request, id):
       else:
          return render(request,'forbidden.html')
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def get_date(request_day):
    if request_day:
@@ -343,7 +343,7 @@ def createGroupSchedule(request, id):
 
       return JsonResponse(data)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def addComment(request, id):
    if request.user.is_authenticated:
@@ -356,7 +356,7 @@ def addComment(request, id):
          comment.save()
       return redirect('groupCalendar_view',id)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def delComment(request,group_id,comment_id):
    if request.user.is_authenticated:
@@ -365,7 +365,7 @@ def delComment(request,group_id,comment_id):
          delete_comment.delete()
       return redirect('groupCalendar_view',group_id)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 '''
 def editComment(request,group_id,comment_id):
@@ -387,7 +387,7 @@ def allowRegister(request, id):
       newUserSchedule.save()
       return redirect('groupCalendar_view', groupSchedule.group.id)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def deleteGroupSchedule(request, id):
    if request.user.is_authenticated:
@@ -403,7 +403,7 @@ def deleteGroupSchedule(request, id):
       groupSchedule.delete()
       return redirect('groupCalendar_view', groupSchedule.group.id)
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 @login_required
 def createGroup(request):
@@ -414,14 +414,14 @@ def createGroup(request):
       invitedGroup=list(invitedGroup)
       return render(request, "createGroup.html", {'userList':userList,'invitedGroup':invitedGroup} )
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def editGroup(request, group_id):
    if request.user.is_authenticated:
       groupInfo = Group.objects.get(pk=group_id)
       return render(request, "editGroup.html", {'groupInfo':groupInfo})
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def updateGroup(request, group_id):
    if request.user.is_authenticated:
@@ -437,7 +437,7 @@ def updateGroup(request, group_id):
          userGroup.save()
       return redirect('getuserGroupList')
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def groupInvite(request):
    if request.user.is_authenticated:
@@ -459,7 +459,7 @@ def groupInvite(request):
          userGroup.save()
       return redirect('getuserGroupList')
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def invitation_view(request,id):
    if request.user.is_authenticated:
@@ -476,7 +476,7 @@ def invitation_view(request,id):
       invitedGroup=list(invitedGroup)
       return render(request,'groupInvitation.html',{'group':group,'member_list':member_list,'usergroup':usergroup,'invitedGroup':invitedGroup})
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def acceptInvitation(request, id):
    if request.user.is_authenticated:
@@ -485,7 +485,7 @@ def acceptInvitation(request, id):
       userGroup.save()
       return redirect('getuserGroupList')
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 def refuseInvitation(request, id):
    if request.user.is_authenticated:
@@ -494,7 +494,7 @@ def refuseInvitation(request, id):
       userGroup.save()
       return redirect('getuserGroupList')
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')
 
 @login_required
 def leaveGroup(request, id):
@@ -504,4 +504,4 @@ def leaveGroup(request, id):
       usergroup.delete()
       return redirect("getuserGroupList") # 수정2
    else:
-      return render(request,'fobidden.html')
+      return render(request,'forbidden.html')

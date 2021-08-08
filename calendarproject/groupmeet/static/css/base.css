@@ -110,6 +110,7 @@
     right: 10px;
     border-radius: 5px;
     background-color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
 }
 
@@ -129,7 +130,8 @@
     border-bottom: 1px solid #eee;
     padding: 6px 9px;
     margin-bottom: 0px;
-    cursor: pointer
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .notifications-item:hover {
@@ -153,6 +155,11 @@
 
 .notifications-item .text p {
     color: #aaa;
-    font-size: 12px
+    font-size: 12px;
+}
+
+.text{
+    color: #aaa;
+    font-size: 16px;
 }
 

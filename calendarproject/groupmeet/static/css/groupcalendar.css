@@ -281,7 +281,7 @@ td:first-child, th:first-child{
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
     border-radius: 50px;
-    background: #88b2f1;
+    background: #bcd4f7;
     display: inline-block;
     padding: 9px 90px;
     position: relative;
@@ -295,7 +295,7 @@ td:first-child, th:first-child{
     height: 0;
 }
 
-.chat-list .chat-message h5 {
+.chat-list .chat-message h4 {
     font-weight: 600;
     line-height: 100%;
     font-size: 1.1rem;
@@ -316,7 +316,7 @@ td:first-child, th:first-child{
 .chat-list .in .chat-message:before {
     left: -12px;
     border-bottom: 20px solid transparent;
-    border-right: 20px solid #88b2f1;
+    border-right: 20px solid #bcd4f7;
 }
 
 .chat-list .out .chat-body {
@@ -335,7 +335,7 @@ td:first-child, th:first-child{
     border-left: 20px solid #ffffff;
 }
 
-.chat-list .out .chat-message h5{
+.chat-list .out .chat-message h6{
     margin: 0 -60px 5px 0;
 }
 
@@ -343,7 +343,7 @@ td:first-child, th:first-child{
     margin: 0 -60px 0 0;
 }
 
-.chat-list .in .chat-message h5{
+.chat-list .in .chat-message h6{
     margin: 0 0 5px -60px;
 }
 
@@ -503,9 +503,6 @@ background-color: #ff0000;
   #mybtn:focus {
       outline: none;
   }
-
-
-
 
 
 /* 사이드바 관련 */

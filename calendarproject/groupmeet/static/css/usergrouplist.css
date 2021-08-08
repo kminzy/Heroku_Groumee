@@ -106,7 +106,7 @@ table{             /* 부트스트랩 css 상쇄 */
 
 .btn{
     border-radius: 25px;
-    background: #aeb4e9;
+    background: #88b2f1;
     color:white;
     font-weight: 500;
     padding:8px 14px 7px 14px;
@@ -118,7 +118,7 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 .btn:hover{
-    background: #838de9;
+    background: #679cec;
     color:white;
 }
 
