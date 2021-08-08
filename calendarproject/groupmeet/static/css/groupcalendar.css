@@ -273,14 +273,15 @@ td:first-child, th:first-child{
 .chat-list li {
     margin-bottom: 10px;
     overflow: auto;
-    color: #ffffff;
+    color: #000000;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 .chat-list .chat-message {
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
     border-radius: 50px;
-    background: #838de9;
+    background: #88b2f1;
     display: inline-block;
     padding: 9px 90px;
     position: relative;
@@ -315,7 +316,7 @@ td:first-child, th:first-child{
 .chat-list .in .chat-message:before {
     left: -12px;
     border-bottom: 20px solid transparent;
-    border-right: 20px solid #838de9;
+    border-right: 20px solid #88b2f1;
 }
 
 .chat-list .out .chat-body {
@@ -325,13 +326,13 @@ td:first-child, th:first-child{
 }
 
 .chat-list .out .chat-message {
-    background: #a4abeb;
+    background: #ffffff;
 }
 
 .chat-list .out .chat-message:before {
     right: -12px;
     border-bottom: 20px solid transparent;
-    border-left: 20px solid #a4abeb;
+    border-left: 20px solid #ffffff;
 }
 
 .chat-list .out .chat-message h5{
@@ -381,7 +382,7 @@ td:first-child, th:first-child{
 .chat-list .out .chat-message .comment_date{
     color:black;
     position:absolute;
-    margin-left: calc(-14vw);
+    margin-left: calc(-14.2vw);
     margin-top:-13px;
 }
 
@@ -396,10 +397,10 @@ td:first-child, th:first-child{
 
 .leftright {
     height: 3px;
-    width: 15px;
+    width: 13px;
     position: absolute;
     margin-top: 24px;
-    background-color: #ff0000;
+    background-color: #acc8f3;
     border-radius: 2px;
     transform: rotate(45deg);
     transition: all 0.2s ease-in;
@@ -407,10 +408,10 @@ td:first-child, th:first-child{
 
 .rightleft {
     height: 3px;
-    width: 15px;
+    width: 13px;
     position: absolute;
     margin-top: 24px;
-    background-color: #ff0000;
+    background-color: #acc8f3;
     border-radius: 2px;
     transform: rotate(-45deg);
     transition: all 0.2s ease-in;
@@ -427,12 +428,12 @@ td:first-child, th:first-child{
 
 .close-container:hover .leftright {
 transform: rotate(-45deg);
-background-color: #ffffff;
+background-color: #ff0000;
 }
 
 .close-container:hover .rightleft {
     transform: rotate(45deg);
-    background-color: #ffffff;
+    background-color: #ff0000;
 }
   
 
