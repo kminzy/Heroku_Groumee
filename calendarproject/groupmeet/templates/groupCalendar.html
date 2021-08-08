@@ -127,13 +127,13 @@
                     <div class="chat-message">
                       <h5>{{comment.writer.nickname}}</h5>
                       <p>{{comment.content}}</p>
+                      <div class="comment_date">{{comment.pub_date|date:'Y-d-m fa' }}</div>
                       <div class="close-container">
                         <a href="{%url 'delComment' group.id comment.id %}">
                           <div class="leftright"></div>
                           <div class="rightleft"></div>
                         </a>
                       </div>
-                      <div class="comment_date">{{comment.pub_date|date:'Y-d-m fa' }}</div>
                     </div>
                   </div>
                 </li>
@@ -149,7 +149,8 @@
                 </li>
             {%endif%}
             {%endfor%}
-          </ul>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

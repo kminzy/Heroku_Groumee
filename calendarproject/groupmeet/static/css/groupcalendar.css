@@ -282,7 +282,7 @@ td:first-child, th:first-child{
     border-radius: 50px;
     background: #838de9;
     display: inline-block;
-    padding: 9px 120px;
+    padding: 9px 90px;
     position: relative;
 }
 
@@ -335,19 +335,19 @@ td:first-child, th:first-child{
 }
 
 .chat-list .out .chat-message h5{
-    margin: 0 -100px 5px 0;
+    margin: 0 -60px 5px 0;
 }
 
 .chat-list .out .chat-message p{
-    margin: 0 -100px 0 0;
+    margin: 0 -60px 0 0;
 }
 
 .chat-list .in .chat-message h5{
-    margin: 0 0 5px -100px;
+    margin: 0 0 5px -60px;
 }
 
 .chat-list .in .chat-message p{
-    margin: 0 0 0 -100px;
+    margin: 0 0 0 -60px;
 }
 
 .card{
@@ -374,15 +374,15 @@ td:first-child, th:first-child{
 .chat-list .in .chat-message .comment_date{
     color:black;
     position:absolute;
-    top:8px;
-    right:20px;
+    right: calc(-8.5vw);
+    margin-top:-13px;
 }
 
 .chat-list .out .chat-message .comment_date{
     color:black;
     position:absolute;
-    top:8px;
-    left:35px;
+    margin-left: calc(-14vw);
+    margin-top:-13px;
 }
 
 .close-container {
