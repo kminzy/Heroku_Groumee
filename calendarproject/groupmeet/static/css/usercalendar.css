@@ -309,7 +309,7 @@ table{             /* 부트스트랩 css 상쇄 */
     margin: 10px auto;
     border-radius: 0px 0px 20px 0px;
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2); 
-    background:linear-gradient(135deg, #838de9 7%, #fff 0);
+    /* background:linear-gradient(135deg, #838de9 7%, #fff 0); */
 }
 
 #Sidebar .content-section .content:hover{

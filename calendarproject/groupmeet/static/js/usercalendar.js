@@ -102,9 +102,12 @@ $(document).ready(function(){
 
           let time = start_time + ' ~ ' + end_time;                       
           let content = schedules_list[i]['fields']['title'].slice(0, 20);  // content : 그 일정의 내용, 단 20글자만 가져옴
+
+          let corner_color = schedules_list[i]['fields']['color'];
+          console.log(corner_color)
   
           $(".content-section").append(                                    // 사이드바에 일정 추가
-            '<div class="content">\
+            '<div class="content" corner_color="' + corner_color + '">\
               <div class="top">\
                 <div>' + time + '</div>\
                 <i class="fas fa-edit edit-schedule" data-bs-toggle="modal" data-bs-target="#UserScheduleModal" value="' + schedules_list[i]['pk'] + '"></i>\
@@ -115,7 +118,14 @@ $(document).ready(function(){
               + '</div>\
             </div>'
           );
-        }
+          }
+
+          let contents = $('.content');
+
+          $.each(contents,function(index, item){
+            let corner_color = item.getAttribute('corner_color');
+            item.style.background = "linear-gradient(135deg, " + corner_color + " 7%, #fff 0)";
+          });
         }
       },
       error:function(){                              // 통신에 실패하면 이하 내용 실행
@@ -135,8 +145,8 @@ $(document).ready(function(){
   $(document).on("click", ".edit-schedule", function(){             // 각 스케줄들의 수정 아이콘(연필모양)을 누르면 이하 내용 실행
                                                                     // 부트스트랩 연동으로 모달창이 자동으로 띄워지는데, 모달창의 폼을 우리가 수정할 스케줄의 값들로 채울 것임
     $('.modal-title').text('일정 수정');
-    $('.modal-footer .btn-primary').text('수정');
-    $('.modal-footer .btn-primary').attr("id", "edit-userschedule");  // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
+    $('.btn-wrapper .save-btn').text('수정');
+    $('.btn-wrapper .save-btn').attr("id", "edit-userschedule");  // 모달의 이름과 버튼이름, 버튼의 아이디값을 설정
 
     $('.modal-body #userschedule-form ul').empty();                   // 오류메시지 출력하는 칸도 비움
 
