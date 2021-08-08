@@ -29,8 +29,22 @@
         </div>
 
         <div class="buttons">
+            <!--
             <button class="btn btn-primary" type="button" onclick="location.href='{% url 'acceptInvitation' usergroup.id %}'">승인</button>
             <button class="btn btn-primary" type="button" onclick="location.href='{% url 'refuseInvitation' usergroup.id %}'">거부</button>
+            -->
+            <button class="selectbtn" onclick="location.href='{% url 'acceptInvitation' usergroup.id %}'">
+                <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                </span>
+                <span class="button-text">수락</span>
+            </button><br><br>
+            <button class="selectbtn" onclick="location.href='{% url 'refuseInvitation' usergroup.id %}'">
+                <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                </span>
+                <span class="button-text">거절</span>
+            </button>
         </div>
     </div>
 
