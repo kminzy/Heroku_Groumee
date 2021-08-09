@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="sidebar-bot">
-        <span><a style="color:black" href="{% url 'editGroup' group.id %}"> 그룹 수정 <i class="fas fa-cog"></i> </a></span>
+        <span id="edit-group"></span><a id="edit-group" href="{% url 'editGroup' group.id %}"> 그룹 수정<i class="fas fa-cog"></i>&nbsp;&nbsp;</a></span>
         <span id="leave-group">나가기 <i class="fas fa-sign-out-alt"></i></span>
       </div>
     </div>
@@ -119,13 +119,13 @@
       <div class="col">
         <div class="card">
           <div class="card-body height3">
-            <ul class="chat-list" style="overflow-y:auto; height:450px;">
+            <ul class="chat-list">
               {% for comment in comment_list %}
               {% if comment.writer == request.user%}
                 <li class="out">  
                   <div class="chat-body">
                     <div class="chat-message">
-                      <h6>{{comment.writer.nickname}}</h6>
+                      <h5>{{comment.writer.nickname}}</h5>
                       <p>{{comment.content}}</p>
                       <div class="comment_date">{{comment.pub_date|date:'Y-d-m fa' }}</div>
                       <div class="close-container">
@@ -140,8 +140,13 @@
               {%else%}
                 <li class="in">
                   <div class="chat-body">
+                    {% if comment.writer.profile %}
+                    <img class="comment_profile" src="{{comment.writer.profile.url}}" alt="">
+                    {% else %}
+                    <i class="fas fa-user"></i>
+                    {% endif %}
                     <div class="chat-message">
-                      <h6>{{comment.writer.nickname}}</h6>
+                      <h5>{{comment.writer.nickname}}</h5>
                       <p>{{comment.content}}</p>
                       <div class="comment_date">{{comment.pub_date|date:'Y-d-m fa' }}</div>
                     </div>

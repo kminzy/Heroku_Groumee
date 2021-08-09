@@ -20,8 +20,9 @@ from django.contrib import messages
 
 #Calendar: 한달 단위 모든 일정
 #Schedule: 일정 하나 하나
-friend_list=[]
 # Create your views here.
+
+commentlist=[]
 
 def userCalendar_view(request):
    if request.user.is_authenticated:
@@ -37,8 +38,12 @@ def userCalendar_view(request):
 
       form = UserScheduleCreationForm()
       invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
-      invitedGroup=list(invitedGroup)
+
+      groups=UserGroup.objects.filter(user=user).get
+      print(groups)
       
+      invitedGroup=list(invitedGroup)
+
       return render(request, 'userCalendar.html', {
                               'calendar' : cal,
                               'cur_year' : today.year, 
@@ -178,16 +183,14 @@ def edit_userschedule(request, schedule_id):
 #사용자의 Id를 받아와서 사용자가 속한 group list return
 def getuserGroupList(request):
    if request.user.is_authenticated:
-      friend_list.clear()
-      if request.user.is_authenticated:
-         user = request.user
-         usergroup=UserGroup.objects.filter(user=user, allowed=2)
-         userGroup_list=[]
-         for ug in usergroup:
-            userGroup_list.append(ug.group)
-         invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
-         invitedGroup=list(invitedGroup)
-         return render(request,'userGroupList.html',{'userGroup_list':userGroup_list,'invitedGroup':invitedGroup})
+      user = request.user
+      usergroup=UserGroup.objects.filter(user=user, allowed=2)
+      userGroup_list=[]
+      for ug in usergroup:
+         userGroup_list.append(ug.group)
+      invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
+      invitedGroup=list(invitedGroup)
+      return render(request,'userGroupList.html',{'userGroup_list':userGroup_list,'invitedGroup':invitedGroup})
    else:
       return render(request,'forbidden.html')
       
@@ -200,14 +203,17 @@ def groupCalendar_view(request, id):
       except Group.DoesNotExist:
          return render(request,'forbidden.html')   
       members=[]
-      testmembers= group.members.all()
+      allmembers= group.members.all()
       waiting_members = []    # allowed가 1인 멤버들 담을 리스트
-      for member in testmembers:    # 그룹원들에 대해 루프
+      for member in allmembers:    # 그룹원들에 대해 루프
          ug = UserGroup.objects.get(user=member, group=group)
          if ug.allowed == 0:
             waiting_members.append(member)
          if ug.allowed==2:
             members.append(member)    
+
+      invitedGroup = UserGroup.objects.filter(user=request.user, allowed=0)
+      invitedGroup=list(invitedGroup)
 
       today = get_date(request.GET.get('month'))
       prev_month_url = prev_month(today)
@@ -273,7 +279,7 @@ def groupCalendar_view(request, id):
          comment_list=list(comments)
          return render(request, 'groupCalendar.html',
          {'groupschedules':groupSchedules,'calendar' : cal, 'cur_month' : cur_month_url, 'prev_month' : prev_month_url, 'next_month' : next_month_url, 'group' : group, 'form' : form,
-         'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members})
+         'schedule_list':schedule_list, 'date' : [today.year, str(today.month).zfill(2), str(day).zfill(2)],'comment_list':comment_list, 'members':members, 'waiting_members' : waiting_members,'invitedGroup':invitedGroup})
       else:
          return render(request,'forbidden.html')
    else:
@@ -300,21 +306,6 @@ def next_month(day):                                                          # 
 
 def createGroupSchedule(request, id):
    if request.user.is_authenticated:
-   # newGroupSchedule = GroupSchedule()
-   # newGroupSchedule.group = Group.objects.get(pk=id)
-   # start_date = request.POST.get('start_date')
-   # start_hour = request.POST.get('start_hour')
-   # start_minute = request.POST.get('start_minute')
-   # startdatetime=str(start_date + ' ' + start_hour + ':' + start_minute+':00')
-   # newGroupSchedule.start = datetime.datetime.strptime(startdatetime,'%Y-%m-%d %H:%M:%S')
-   # end_date = request.POST.get('end_date')
-   # end_hour = request.POST.get('end_hour')
-   # end_minute = request.POST.get('end_minute')
-   # enddatetime=str(end_date + ' ' + end_hour + ':' + end_minute+':00')
-   # newGroupSchedule.end = datetime.datetime.strptime(enddatetime,'%Y-%m-%d %H:%M:%S')
-   # newGroupSchedule.title =  request.POST.get('title')
-   # newGroupSchedule.save()
-   # return redirect('groupCalendar_view',newGroupSchedule.group.id)
       group = get_object_or_404(Group, pk=id)
       new_schedule = GroupSchedule(group=group)
       form = GroupScheduleCreationForm(request.POST)
