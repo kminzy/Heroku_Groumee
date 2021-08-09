@@ -46,7 +46,7 @@
     <nav class="navbar">
         <div class="nav_logo">
             {% if user.is_authenticated %}
-            <a href="{% url 'userCalendar_view' %}"><i class="fas fa-cloud"></i> Groumee</a>
+            <a href="{% url 'userCalendar_view' %}"><i class="fas fa-cloud"></i>Groumee</a>
             {% endif %}
             {% if not user.is_authenticated %}
             <a href="{% url 'login' %}">Groumee</a>
