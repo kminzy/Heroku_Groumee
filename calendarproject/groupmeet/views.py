@@ -186,11 +186,19 @@ def getuserGroupList(request):
       user = request.user
       usergroup=UserGroup.objects.filter(user=user, allowed=2)
       userGroup_list=[]
+      allUser = UserGroup.objects.all().exclude(user=user)
+      alluser_list = []
+
       for ug in usergroup:
          userGroup_list.append(ug.group)
+         new_usergroup = ug.group
+         for au in allUser:
+            if (au.group == new_usergroup) and (au.allowed == 2):
+               alluser_list.append(au)
+
       invitedGroup = UserGroup.objects.filter(user=user, allowed=0)
       invitedGroup=list(invitedGroup)
-      return render(request,'userGroupList.html',{'userGroup_list':userGroup_list,'invitedGroup':invitedGroup})
+      return render(request,'userGroupList.html',{'userGroup_list':userGroup_list,'invitedGroup':invitedGroup,'alluser_list':alluser_list})
    else:
       return render(request,'forbidden.html')
       

@@ -44,7 +44,8 @@ urlpatterns = [
     path('groupInvitation/<str:id>',views.invitation_view,name="invitation"),
     path('groupInvitation/acceptIvitation/<str:id>', views.acceptInvitation, name="acceptInvitation"),
     path('groupInvitation/refuseIvitation/<str:id>', views.refuseInvitation, name="refuseInvitation"),
-    
+    path('mypage/', account_view.mypage_view, name="mypage"),
+    path('mypage/changepw/', account_view.change_password, name="changepw"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
