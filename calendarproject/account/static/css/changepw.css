@@ -120,3 +120,8 @@ body{
     font-weight: bold;
     cursor: pointer;
 }
+
+.change_success{
+    font-weight:700;
+    color:#4555e6;
+}

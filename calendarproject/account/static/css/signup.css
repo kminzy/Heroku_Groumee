@@ -29,7 +29,7 @@ body{
     justify-content: center;
     align-items: center;
     width: 35%;
-    height: 80%;
+    height: 85%;
     background: linear-gradient(287deg, rgba(255,255,255,1) 0%, rgba(243,244,244,1) 0%, rgba(255,255,255,1) 100%);
     border-radius: 20px;
     -webkit-box-shadow: 27px 43px 43px -26px rgba(89,89,89,0.39);
@@ -136,4 +136,10 @@ body{
     font-size: 0.8rem;
     font-weight: 300;
     padding: 0;
+}
+
+.profile_guide{
+    color:#4555e6;
+    font-size:9.5px;
+    margin-top:0;
 }
