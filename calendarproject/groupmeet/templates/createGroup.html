@@ -111,7 +111,13 @@
       $('#form-members-error').empty(); 
     })
 
-    $(document).on("click", ".invite-btn", function(){            // 모달에서 수정버튼을 누르면 이하 내용 실행
+    $(document).on("change", ".form-check-input", function(){
+      if($(".form-check-input").is(":checked")){
+        $('#form-members-error').empty();
+      }
+    });
+
+    $(document).on("click", ".invite-btn", function(){            
       $('form ul').empty();               // 오류메시지 출력하는 부분 비우기
       const new_group_name = $("#inputPassword3").val();
       let new_group_members = [];
@@ -140,7 +146,7 @@
         data : fd,
         success:function(data){
 
-          if(data['result'] === "success"){                   // 작성한 폼이 유효했다면 redirect
+          if(data['result'] === "success"){                   // 작성한 폼이 유효했다면 
             location.href = "{% url 'getuserGroupList' %}"
           }
           else{                                               // 작성한 폼이 유효 X -> 에러메시지 출력
