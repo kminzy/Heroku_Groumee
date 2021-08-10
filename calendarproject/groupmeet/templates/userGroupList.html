@@ -28,10 +28,16 @@
         {%for group in userGroup_list%}
         <a href="{%url 'groupCalendar_view' group.id%}">
             <div class="group_wrap">
-                <span class="group_name">{{group.id}}</span>
+                <span class="group_name">{{group.name}}</span>
                 <span class="member_num">number of member</span>
                 <br>
-                <span class="member_name">member names</span><br>
+                <span class="member_name">
+                    {% for member in alluser_list %}
+                        {% if member.group == group %}
+                            {{member.user}}
+                        {% endif %}
+                    {% endfor %}
+                </span><br>
             </div>
         </a>
         {%endfor%}

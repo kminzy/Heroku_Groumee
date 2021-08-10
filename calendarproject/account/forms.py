@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
 from django import forms
 from django.forms import widgets
 from .models import CustomUser
@@ -43,7 +43,7 @@ class RegisterForm(UserCreationForm):
     profile = forms.ImageField(widget = forms.FileInput(attrs={
          "class":"input",
          "type":"file",
-     }),label="upload profile")
+     }),label="upload profile", required=False)
 
     class Meta:
         model = CustomUser
@@ -54,3 +54,27 @@ class RegisterForm(UserCreationForm):
     #     if len(password) < 8:
     #         raise ValidationError("비밀번호는 최소 8글자 이상이어야 합니다")
     #     return password
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.fields['old_password'].label = '기존 비밀번호'
+        self.fields['old_password'].widget.attrs.update({
+            'class': 'form-control',
+            'autofocus': False,
+            'placeholder':"old password"
+        })
+        self.fields['new_password1'].label = '새 비밀번호'
+        self.fields['new_password1'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder':"new password1"
+        })
+        self.fields['new_password2'].label = '새 비밀번호 확인'
+        self.fields['new_password2'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder':"new password2"
+        })
+
+    class Meta:
+        model = CustomUser
+        fields = ['old_password', 'new_password1', 'new_password2']

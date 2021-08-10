@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extrahead %}
+<link rel="stylesheet" href='{% static "css/groupinvitation.css" %}' />
+{% endblock %}
+
+{% block content %}
+<div class="main-section">
+    <h1>mypage</h1>
+    <br><br>
+    <a href="{% url 'changepw' %}" style="color:black;">비밀번호 변경</a>
+</div>
+{% endblock %}
