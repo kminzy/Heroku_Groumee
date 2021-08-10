@@ -54,7 +54,7 @@
                         {% endif %}
                     </div>
                     <div class="form-element profile-upload">
-                        {{form.profile}}
+                        {{form.profile}} <span class="profile_guide"><i class="fas fa-exclamation-circle"></i> 프로필 사진은 선택사항입니다.</span>
                     </div>
                     <div class="error-field"></div>
                     <input type="hidden" name="next" value="{{ request.GET.next }}"/>

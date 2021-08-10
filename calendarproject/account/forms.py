@@ -67,12 +67,12 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         self.fields['new_password1'].label = '새 비밀번호'
         self.fields['new_password1'].widget.attrs.update({
             'class': 'form-control',
-            'placeholder':"new password1"
+            'placeholder':"new password"
         })
         self.fields['new_password2'].label = '새 비밀번호 확인'
         self.fields['new_password2'].widget.attrs.update({
             'class': 'form-control',
-            'placeholder':"new password2"
+            'placeholder':"confirm new password"
         })
 
     class Meta:
