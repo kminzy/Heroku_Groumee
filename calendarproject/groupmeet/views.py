@@ -432,23 +432,43 @@ def updateGroup(request, group_id):
 
 def groupInvite(request):
    if request.user.is_authenticated:
-      user = request.user
-      group = Group()
-      group.name = request.POST.get('name')
-      group.save()
-      userGroup = UserGroup()
-      userGroup.user = user
-      userGroup.group = group
-      userGroup.allowed = 2
-      userGroup.save()
-      members = request.POST.getlist('members[]')
-      for member in members:
+      error_messages = []
+      new_group_name = request.POST.get("new_group_name")
+      new_group_members = request.POST.get("new_group_members")
+
+      if not new_group_name:
+         error_messages.append({'error_type' : 'name', 'error_content' : '그룹 이름을 지어야 합니다'})
+      if not new_group_members:
+         error_messages.append({'error_type' : 'members', 'error_content' : '초대할 멤버를 골라야 합니다'})
+      
+      if error_messages:
+         data = {
+            'result' : 'fail',
+            'error_messages' : error_messages
+         }
+      else:
+         user = request.user
+         group = Group()
+         group.name = new_group_name
+         group.save()
          userGroup = UserGroup()
-         userGroup.user = CustomUser.objects.get(nickname=member)
+         userGroup.user = user
          userGroup.group = group
-         userGroup.allowed = 0
+         userGroup.allowed = 2
          userGroup.save()
-      return redirect('getuserGroupList')
+         members = new_group_members.split(',')
+         for member in members:
+            print(type(member))
+            userGroup = UserGroup()
+            new_member = CustomUser.objects.get(nickname=member)
+            userGroup.user = new_member
+            userGroup.group = group
+            userGroup.allowed = 0
+            userGroup.save()
+         data = {
+            'result' : 'success'
+         }
+      return JsonResponse(data)
    else:
       return render(request,'forbidden.html')
 

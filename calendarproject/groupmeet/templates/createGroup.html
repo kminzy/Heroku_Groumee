@@ -34,13 +34,14 @@
 </script>
 <div class="main-section">
   <div class="inviteSection">
-    <form action="{% url 'groupInvite' %}" method="POST">
+    <form>
       {% csrf_token %}
 
       <div class="invite-wrapper">
         <label for="inputPassword3" class="col-form-label"><i class="fas fa-user-tag"></i> <span class="invite-title"> 그룹이름</span></label>
-        <input name="name" type="text" class="form-control group-name" id="inputPassword3" />
+        <input name="name" type="text" class="form-control group-name" id="inputPassword3" /><br>
       </div>
+      <ul id="form-name-error"></ul>
 
       <div class="invite-wrapper">
         <fieldset class="">
@@ -86,8 +87,9 @@
 
         </fieldset>
       </div>
+      <ul id="form-members-error"></ul>
       <div class="d-grid d-md-flex justify-content-md-center">
-        <button class="btn invite-btn" type="submit">그룹 초대하기</button>
+        <button class="btn invite-btn" type="button">그룹 초대하기</button>
         <button class="btn cancel-btn" type="button" onclick="location.href={% url 'getuserGroupList' %}">취소</button>
       </div>
     </form>
@@ -95,4 +97,71 @@
   <!-- inviteSection 끝 -->
 </div>
 
+<script>
+  $(document).ready(function(){
+    $('.group-name').focus(function(){
+      $('#form-name-error').empty(); 
+    })
+    
+    $('.plus-btn').focus(function(){
+      $('#form-members-error').empty(); 
+    })
+
+    $('.form-check-input').focus(function(){
+      $('#form-members-error').empty(); 
+    })
+
+    $(document).on("click", ".invite-btn", function(){            // 모달에서 수정버튼을 누르면 이하 내용 실행
+      $('form ul').empty();               // 오류메시지 출력하는 부분 비우기
+      const new_group_name = $("#inputPassword3").val();
+      let new_group_members = [];
+      $('.form-check-input').each(function(index){  //index는 순서
+        if($(this).is(":checked")){
+          new_group_members.push($(this).val())
+        }
+      });
+      const csrf = document.getElementsByName('csrfmiddlewaretoken');
+      let csrf_token = '{{csrf_token}}';
+
+      console.log(new_group_name);
+      const fd = new FormData();
+
+      fd.append('csrfmiddlewaretoken', csrf[0].value);
+      fd.append('new_group_name', new_group_name);
+      fd.append('new_group_members', new_group_members);
+                                           // 입력한 폼 데이터들을 전부 fd란 변수에 담아서 ajax통신
+      
+      $.ajax({
+        url : "{% url 'groupInvite' %}",
+        type : 'POST',
+        headers : {
+          'X-CSRFTOKEN' : "{{csrf_token}}"
+        },
+        data : fd,
+        success:function(data){
+
+          if(data['result'] === "success"){                   // 작성한 폼이 유효했다면 redirect
+            location.href = "{% url 'getuserGroupList' %}"
+          }
+          else{                                               // 작성한 폼이 유효 X -> 에러메시지 출력
+            errors = data['error_messages'];
+            console.log(errors.length);
+            for(let i=0; i<errors.length; i++){
+              let error_message = '<li>' + errors[i]['error_content'] + '</li>';
+              let error_field = errors[i]['error_type'];
+              $("ul[id*='" + error_field +"']").append(error_message);
+            }
+          }
+        },
+        error:function(){
+          alert("그룹 생성에 실패했습니다");
+        },
+        cache : false,
+        contentType: false,
+        processData: false
+      });
+
+    });
+  })
+</script>
 {% endblock %}
