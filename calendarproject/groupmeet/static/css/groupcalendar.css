@@ -35,7 +35,7 @@
 
 .left-section #top{
     display: flex;
-    width: 100%;
+    width: 95%;
 }
 
 .left-section #top h3{
@@ -766,3 +766,30 @@ background-color: #ff0000;
     padding:3px;
     text-align: center;
 } */
+.group-name{
+    width:15vw;
+    height:58px;
+    justify-self: center;
+    align-self: center;
+    color:white;
+    margin:auto;
+         /*stitching*/
+ outline: 1px dashed #8e8e8e;
+ outline-offset: -5px;
+ 
+ background-color: #88b2f1;
+ 
+ /*shadow*/
+ -webkit-box-shadow: 2px 2px 2px #98abb9;
+ -moz-box-shadow: 2px 2px 2px #98abb9;
+ box-shadow: 2px 2px 2px #98abb9;
+}
+
+.group-name > h2{
+    font-size: 35px;    
+    justify-self: center;
+    align-self: center;
+    font-weight: bold;
+    text-align: center;
+    margin:6px auto !important;
+}
