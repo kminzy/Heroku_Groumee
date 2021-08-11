@@ -235,57 +235,71 @@ table{             /* 부트스트랩 css 상쇄 */
 /* Sidebar Css */
 
 #Sidebar{
-    background-color: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(1.5px);
-    -webkit-backdrop-filter: blur(1.5px);
+    background: linear-gradient(287deg, rgba(255,255,255,1) 0%, rgba(243,244,244,1) 0%, rgba(255,255,255,1) 100%);
     position: fixed;
-    z-index: 4;
+    z-index: 5;
     height: 100%;
-    width: 25vw;
+    width: 35vw;
     overflow-x: hidden;
 	transition: 0.4s ease-in-out;
     top: 0;
-	right: -25vw;
+	right: -35vw;
     padding: 10px 20px 10px 20px;
-    box-shadow: -0.5px 0px 1px 1px rgba(0, 0, 0, .2);
+    /* box-shadow: -0.5px 0px 1px 1px rgba(0, 0, 0, .2); */
+    box-shadow: -10px 0px 43px -26px rgba(89,89,89,0.39);
 }
 
 #Sidebar .close-section{
     /* height: 5vh; */
-    font-size: 30px;
-    color: rgb(185, 185, 185);
+    font-size: 1.5rem;
+    color: #afc9f6;
+    height: 5%;
 }
 
 #Sidebar .close-Sidebar:hover{
-    color: #222222;
+    color: #5390fe;
     cursor: pointer;
-    font-size: 36px;  
     transition: .3s;
+    transform: scale(1.2);
 }
 
 #Sidebar .Sidebar-head{
     /* height: 12vh; */
+    height: 17%;
     color: #222222;
     font-size: 1.25rem;
-    padding: 10px 0;
-    border-bottom: 1.5px solid rgba(0, 0, 0, .2);
+    padding: 5px 0 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+    line-height: 3rem;
 }
 
 #Sidebar .Sidebar-head .cur-date{
-    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-shadow:rgba(40, 108, 230, 0.5) 2px 2px 4px;
+    line-height: 3.75rem;
+    /* color: #5d9dff; */
+    /* color: #838de9; */
+    color: #5390fe;
 }
 
-#Sidebar .Sidebar-head .num-of-schedules{
-    color: #838de9;
-    font-weight: 700;
+#Sidebar .Sidebar-head .cur-date #cur_day{
+    font-size: 5.5rem;
+}
+
+#Sidebar .Sidebar-head .cur-date #cur_weekday{
+    font-size: 1.75rem;
 }
 
 #Sidebar .content-section{
     width: 100%;
-    height: 65vh;
+    height: 63%;
     overflow: auto;
-    border-bottom: 1.5px solid rgba(0, 0, 0, .2);
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 #Sidebar .content-section .is-not-schedule{
@@ -294,13 +308,14 @@ table{             /* 부트스트랩 css 상쇄 */
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #222222;
-    font-size: 15vh;
+    color: #afc9f6;
+    font-size: 7rem;
 }
 
 #Sidebar .content-section .is-not-schedule p{
     text-align: center;
-    font-size: 3vh;
+    font-size: 1.25rem;
+    font-weight: 100;
 }
 
 #Sidebar .content-section .content{
@@ -308,13 +323,15 @@ table{             /* 부트스트랩 css 상쇄 */
     height: 13.5vh;
     margin: 10px auto;
     border-radius: 0px 0px 20px 0px;
-    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2); 
+    /* box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);  */
+    box-shadow: 13px 21px 22px -13px rgba(89,89,89,0.39);
     /* background:linear-gradient(135deg, #838de9 7%, #fff 0); */
 }
 
 #Sidebar .content-section .content:hover{
     cursor: pointer;
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .1); 
+    /* box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, .1);  */
+    box-shadow: 18px 30px 30px -18px rgba(89,89,89,0.39);
     transition: .3s;
     transform: scale(1.025);
 }
@@ -356,7 +373,7 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 #Sidebar .content-section .content .top .edit-schedule:hover{
-    color: #838de9;
+    color: #5390fe;
     cursor: pointer;
     font-size: 1.5em;
     transition: .3s;
@@ -367,7 +384,7 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 #Sidebar .content-section .content .top .delete-schedule:hover{
-    color: #838de9;
+    color: #5390fe;
     cursor: pointer;
     font-size: 1.5em;
     transition: .3s;
@@ -384,19 +401,31 @@ table{             /* 부트스트랩 css 상쇄 */
 }
 
 #Sidebar .content-add-section {
-    height: 13vh;
-    font-size: 8vh;
+    height: 15%;
+    font-size: 1.25rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #838de9;
+}
+
+#Sidebar .content-add-section .go-add-userschedule{
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    padding: 0.5rem 1rem;
+    font-weight: 100;
+    color: #5390fe;
 }
 
 #Sidebar .content-add-section .go-add-userschedule:hover{
-    color: #4555e6;
     cursor: pointer;
     transition: .3s;
     transform: scale(1.1);
+    background-color: #5390fe;
+    box-shadow: 0px 15px 20px rgba(40, 108, 230, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
 }
 
 

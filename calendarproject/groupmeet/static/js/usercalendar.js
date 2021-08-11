@@ -61,6 +61,10 @@ $(document).ready(function(){
     let day = $(this).html().split('<')[0];          // 클릭한 날짜의 날(ex : 15, 17, 31...)을 가져와서
     $("#cur_day").text(day);                         // 사이드바의 날짜로 한다. 즉 클릭한 날짜가 사이드바에 표시되게 됨
 
+    let date = new Date(cur_year + '-' + cur_month + '-' + day);                 // 클릭한 날짜
+    let week = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAT"];
+    $("#cur_weekday").text(week[date.getDay()]);                                 // 클릭한 날짜의 요일 영어로 해서 
+
     let param = {                                    // 클릭한 날짜의 년/월/일을 객체형태로. 얘를 ajax통신에 사용할 것임
       'year' : cur_year,
       'month' : cur_month,
@@ -80,7 +84,6 @@ $(document).ready(function(){
                                                                           // 즉 schedules_list는 js객체들의 리스트형태
                                                                           // ex) [json_data_01, json_data_02, json_data_03, ...]
                                                                           // shcedules_list는 클릭한 날짜의 일정들의 리스트임
-        $("#num-of-schedules").text(schedules_list.length); // 사이드바에서 'N개의 일정들이 있습니다'라는 문장에서 N을 표기
         $(".content-section").empty();                      // 일정들이 채워질 영역을 비움 -> 7일날 일정 보다가 8일 일정 볼때, 7일 일정
                                                             // 은 날리고 8일 일정만 봐야 하므로 
 
@@ -359,7 +362,7 @@ $(document).ready(function(){
 
 
 function closeSidebar() {                                           // 사이드바 닫기
-  document.getElementById("Sidebar").style.right = "-25vw";
+  document.getElementById("Sidebar").style.right = "-35vw";
 }
 
 function go_prev_month() {                                          // 이전 달로 가기

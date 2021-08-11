@@ -14,13 +14,16 @@
           <i class="fas fa-times close-Sidebar" onclick="closeSidebar()"></i>
         </div>
         <div class="Sidebar-head">
-          <div class="cur-date">{{cur_year}}년 {{cur_month}}월 <span id="cur_day"></span>일</div>
-          <span class="num-of-schedules"><span id="num-of-schedules"></span>개</span>의 일정이 있습니다.
+          <div class="cur-date">
+            <div id="cur_day"></div>
+            <div id="cur_weekday"></div>
+          </div>
         </div>
         <div class="content-section">
         </div>
         <div class="content-add-section">
-          <i class="far fa-calendar-plus go-add-userschedule" data-bs-toggle="modal" data-bs-target="#UserScheduleModal"></i>
+          <!-- <i class="far fa-calendar-plus go-add-userschedule" data-bs-toggle="modal" data-bs-target="#UserScheduleModal"></i> -->
+          <button class="go-add-userschedule" type="button" data-bs-toggle="modal" data-bs-target="#UserScheduleModal">+ 일정 추가하기</button>
         </div>
       </div>
 
