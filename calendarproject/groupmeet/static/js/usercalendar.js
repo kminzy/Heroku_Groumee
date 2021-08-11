@@ -326,36 +326,45 @@ $(document).ready(function(){
   });
 
   $(document).on("click", ".delete-schedule", function(e){             // 휴지통 아이콘 누르면 그 스케줄 삭제하기
-    // e.stopPropagation();   // 부모 태그인 .content로 click이벤트가 전파되는 것을 막음
-    let result = confirm("정말 이 일정을 삭제하시겠습니까?");
-    if (result){
-      let param = {
-        'pk' : $(this).attr("value")
-      }
-
-      $.ajax({
-        url : delete_userschedule_url,
-        type : 'POST',
-        headers : {
-          'X-CSRFTOKEN' : csrf_token
-        },
-        data : JSON.stringify(param),
-        success:function(data){
-          setTimeout(function() {
-            location.href = "";
-          }, 300);
-          // $(self).parent().parent().remove();
-
-        },
-        error:function(){
-          alert("일정을 삭제하는데 실패했습니다");
+      // e.stopPropagation();   // 부모 태그인 .content로 click이벤트가 전파되는 것을 막음
+      Swal.fire({
+        title: '이 일정을 삭제하시겠습니까?',
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#42a5f5',
+        confirmButtonText: '확인',
+        cancelButtonText: '취소',
+      }).then((result) => {
+        if(result.isConfirmed){
+          let param = {
+            'pk' : $(this).attr("value")
+          }
+  
+          $.ajax({
+            url : delete_userschedule_url,
+            type : 'POST',
+            headers : {
+              'X-CSRFTOKEN' : csrf_token
+            },
+            data : JSON.stringify(param),
+            success:function(data){
+              setTimeout(function() {
+                location.href = "";
+              }, 300);
+              // $(self).parent().parent().remove();
+    
+            },
+            error:function(){
+              alert("일정을 삭제하는데 실패했습니다");
+            }
+          });
+        }
+  
+        else{
+          ;
         }
       });
-    }
-    else{
-      ;
-    }
-  });
+    });
 
 
 });
